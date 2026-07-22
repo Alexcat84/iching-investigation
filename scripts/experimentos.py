@@ -161,11 +161,88 @@ def verificar_simetrias():
     print(f'   espectro Q6: {espectro}  (suma {sum(espectro.values())})')
 
 
+# ————————————————————— 4. Secuencia del Rey Wen —————————————————————
+
+def verificar_rey_wen():
+    fan_pairs = dui_pairs = 0
+    for n in range(1, 33):
+        a = BY_KW[2 * n - 1]['valor']
+        b = BY_KW[2 * n]['valor']
+        if fan(a) == a:  # palindromo -> se usa dui
+            assert b == dui(a), f'par {n}: dui esperado'
+            dui_pairs += 1
+        else:
+            assert b == fan(a), f'par {n}: fan esperado'
+            fan_pairs += 1
+    assert fan_pairs == 28 and dui_pairs == 4, (fan_pairs, dui_pairs)
+
+    # El volteo conserva el nº de líneas yang; el opuesto lo complementa.
+    for v in range(64):
+        assert bin(fan(v)).count('1') == bin(v).count('1')
+        assert bin(dui(v)).count('1') == 6 - bin(v).count('1')
+
+    print('4. La secuencia del Rey Wen')
+    print(f'   32 pares: {fan_pairs} por volteo (fan), {dui_pairs} por opuesto (dui)  OK')
+    print('   fan conserva el nº de yang; dui lo complementa (yang <-> 6-yang)  OK')
+
+
+# ————————————————————— 5. Cuadrado y circulo de Shao Yong —————————————————————
+
+def verificar_shao_yong():
+    def celda(fila, col):
+        return (col << 3) | (7 - fila)
+    vals = set(celda(f, c) for f in range(8) for c in range(8))
+    assert vals == set(range(64)), 'el cuadrado no cubre 0..63'
+    # Simetrias del circulo: dui = reflexion (63 - v); antipoda = voltear linea inferior.
+    for v in range(64):
+        assert dui(v) == 63 - v
+        assert (v ^ 32) == v ^ LINE_BIT(1)
+    print('5. El cuadrado y el circulo de Shao Yong')
+    print('   las 64 celdas del cuadrado 8x8 son exactamente 0..63  OK')
+    print('   circulo: dui = 63-v (reflexion vertical); antipoda = voltear linea 1  OK')
+
+
+# ————————————————————— 6. Rey Wen como permutacion —————————————————————
+
+def verificar_permutacion():
+    from math import gcd
+    perm = [BY_KW[k + 1]['valor'] for k in range(64)]
+    visto = [False] * 64
+    ciclos = []
+    for i in range(64):
+        if visto[i]:
+            continue
+        c, j = [], i
+        while not visto[j]:
+            visto[j] = True
+            c.append(j)
+            j = perm[j]
+        ciclos.append(c)
+    longs = sorted((len(c) for c in ciclos), reverse=True)
+    fijos = [c[0] for c in ciclos if len(c) == 1]
+    orden = 1
+    for L in longs:
+        orden = orden * L // gcd(orden, L)
+    inv = sum(1 for i in range(64) for j in range(i + 1, 64) if perm[i] > perm[j])
+    paridad = 'par' if (64 - len(ciclos)) % 2 == 0 else 'impar'
+
+    print('6. Rey Wen como permutacion de Fu Xi')
+    print(f'   {len(ciclos)} ciclos; longitudes {longs}')
+    print(f'   {len(fijos)} puntos fijos: {fijos}')
+    print(f'   orden {orden} · paridad {paridad} · {inv} inversiones (de {64*63//2})')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
     verificar_oraculo()
     print()
     verificar_simetrias()
+    print()
+    verificar_rey_wen()
+    print()
+    verificar_shao_yong()
+    print()
+    verificar_permutacion()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')

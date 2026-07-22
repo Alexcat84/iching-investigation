@@ -101,6 +101,42 @@ export const EXPERIMENTOS: Experimento[] = [
     accent: "#e24b3b",
     estado: "activo",
   },
+  {
+    slug: "rey-wen",
+    n: 7,
+    titulo: "La secuencia del Rey Wen",
+    subtitulo: "La regla de pares y la búsqueda de una fórmula",
+    descripcion:
+      "El orden tradicional agrupa los 64 en 32 pares: cada par es el volteo del anterior, salvo en 4 casos donde se usa el opuesto. Fuera de esa regla no se conoce ninguna fórmula binaria. La visualizamos y buscamos la estructura que sí hay.",
+    simbolo: "序",
+    categoria: "Historia",
+    accent: "#cf9b5b",
+    estado: "activo",
+  },
+  {
+    slug: "shao-yong",
+    n: 8,
+    titulo: "El cuadrado y el círculo",
+    subtitulo: "El diagrama de Shao Yong que vio Leibniz",
+    descripcion:
+      "Los 64 hexagramas dispuestos a la vez en un cuadrado 8×8 y en un círculo, en orden binario. Es el diagrama que Bouvet envió a Leibniz hacia 1701: leerlo en orden es, literalmente, contar de 0 a 63.",
+    simbolo: "圓",
+    categoria: "Historia",
+    accent: "#6fa8b0",
+    estado: "activo",
+  },
+  {
+    slug: "permutacion",
+    n: 9,
+    titulo: "Rey Wen como permutación",
+    subtitulo: "Cuánto desordena el libro la geometría",
+    descripcion:
+      "Si Fu Xi es la identidad, el Rey Wen es una permutación de los 64 números. La descomponemos en ciclos y medimos su desorden: puntos fijos, orden, paridad e inversiones.",
+    simbolo: "σ",
+    categoria: "Álgebra",
+    accent: "#b57bb0",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS_ACTIVOS = EXPERIMENTOS.filter(
