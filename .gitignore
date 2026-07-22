@@ -2,3 +2,13 @@ __pycache__/
 *.pyc
 node_modules/
 .DS_Store
+
+# artefacto redundante (copia comprimida del propio repo)
+iching-investigation.tar.gz
+
+# build del sitio (web/)
+.next/
+out/
+.vercel
+*.tsbuildinfo
+web/next-env.d.ts

@@ -1,0 +1,112 @@
+/**
+ * Registro de experimentos — fuente de verdad del menú.
+ *
+ * Para añadir un experimento nuevo:
+ *   1. Añade una entrada a este arreglo.
+ *   2. Crea app/experimentos/<slug>/page.tsx.
+ * El menú de la portada se genera solo desde aquí.
+ */
+
+export type Categoria = "Geometría" | "Historia" | "Oráculo" | "Álgebra";
+export type Estado = "activo" | "proximamente";
+
+export interface Experimento {
+  slug: string;
+  n: number;
+  titulo: string;
+  subtitulo: string;
+  descripcion: string;
+  /** Símbolo o hexagrama representativo. */
+  simbolo: string;
+  categoria: Categoria;
+  /** Color de acento (de la paleta de líneas). */
+  accent: string;
+  estado: Estado;
+  destacado?: boolean;
+}
+
+export const EXPERIMENTOS: Experimento[] = [
+  {
+    slug: "hipercubo",
+    n: 1,
+    titulo: "El hipercubo del I Ching",
+    subtitulo: "64 hexagramas · 192 mutaciones · un recorrido Gray",
+    descripcion:
+      "El anillo de los 64 hexagramas y las 192 aristas que forman el hipercubo de 6 dimensiones. Compara el orden Fu Xi (binario) con el del Rey Wen y recorre los 64 estados cambiando una sola línea por paso.",
+    simbolo: "䷀",
+    categoria: "Geometría",
+    accent: "#5b8fd9",
+    estado: "activo",
+    destacado: true,
+  },
+  {
+    slug: "palacios",
+    n: 2,
+    titulo: "Los ocho palacios de Jing Fang",
+    subtitulo: "Caminos sobre el hipercubo, descritos en el siglo II a.C.",
+    descripcion:
+      "Jing Fang agrupó los 64 hexagramas en 8 casas generadas por cambios sucesivos de líneas desde los 8 hexagramas puros. Reconstruimos las casas como recorridos sobre Q6 y verificamos que particionan los 64 sin repetir ninguno.",
+    simbolo: "☰",
+    categoria: "Historia",
+    accent: "#e5c558",
+    estado: "activo",
+    destacado: true,
+  },
+  {
+    slug: "mapa-lectura",
+    n: 3,
+    titulo: "El mapa de la lectura",
+    subtitulo: "Toda consulta es un salto en el hipercubo",
+    descripcion:
+      "Arma un hexagrama, marca las líneas mutantes y observa el salto: hexagrama original → resultante, con la distancia exacta y la lectura simbólica de qué líneas cambiaron. También puedes echar las monedas.",
+    simbolo: "䷗",
+    categoria: "Oráculo",
+    accent: "#5fae7f",
+    estado: "activo",
+    destacado: true,
+  },
+  {
+    slug: "probabilidades",
+    n: 4,
+    titulo: "Monedas contra milenrama",
+    subtitulo: "Las probabilidades ocultas del oráculo",
+    descripcion:
+      "Las varillas de milenrama no son simétricas como las monedas. Simulamos miles de consultas con las probabilidades históricas de cada método y descubrimos qué distribuciones cambian… y cuáles resultan ser idénticas.",
+    simbolo: "䷚",
+    categoria: "Oráculo",
+    accent: "#e8883a",
+    estado: "activo",
+  },
+  {
+    slug: "simetrias",
+    n: 5,
+    titulo: "Las simetrías del hipercubo",
+    subtitulo: "Órbitas, palíndromos y el mapa nuclear",
+    descripcion:
+      "El grupo de Klein generado por el volteo (fan) y el opuesto (dui) parte los 64 hexagramas en 20 órbitas. Los 8 palíndromos resultan ser exactamente los pares especiales del Rey Wen. Y el hexagrama nuclear, iterado, cae siempre en cuatro atractores.",
+    simbolo: "䷾",
+    categoria: "Álgebra",
+    accent: "#9c6bc9",
+    estado: "activo",
+  },
+  {
+    slug: "trayectoria",
+    n: 6,
+    titulo: "Trayectoria personal",
+    subtitulo: "Tu historial como ruta por los 64 estados",
+    descripcion:
+      "El historial de consultas de una persona es un camino por el espacio de 64 estados: regiones recurrentes, distancia media entre lecturas, en qué palacio vive cada período.",
+    simbolo: "䷆",
+    categoria: "Oráculo",
+    accent: "#cfc7b2",
+    estado: "proximamente",
+  },
+];
+
+export const EXPERIMENTOS_ACTIVOS = EXPERIMENTOS.filter(
+  (e) => e.estado === "activo",
+);
+
+export function getExperimento(slug: string): Experimento | undefined {
+  return EXPERIMENTOS.find((e) => e.slug === slug);
+}

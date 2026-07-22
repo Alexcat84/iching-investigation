@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+/* ————————————————————————————————————————————————
+   Sistema de diseño — estética "tinta y pergamino"
+   Heredada de la visualización original del hipercubo:
+   fondo de tinta casi negra, texto pergamino, acento cinabrio.
+   ———————————————————————————————————————————————— */
+@theme {
+  --color-ink-950: #0b0a08;
+  --color-ink-900: #100f0d;
+  --color-ink-850: #151310;
+  --color-ink-800: #1c1915;
+  --color-ink-700: #2a2620;
+  --color-ink-600: #3a362e;
+
+  --color-sand-600: #4a453b;
+  --color-sand-500: #6b6558;
+  --color-sand-400: #8a8271;
+  --color-sand-300: #cfc7b2;
+  --color-sand-200: #e9e3d3;
+  --color-sand-100: #f5efdf;
+
+  --color-cinnabar: #b5442d;
+  --color-cinnabar-bright: #e24b3b;
+
+  /* Colores de línea (una dimensión del hipercubo por color) */
+  --color-line-1: #e24b3b;
+  --color-line-2: #e8883a;
+  --color-line-3: #e5c558;
+  --color-line-4: #5fae7f;
+  --color-line-5: #5b8fd9;
+  --color-line-6: #9c6bc9;
+
+  --font-serif: Georgia, "Times New Roman", "Songti SC", serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", monospace;
+}
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-ink-900);
+  color: var(--color-sand-200);
+  font-family: var(--font-serif);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Trama sutil de fondo — puntos tenues como papel envejecido */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(181, 68, 45, 0.08), transparent 55%),
+    radial-gradient(rgba(233, 227, 211, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 22px 22px;
+}
+
+::selection {
+  background: rgba(181, 68, 45, 0.35);
+  color: var(--color-sand-100);
+}
+
+/* Scrollbars discretas */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-700) transparent;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
