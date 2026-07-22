@@ -439,6 +439,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#6a9fd0",
     estado: "activo",
   },
+  {
+    slug: "comparador-sorteo",
+    titulo: "Comparador de métodos de sorteo",
+    subtitulo: "Monedas, milenrama y 16 fichas",
+    descripcion:
+      "Tres formas de echar una línea, lado a lado, con sus distribuciones exactas y un simulador que converge a ellas. Monedas y milenrama no son intercambiables; las 16 fichas reproducen la milenrama por construcción. Útil para quien consulta de verdad.",
+    simbolo: "⚄",
+    categoria: "azar",
+    etiquetas: ["adivinacion", "probabilidad", "estadistica"],
+    tipo: "simulador",
+    nivel: "introductorio",
+    accent: "#d98f6b",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

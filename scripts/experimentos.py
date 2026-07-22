@@ -650,6 +650,7 @@ ETIQUETADO = {
     'grupo-sierpinski': ('algebra', ['teoria-de-grupos', 'particiones', 'binario'], 'visualizacion', 'intermedio'),
     'rey-wen-aleatorio': ('historia', ['estadistica', 'permutaciones', 'secuencias-historicas'], 'test', 'avanzado'),
     'markov-consultas': ('azar', ['probabilidad', 'adivinacion', 'hipercubo'], 'simulador', 'avanzado'),
+    'comparador-sorteo': ('azar', ['adivinacion', 'probabilidad', 'estadistica'], 'simulador', 'introductorio'),
 }
 
 
@@ -708,6 +709,46 @@ def verificar_matriz_nuclear():
     print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
     print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
+
+
+def verificar_sorteo():
+    """C3: comparador de metodos. Fichas = milenrama; monedas != milenrama;
+    frecuencias simuladas convergen a la teoria (chi2 bajo umbral, semilla fija)."""
+    import random
+    fichas = {9: 3, 8: 7, 7: 5, 6: 1}
+    assert fichas == SESAVOS['milenrama'], 'las 16 fichas deben reproducir la milenrama'
+    assert SESAVOS['monedas'] != SESAVOS['milenrama'], 'monedas y milenrama son distintas'
+    for m, d in [('monedas', SESAVOS['monedas']), ('milenrama', SESAVOS['milenrama']), ('fichas', fichas)]:
+        assert sum(d.values()) == 16, f'{m} no suma 16/16'
+        # P(muta) = viejo yin + viejo yang = 1/4 en los tres
+        assert (d[6] + d[9]) / 16 == 0.25, f'{m}: P(muta) != 1/4'
+
+    def sim(d, n, rng):
+        estados = [9, 8, 7, 6]
+        cnt = {e: 0 for e in estados}
+        for _ in range(n):
+            r = rng.random() * 16
+            acc = 0
+            for e in estados:
+                acc += d[e]
+                if r < acc:
+                    cnt[e] += 1
+                    break
+        chi2 = sum((cnt[e] - n * d[e] / 16) ** 2 / (n * d[e] / 16) for e in estados)
+        return chi2
+
+    rng = random.Random(20260722)
+    chis = {m: sim(d, 50000, rng) for m, d in
+            [('monedas', SESAVOS['monedas']), ('milenrama', SESAVOS['milenrama']), ('fichas', fichas)]}
+    # chi2 con 3 gl: umbral 16.27 (p=0.001). Con semilla fija todas quedan por debajo.
+    for m, c in chis.items():
+        assert c < 16.27, f'{m}: chi2={c} no converge'
+
+    print('21. Comparador de metodos de sorteo (C3)')
+    print('   16 fichas (3/7/5/1) identicas a la milenrama; monedas distintas  OK')
+    print('   P(muta) = 1/4 en los tres metodos  OK')
+    print(f'   simulacion 50000 lineas, semilla fija: chi2 ' +
+          ' '.join(f'{m}={c:.2f}' for m, c in chis.items()) + ' (< 16.27)  OK')
 
 
 def verificar_markov():
@@ -932,7 +973,7 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 4, 'azar': 3, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 4, 'azar': 4, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
@@ -982,6 +1023,8 @@ if __name__ == '__main__':
     verificar_rey_wen_aleatorio()
     print()
     verificar_markov()
+    print()
+    verificar_sorteo()
     print()
     verificar_etiquetado()
     print()
