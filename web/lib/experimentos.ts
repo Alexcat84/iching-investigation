@@ -131,6 +131,17 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#b57bb0",
     estado: "activo",
   },
+  {
+    slug: "ritual-milenrama",
+    titulo: "El ritual de las 49 varillas",
+    subtitulo: "De dónde salen 1, 3, 5 y 7 dieciseisavos",
+    descripcion:
+      "El método antiguo de la milenrama, paso a paso: dividir el manojo, contar de 4 en 4, tres operaciones por línea. Derivamos con fracciones exactas las probabilidades que el experimento de monedas contra milenrama usa como dato, y verificamos que coinciden.",
+    simbolo: "蓍",
+    categoria: "Oráculo",
+    accent: "#c8873a",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

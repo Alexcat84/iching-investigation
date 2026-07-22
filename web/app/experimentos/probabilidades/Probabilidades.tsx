@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   DIECISEISAVOS,
   ES_MUTANTE,
@@ -116,6 +117,18 @@ export default function Probabilidades() {
           </Panel>
         ))}
       </div>
+
+      <p className="mb-8 -mt-2 text-center text-sm text-sand-400">
+        ¿De dónde salen los dieciseisavos de la milenrama? El experimento{" "}
+        <Link
+          href="/experimentos/ritual-milenrama"
+          className="underline decoration-dotted underline-offset-4"
+          style={{ color: ACCENT }}
+        >
+          el ritual de las 49 varillas
+        </Link>{" "}
+        los deriva paso a paso, con fracciones exactas.
+      </p>
 
       {/* Coincidencias y diferencias teóricas */}
       <div className="mb-8">

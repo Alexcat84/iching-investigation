@@ -258,6 +258,58 @@ def verificar_permutacion():
     print(f'   orden {orden} · paridad {paridad} · {inv} inversiones (de {64*63//2})')
 
 
+# ----------------- 7. El ritual de las 49 varillas -----------------
+
+def verificar_milenrama():
+    """Deriva 1/3/5/7 sobre 16 por enumeracion exacta y comprueba la convergencia.
+
+    Supuesto del modelo (declarado en la pagina): en cada division, el resto del
+    monton izquierdo al contar de 4 en 4 (1..4) es equiprobable.
+    """
+    from fractions import Fraction
+    from itertools import product
+    import random
+
+    def co(pile, rl):
+        return ((pile - 2 - rl) % 4) + 1
+
+    dist = {6: Fraction(0), 7: Fraction(0), 8: Fraction(0), 9: Fraction(0)}
+    ramas = {}
+    for r1, r2, r3 in product((1, 2, 3, 4), repeat=3):
+        pile = 49
+        quitadas = []
+        for r in (r1, r2, r3):
+            q = 1 + r + co(pile, r)
+            quitadas.append(q)
+            pile -= q
+        assert pile in (24, 28, 32, 36), f'restantes invalidos: {pile}'
+        dist[pile // 4] += Fraction(1, 64)
+        ramas[tuple(quitadas)] = ramas.get(tuple(quitadas), 0) + 1
+
+    esperada = {9: Fraction(3, 16), 8: Fraction(7, 16), 7: Fraction(5, 16), 6: Fraction(1, 16)}
+    assert dist == esperada, f'derivacion inesperada: {dist}'
+    assert len(ramas) == 8, 'el arbol debe tener 8 ramas'
+    # Cierre del bucle: identica a la tabla que usa el experimento de probabilidades.
+    assert all(dist[e] == Fraction(SESAVOS['milenrama'][e], 16) for e in (6, 7, 8, 9)), \
+        'la derivacion no coincide con SESAVOS[milenrama]'
+
+    rng = random.Random(20260722)
+    n = 200000
+    cnt = {6: 0, 7: 0, 8: 0, 9: 0}
+    for _ in range(n):
+        pile = 49
+        for _ in range(3):
+            pile -= 1 + (r := rng.randrange(1, 5)) + co(pile, r)
+        cnt[pile // 4] += 1
+    for e in (6, 7, 8, 9):
+        assert abs(cnt[e] / n - float(esperada[e])) < 0.01, f'sim no converge en {e}'
+
+    print('7. El ritual de las 49 varillas')
+    print('   enumeracion exacta 4^3=64 casos -> 8 ramas -> 3/16, 7/16, 5/16, 1/16  OK')
+    print('   identica a la tabla del experimento de probabilidades  OK')
+    print(f'   simulacion n={n}: ' + ' '.join(f'{e}:{cnt[e]/n:.4f}' for e in (9, 8, 7, 6)) + '  converge  OK')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -270,5 +322,7 @@ if __name__ == '__main__':
     verificar_shao_yong()
     print()
     verificar_permutacion()
+    print()
+    verificar_milenrama()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')
