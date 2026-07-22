@@ -646,6 +646,7 @@ ETIQUETADO = {
     'arbol-fuxi':       ('geometria', ['binario', 'secuencias-historicas', 'recorridos'], 'visualizacion', 'introductorio'),
     'bosque-nuclear':   ('algebra', ['hu-gua', 'particiones', 'hipercubo'], 'visualizacion', 'intermedio'),
     'matriz-nuclear':   ('algebra', ['hu-gua', 'algebra-lineal', 'binario'], 'visualizacion', 'avanzado'),
+    'serpiente-debruijn': ('geometria', ['recorridos', 'binario', 'hipercubo'], 'visualizacion', 'intermedio'),
 }
 
 
@@ -706,6 +707,40 @@ def verificar_matriz_nuclear():
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
 
 
+def verificar_debruijn():
+    """B1: secuencia de De Bruijn B(2,6) canonica; las 64 ventanas son {0..63}."""
+    def fkm(n, k=2):
+        a = [0] * (k * n)
+        seq = []
+        def db(t, p):
+            if t > n:
+                if n % p == 0:
+                    seq.extend(a[1:p + 1])
+            else:
+                a[t] = a[t - p]
+                db(t + 1, p)
+                for j in range(a[t - p] + 1, k):
+                    a[t] = j
+                    db(t + 1, t)
+        db(1, 1)
+        return seq
+
+    s = fkm(6)
+    assert len(s) == 64, 'la secuencia debe tener 64 bits'
+    wins = []
+    for i in range(64):
+        v = 0
+        for x in range(6):
+            v |= s[(i + x) % 64] << (5 - x)
+        wins.append(v)
+    assert sorted(wins) == list(range(64)), 'las 64 ventanas no cubren {0..63}'
+    assert 2 ** (2 ** 5 - 6) == 67108864, 'deben ser 2^26 secuencias'
+
+    print('17. La serpiente de De Bruijn (B1)')
+    print('   B(2,6) canonica de 64 bits: cada ventana de 6 es un hexagrama distinto  OK')
+    print('   las 64 ventanas ciclicas = {0..63} sin repetir; 2^26 anillos posibles  OK')
+
+
 def verificar_etiquetado():
     usadas = set()
     por_cat = {c: 0 for c in CATEGORIAS_VOCAB}
@@ -721,7 +756,7 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 4, 'historia': 5, 'algebra': 3, 'azar': 2, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 5, 'historia': 5, 'algebra': 3, 'azar': 2, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
@@ -763,6 +798,8 @@ if __name__ == '__main__':
     verificar_d4()
     print()
     verificar_matriz_nuclear()
+    print()
+    verificar_debruijn()
     print()
     verificar_etiquetado()
     print()

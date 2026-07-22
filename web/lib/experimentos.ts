@@ -383,6 +383,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#b8926a",
     estado: "activo",
   },
+  {
+    slug: "serpiente-debruijn",
+    titulo: "La serpiente de De Bruijn",
+    subtitulo: "Los 64 hexagramas en un anillo de 64 bits",
+    descripcion:
+      "Un anillo de 64 líneas yin/yang donde cada ventana de 6 consecutivas es un hexagrama distinto: los 64 aparecen superpuestos, una vez cada uno. La compresión máxima del libro, en la secuencia de De Bruijn canónica; y hay 2²⁶ anillos así.",
+    simbolo: "⟳",
+    categoria: "geometria",
+    etiquetas: ["recorridos", "binario", "hipercubo"],
+    tipo: "visualizacion",
+    nivel: "intermedio",
+    accent: "#63b6a6",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
