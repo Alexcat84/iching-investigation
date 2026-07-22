@@ -408,6 +408,48 @@ def verificar_sombras():
     print(f'   niveles de yang: tamanos {tam}; toda arista cruza un nivel  OK')
 
 
+# ----------------- 10. El reticulo booleano B6 -----------------
+
+def verificar_reticulo():
+    # Coberturas del orden de dominancia bit a bit: x debajo de y, difieren en 1 bit.
+    covers = set()
+    for x in range(64):
+        for y in range(64):
+            if x != y and (x & y) == x and bin(x ^ y).count('1') == 1:
+                covers.add((x, y))
+    assert len(covers) == 192, f'coberturas: {len(covers)}'
+    # Son exactamente las aristas de Q6 (como pares no ordenados).
+    aristas = set()
+    for v in range(64):
+        for k in range(1, 7):
+            u = v ^ LINE_BIT(k)
+            aristas.add((min(u, v), max(u, v)))
+    assert {(min(a, b), max(a, b)) for a, b in covers} == aristas, \
+        'las coberturas no son las aristas del hipercubo'
+    # Toda cobertura sube exactamente un nivel de yang.
+    assert all(bin(y).count('1') - bin(x).count('1') == 1 for x, y in covers)
+
+    # Cadenas maximales de Kun a Qian: 6! = 720.
+    ways = [0] * 64
+    ways[0] = 1
+    for v in sorted(range(64), key=lambda x: bin(x).count('1')):
+        if v:
+            ways[v] = sum(ways[v ^ (1 << b)] for b in range(6) if v >> b & 1)
+    assert ways[63] == 720, f'cadenas maximales: {ways[63]}'
+
+    # Conos: 2^k hacia abajo, 2^(6-k) hacia arriba, para todo v.
+    for v in range(64):
+        k = bin(v).count('1')
+        arriba = sum(1 for y in range(64) if (v & y) == v)
+        abajo = sum(1 for x in range(64) if (x & v) == x)
+        assert arriba == 2 ** (6 - k) and abajo == 2 ** k
+
+    print('10. El reticulo booleano B6')
+    print('   coberturas de la dominancia = las 192 aristas de Q6, orientadas  OK')
+    print('   cadenas maximales Kun -> Qian: 720 = 6!  OK')
+    print('   conos: 2^k por debajo y 2^(6-k) por encima, para los 64  OK')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -426,5 +468,7 @@ if __name__ == '__main__':
     verificar_dos_cielos()
     print()
     verificar_sombras()
+    print()
+    verificar_reticulo()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')

@@ -164,6 +164,17 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#82a7e8",
     estado: "activo",
   },
+  {
+    slug: "reticulo-b6",
+    titulo: "El retículo booleano B6",
+    subtitulo: "El orden parcial de encender líneas",
+    descripcion:
+      "Un hexagrama está por debajo de otro si toda línea yang suya también lo es en el otro. Ese orden de dominancia forma un retículo de 7 niveles con las mismas 192 aristas del hipercubo, ahora orientadas hacia arriba: de Kun a Qian hay 720 caminos de ascenso.",
+    simbolo: "⊑",
+    categoria: "Álgebra",
+    accent: "#8f7fd6",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
