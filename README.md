@@ -7,10 +7,12 @@ El proyecto tiene dos capas: una de **investigación verificada** (Python) y una
 ## Capa de investigación: `scripts/` y `data/`
 
 - `scripts/iching_engine.py`: motor binario verificado. Operaciones tradicionales (mutación, dui, fan, hu gua, trigramas) como operaciones de bits, secuencias Fu Xi y Rey Wen, recorrido Gray, distancia de Hamming, y suite de verificación (biyección 0 a 63, estructura de pares del Rey Wen, camino hamiltoniano).
-- `scripts/experimentos.py`: verifica las afirmaciones de los experimentos del sitio contra el motor: partición de los palacios de Jing Fang, probabilidades de monedas vs. milenrama, y las simetrías (órbitas de Klein, palíndromos, dinámica nuclear, espectro de Q6).
+- `scripts/experimentos.py`: verifica contra el motor **cada afirmación estructural** que aparece en el sitio, un bloque por experimento, más la cobertura del etiquetado y de las miniaturas. Es la **puerta de publicación**: no se hace push si no sale con exit 0. Cada cifra visible en la web o está asertada aquí o lleva su cita.
 - `data/hexagramas.json`: dataset de los 64 hexagramas. Generado por el motor; regenerar con `python3 scripts/iching_engine.py`.
 - `docs/analisis-binario.md`: análisis completo con las tablas de ambas secuencias.
-- `docs/ideas-aplicaciones.md`: ideas de aplicación.
+- `docs/ideas-aplicaciones.md`: ideas de aplicación (base de la categoría práctica y de la app).
+- `docs/etiquetado-experimentos.md`: el esquema de clasificación en facetas y la asignación completa.
+- `docs/catalogo-experimentos-restantes.md`: registro histórico del catálogo, ya construido en su totalidad.
 
 ```bash
 python3 scripts/iching_engine.py    # verifica el motor y regenera el dataset
@@ -19,19 +21,21 @@ python3 scripts/experimentos.py     # verifica las afirmaciones de los experimen
 
 ## Capa web: `web/`
 
-Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensible de experimentos** filtrable por facetas, cada uno en su propia página visual e interactiva. La numeración sale del orden del registro (`web/lib/experimentos.ts`): reordenar experimentos es reordenar ese arreglo.
+Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensible de experimentos**, cada uno en su propia página visual e interactiva. La numeración sale del orden del registro (`web/lib/experimentos.ts`): reordenar experimentos es reordenar ese arreglo.
 
-**Sistema de etiquetado en facetas** (`docs/etiquetado-experimentos.md`): cada experimento tiene exactamente 1 **categoría** (geometría, álgebra, historia, azar, práctica), 2 a 4 **etiquetas** de un vocabulario cerrado de 17 (union types que el compilador valida), un **tipo** y un **nivel**. La portada filtra por categoría (pestañas) y etiquetas (chips combinables).
+**Portada = menú acordeón.** Las cinco categorías se despliegan una a una (hover en escritorio, toque en táctil), con un buscador en cliente por título y una **miniatura SVG generativa** por experimento, dibujada con la matemática real de su propia lib (nunca con datos decorativos). `web/lib/miniaturas.tsx` tiene un generador por slug, y la suite comprueba que hay uno por experimento y ninguno huérfano.
 
-Experimentos actuales (27), por categoría:
+**Sistema de etiquetado en facetas** (`docs/etiquetado-experimentos.md`): cada experimento tiene exactamente 1 **categoría** (geometría, álgebra, historia, azar, práctica), de 2 a 4 **etiquetas** de un vocabulario cerrado de 17 (union types que el compilador valida), un **tipo** y un **nivel**. El vocabulario de 17 etiquetas queda completamente cubierto (0 muertas).
 
-- **Geometría** (6): el hipercubo (anillo + recorrido Gray), las sombras del 6-cubo, el árbol de Fu Xi, la serpiente de De Bruijn, los conteos astronómicos del cubo.
-- **Álgebra y estructura** (7): las simetrías del hipercubo, Rey Wen como permutación (carrera de los órdenes + costo en líneas), el retículo booleano B6, el bosque nuclear, el operador nuclear como matriz sobre F2, el grupo (Z/2)⁶ y el Sierpinski, el comparador de particiones (ARI), el espectro de Walsh-Hadamard, los 64 codones (con descargo).
-- **Historia y secuencias** (7): los ocho palacios de Jing Fang, la secuencia del Rey Wen, el cuadrado y el círculo de Shao Yong (con D4), los dos cielos (bagua), ¿es el Rey Wen aleatorio? (test), Leibniz: los documentos (con descargo).
-- **Azar y dinámica** (5): monedas contra milenrama, el ritual de las 49 varillas, la cadena de Markov de las consultas, el comparador de métodos de sorteo, el paseo aleatorio y cobertura.
-- **Tu práctica** (2): el mapa de la lectura, trayectoria personal.
+**28 experimentos**, por categoría (la lista exacta vive en el registro y en `docs/etiquetado-experimentos.md`):
 
-El vocabulario de 17 etiquetas queda completamente cubierto. La lógica del sitio (`web/lib/`) es un puerto TypeScript del motor de Python; ambos se mantienen en paralelo y `scripts/experimentos.py` verifica cada afirmación estructural que aparece en pantalla.
+- **Geometría** (6): el cubo de 6 dimensiones y sus formas (hipercubo y recorrido Gray, sombras del 6-cubo, árbol de Fu Xi, serpiente de De Bruijn, retículo B6, conteos astronómicos).
+- **Álgebra** (7): grupos, matrices, particiones y espectros (simetrías, bosque nuclear, matriz nuclear sobre F2, grupo (Z/2)⁶ y Sierpinski, comparador de particiones, espectro de Walsh-Hadamard, codones con descargo).
+- **Historia** (8): los órdenes tradicionales y sus documentos (palacios de Jing Fang, secuencia del Rey Wen, cuadrado y círculo de Shao Yong, dos cielos, Rey Wen como permutación, ¿es el Rey Wen aleatorio?, Leibniz, el calendario de los soberanos).
+- **Azar** (5): probabilidades, cadenas y paseos (monedas contra milenrama, ritual de las 49 varillas, cadena de Markov, comparador de sorteos, paseo aleatorio).
+- **Tu práctica** (2): herramientas sobre las propias consultas (el mapa de la lectura, la trayectoria personal).
+
+La lógica del sitio (`web/lib/`) es un puerto TypeScript del motor de Python; ambos se mantienen en paralelo, con aserciones en desarrollo en las libs TS y `scripts/experimentos.py` como verificación autoritativa de cada afirmación estructural que aparece en pantalla.
 
 ### Desarrollo local
 
@@ -44,10 +48,14 @@ npm run build      # build de producción
 
 ### Añadir un experimento nuevo
 
-El menú se genera solo. Para añadir uno:
+El menú se genera solo desde el registro. Un experimento nuevo es un commit atómico con:
 
-1. Añade una entrada a `web/lib/experimentos.ts`.
-2. Crea `web/app/experimentos/<slug>/page.tsx`.
+1. Una entrada en el registro `web/lib/experimentos.ts` (con sus cuatro facetas).
+2. La página `web/app/experimentos/<slug>/page.tsx` (más su componente cliente si es interactiva) y, si hace falta, su lib en `web/lib/`.
+3. Un generador de miniatura en `web/lib/miniaturas.tsx`, derivado de la matemática real.
+4. Una sección de verificación en `scripts/experimentos.py` y la actualización de los conteos (miniaturas, distribución del etiquetado).
+
+Puerta antes de publicar: `python3 scripts/experimentos.py` con exit 0 y `npm run build` con exit 0.
 
 ### Despliegue en Vercel
 
