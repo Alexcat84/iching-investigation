@@ -28,26 +28,34 @@ export const CATEGORIAS: Categoria[] = [
   "practica",
 ];
 
-export const CATEGORIA_INFO: Record<Categoria, { nombre: string; desc: string }> = {
+export const CATEGORIA_INFO: Record<
+  Categoria,
+  { nombre: string; desc: string; color: string }
+> = {
   geometria: {
     nombre: "Geometría",
-    desc: "El cubo de 6 dimensiones y sus formas: proyecciones, retículos, árboles",
+    desc: "El cubo de 6 dimensiones y sus formas",
+    color: "#5B8FD9",
   },
   algebra: {
-    nombre: "Álgebra y estructura",
-    desc: "Operaciones, grupos, matrices, particiones, espectros",
+    nombre: "Álgebra",
+    desc: "Grupos, matrices, particiones, espectros",
+    color: "#9C6BC9",
   },
   historia: {
-    nombre: "Historia y secuencias",
-    desc: "Los órdenes tradicionales, sus autores y sus documentos",
+    nombre: "Historia",
+    desc: "Los órdenes tradicionales y sus documentos",
+    color: "#E5C558",
   },
   azar: {
-    nombre: "Azar y dinámica",
-    desc: "Probabilidades del oráculo, cadenas, paseos, simulaciones",
+    nombre: "Azar",
+    desc: "Probabilidades, cadenas, paseos, simulaciones",
+    color: "#E24B3B",
   },
   practica: {
     nombre: "Tu práctica",
-    desc: "Herramientas sobre las consultas del propio usuario",
+    desc: "Herramientas sobre tus propias consultas",
+    color: "#5FAE7F",
   },
 };
 
