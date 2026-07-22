@@ -95,11 +95,11 @@ export const EXPERIMENTOS: Experimento[] = [
     titulo: "Trayectoria personal",
     subtitulo: "Tu historial como ruta por los 64 estados",
     descripcion:
-      "El historial de consultas de una persona es un camino por el espacio de 64 estados: regiones recurrentes, distancia media entre lecturas, en qué palacio vive cada período.",
+      "El historial de consultas de una persona es un camino por el espacio de 64 estados: regiones recurrentes, distancia media entre lecturas, en qué palacio vive cada período. Tus datos quedan solo en tu navegador.",
     simbolo: "䷆",
     categoria: "Oráculo",
-    accent: "#cfc7b2",
-    estado: "proximamente",
+    accent: "#e24b3b",
+    estado: "activo",
   },
 ];
 
