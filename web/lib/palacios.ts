@@ -43,16 +43,17 @@ export const POSICIONES: PosicionInfo[] = [
   },
 ];
 
-/** Orden tradicional de los ocho palacios (乾兌離震巽坎艮坤). */
+/** Orden tradicional del bagong de Jing Fang (乾震坎艮坤巽離兌:
+ *  padre, tres hijos por edad, madre, tres hijas por edad). */
 export const CABEZAS: TrigramName[] = [
   "Qian",
-  "Dui",
-  "Li",
   "Zhen",
-  "Xun",
   "Kan",
   "Gen",
   "Kun",
+  "Xun",
+  "Li",
+  "Dui",
 ];
 
 const LOWER_MASK = lineBit(1) | lineBit(2) | lineBit(3); // líneas del trigrama inferior
