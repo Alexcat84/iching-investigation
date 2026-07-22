@@ -11,6 +11,7 @@ import {
   TOP,
 } from "@/lib/walsh";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
+import { NotaAlMargen } from "@/components/NotaAlMargen";
 
 const ACCENT = "#5aa0a8";
 
@@ -120,9 +121,9 @@ export default function EspectroWalsh() {
           </p>
           <p className="mt-3 text-sm leading-relaxed text-sand-300">
             Sumados, los <b style={{ color: ACCENT }}>órdenes pares 2 y 4</b> reúnen el{" "}
-            <b style={{ color: ACCENT }}>{(FRACCION_PARES * 100).toFixed(1)}%</b> de la
-            energía, frente al {(FRACCION_PARES_AZAR * 100).toFixed(0)}% que repartiría un
-            orden al azar. Es la confirmación espectral, por una vía independiente, de lo
+            <b style={{ color: ACCENT }}>{(FRACCION_PARES * 100).toFixed(1)}%</b>
+            <NotaAlMargen slug="espectro-walsh" indice={0} /> de la energía, frente al{" "}
+            {(FRACCION_PARES_AZAR * 100).toFixed(0)}% que repartiría un orden al azar. Es la confirmación espectral, por una vía independiente, de lo
             que{" "}
             <Link href="/experimentos/rey-wen-aleatorio" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
               ¿es el Rey Wen aleatorio?

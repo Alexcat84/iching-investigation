@@ -16,6 +16,7 @@ import {
   sonLosMonotonos,
 } from "@/lib/soberanos";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
+import { NotaAlMargen } from "@/components/NotaAlMargen";
 
 const ACCENT = "#d99a4e";
 const CX = 200;
@@ -106,9 +107,10 @@ export default function CalendarioSoberanos() {
             <Link href="/experimentos/palacios" className="underline decoration-1 underline-offset-2" style={{ textDecorationColor: ACCENT }}>
               ocho palacios
             </Link>
-            . Leídos en orden de mes, los 12 dibujan la respiración del año: el yang
-            entra por abajo una línea por mes hasta llenar el hexagrama, y luego el yin lo
-            vacía en el mismo orden.
+            .<NotaAlMargen slug="calendario-soberanos" indice={1} /> Leídos en orden de mes,
+            los 12 dibujan la respiración del año: el yang entra por abajo una línea por mes
+            hasta llenar el hexagrama, y luego el yin lo vacía en el mismo orden.
+            <NotaAlMargen slug="calendario-soberanos" indice={0} />
           </p>
         </Prose>
       </div>

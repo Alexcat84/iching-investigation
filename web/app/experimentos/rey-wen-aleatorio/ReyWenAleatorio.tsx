@@ -10,6 +10,7 @@ import {
   REAL_INV,
 } from "@/lib/aleatorio-reywen";
 import { FRACCION_PARES, FRACCION_PARES_AZAR } from "@/lib/walsh";
+import { NotaAlMargen } from "@/components/NotaAlMargen";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
 
 const ACCENT = "#a89a5e";
@@ -103,7 +104,8 @@ export default function ReyWenAleatorio() {
             El valor real cae <b style={{ color: ACCENT }}>en el centro exacto</b> de la
             campana: z = {INV.z.toFixed(2)}, p = {INV.p2.toFixed(2)}. En cuanto a
             inversiones, el orden del Rey Wen es <b>indistinguible de un barajado</b> que
-            respeta su regla de pares. Y esto no es un fracaso: es un hallazgo legítimo.
+            respeta su regla de pares.<NotaAlMargen slug="rey-wen-aleatorio" indice={0} /> Y
+            esto no es un fracaso: es un hallazgo legítimo.
             La regla de pares es la única estructura global detectable; más allá de ella,
             el arreglo se comporta como el azar. El{" "}
             <Link href="/experimentos/espectro-walsh" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
@@ -112,7 +114,7 @@ export default function ReyWenAleatorio() {
             lo confirma por una vía independiente: los órdenes pares concentran el{" "}
             <b style={{ color: ACCENT }}>{(FRACCION_PARES * 100).toFixed(1)}%</b> de la
             energía (un orden al azar repartiría un {(FRACCION_PARES_AZAR * 100).toFixed(0)}%),
-            justo la huella de esa regla de pares y nada más.
+            justo la huella de esa regla de pares y nada más.<NotaAlMargen slug="rey-wen-aleatorio" indice={1} />
           </p>
         </Panel>
       </div>

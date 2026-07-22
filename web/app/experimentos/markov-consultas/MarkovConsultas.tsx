@@ -12,6 +12,7 @@ import {
   yangEsperado,
 } from "@/lib/transicion";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
+import { NotaAlMargen } from "@/components/NotaAlMargen";
 
 const ACCENT = "#6a9fd0";
 
@@ -171,7 +172,8 @@ export default function MarkovConsultas() {
           Con monedas la estacionaria es <b>uniforme</b> (1/64 cada hexagrama, correlación
           0). Con milenrama <b style={{ color: ACCENT }}>no</b>: se sesga hacia el yin, con
           correlación −0,73 entre probabilidad y número de líneas yang. Kun es <b>729</b>{" "}
-          veces más probable que Qian, y el número de yang esperado cae de 3 a 1,5. La
+          veces más probable que Qian<NotaAlMargen slug="markov-consultas" indice={0} />, y el
+          número de yang esperado cae de 3 a 1,5. La
           causa es que el yang viejo (3/16) muta más que el yin viejo (1/16): el yang
           decae hacia el yin. Curiosamente ambos métodos mezclan a la <b>misma</b>{" "}
           velocidad (λ₂ = 0,5, relajación 2 pasos): igual de rápido, pero a destinos
