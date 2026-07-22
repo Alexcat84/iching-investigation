@@ -654,6 +654,7 @@ ETIQUETADO = {
     'comparador-particiones': ('algebra', ['particiones', 'estadistica'], 'calculadora', 'avanzado'),
     'espectro-walsh': ('algebra', ['algebra-lineal', 'secuencias-historicas', 'estadistica'], 'test', 'avanzado'),
     'conteos-astronomicos': ('geometria', ['hipercubo', 'recorridos'], 'referencia', 'intermedio'),
+    'paseo-aleatorio': ('azar', ['probabilidad', 'recorridos', 'hipercubo'], 'simulador', 'intermedio'),
 }
 
 
@@ -712,6 +713,52 @@ def verificar_matriz_nuclear():
     print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
     print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
+
+
+def verificar_paseo():
+    """C2: paseo aleatorio simple. Retorno esperado = 64 (estacionaria uniforme);
+    cover time simulado con semilla fija dentro de una banda."""
+    import random
+    # matriz doblemente estocastica -> estacionaria uniforme -> retorno medio = 64
+    cols = [0.0] * 64
+    for i in range(64):
+        fila = 0.0
+        for k in range(1, 7):
+            j = i ^ LINE_BIT(k)
+            fila += 1 / 6
+            cols[j] += 1 / 6
+        assert abs(fila - 1) < 1e-12
+    assert all(abs(c - 1) < 1e-12 for c in cols), 'no doblemente estocastica'
+
+    rng = random.Random(20260722)
+
+    def cover():
+        v = 0; vis = {0}; steps = 0
+        while len(vis) < 64:
+            v ^= LINE_BIT(1 + rng.randrange(6)); steps += 1; vis.add(v)
+        return steps
+
+    T = 1500
+    cs = [cover() for _ in range(T)]
+    media = sum(cs) / T
+    assert min(cs) >= 63, 'cubrir 64 requiere al menos 63 pasos'
+    assert 320 < media < 400, f'cover time fuera de banda: {media}'
+
+    # retorno: la simulacion confirma ~64
+    def ret():
+        v = 0; steps = 0
+        while True:
+            v ^= LINE_BIT(1 + rng.randrange(6)); steps += 1
+            if v == 0:
+                return steps
+    R = 8000
+    mr = sum(ret() for _ in range(R)) / R
+    assert abs(mr - 64) < 3, f'retorno medio {mr} lejos de 64'
+
+    print('25. Paseo aleatorio y cobertura (C2)')
+    print('   matriz doblemente estocastica -> estacionaria uniforme  OK')
+    print(f'   tiempo de retorno al origen: teoria 64, simulado {mr:.2f}  OK')
+    print(f'   cover time (semilla fija, T={T}): media {media:.1f} en la banda [320, 400]  OK')
 
 
 def verificar_conteos():
@@ -1099,7 +1146,7 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 6, 'historia': 6, 'algebra': 6, 'azar': 4, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 6, 'historia': 6, 'algebra': 6, 'azar': 5, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
@@ -1157,6 +1204,8 @@ if __name__ == '__main__':
     verificar_walsh()
     print()
     verificar_conteos()
+    print()
+    verificar_paseo()
     print()
     verificar_etiquetado()
     print()

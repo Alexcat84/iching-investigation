@@ -495,6 +495,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#8a9bb0",
     estado: "activo",
   },
+  {
+    slug: "paseo-aleatorio",
+    titulo: "Paseo aleatorio y cobertura",
+    subtitulo: "Cuánto tarda un caminante en ver los 64",
+    descripcion:
+      "Un caminante que muta una línea al azar por paso sobre el hipercubo. El tiempo esperado de retorno al origen es exactamente 64 (por la estacionaria uniforme); la cobertura de los 64 estados ronda los 360 pasos. Con animación del recorrido y simulación.",
+    simbolo: "↝",
+    categoria: "azar",
+    etiquetas: ["probabilidad", "recorridos", "hipercubo"],
+    tipo: "simulador",
+    nivel: "intermedio",
+    accent: "#6ab0a0",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
