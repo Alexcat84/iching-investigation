@@ -19,15 +19,16 @@ python3 scripts/experimentos.py     # verifica las afirmaciones de los experimen
 
 ## Capa web — `web/`
 
-Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensible de experimentos**, cada uno en su propia página visual e interactiva:
+Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensible de experimentos**, cada uno en su propia página visual e interactiva. La numeración sale del orden del registro (`web/lib/experimentos.ts`): reordenar experimentos es reordenar ese arreglo.
 
-1. **El hipercubo** — el anillo de los 64 hexagramas y sus 192 aristas; Fu Xi vs. Rey Wen; recorrido Gray.
-2. **Los ocho palacios de Jing Fang** — las casas del siglo II a.C. como recorridos sobre Q6, con la partición verificada.
-3. **El mapa de la lectura** — una consulta como salto en el hipercubo, con las monedas.
-4. **Monedas contra milenrama** — las probabilidades de cada método, simuladas en vivo.
-5. **Las simetrías del hipercubo** — órbitas de Klein, palíndromos y el mapa nuclear.
+Experimentos actuales (15), por categoría:
 
-La lógica del sitio (`web/lib/`) es un puerto TypeScript del motor de Python; ambos se mantienen en paralelo.
+- **Geometría**: el hipercubo (anillo + recorrido Gray), las sombras del 6-cubo (Petrie, cubo de cubos, niveles de yang), el árbol de Fu Xi (la bifurcación que genera el orden binario).
+- **Historia**: los ocho palacios de Jing Fang, la secuencia del Rey Wen (regla de pares), el cuadrado y el círculo de Shao Yong (con las 8 simetrías D4 del cuadrado), los dos cielos (bagua Anterior y Posterior).
+- **Oráculo**: el mapa de la lectura, monedas contra milenrama, el ritual de las 49 varillas (derivación exacta de las probabilidades), trayectoria personal (localStorage).
+- **Álgebra**: las simetrías del hipercubo (Klein, palíndromos, mapa nuclear), Rey Wen como permutación (con la carrera contra Mawangdui y Jing Fang), el retículo booleano B6, el bosque nuclear (la dinámica completa del hu gua).
+
+La lógica del sitio (`web/lib/`) es un puerto TypeScript del motor de Python; ambos se mantienen en paralelo y `scripts/experimentos.py` verifica cada afirmación estructural que aparece en pantalla.
 
 ### Desarrollo local
 
