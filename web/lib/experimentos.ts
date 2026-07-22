@@ -142,6 +142,17 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#c8873a",
     estado: "activo",
   },
+  {
+    slug: "dos-cielos",
+    titulo: "Los dos cielos",
+    subtitulo: "El bagua Anterior y el Posterior como permutaciones",
+    descripcion:
+      "Los 8 trigramas tienen dos disposiciones clásicas en círculo: el Cielo Anterior de Fu Xi y el Cielo Posterior del Rey Wen. En la primera, cada trigrama mira a su complemento binario exacto; en la segunda esa simetría se rompe salvo en el eje Li y Kan. La permutación entre ambas: dos ciclos de 4.",
+    simbolo: "先",
+    categoria: "Historia",
+    accent: "#58b09c",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

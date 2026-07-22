@@ -14,7 +14,7 @@ from math import comb
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from iching_engine import (  # noqa: E402
-    BY_KW, BY_VALUE, LINE_BIT, bits_of, dui, fan, hamming, hu_gua, value_of,
+    BY_KW, BY_VALUE, LINE_BIT, TRI, bits_of, dui, fan, hamming, hu_gua, value_of,
 )
 
 # ————————————————————— 1. Palacios de Jing Fang —————————————————————
@@ -310,6 +310,61 @@ def verificar_milenrama():
     print(f'   simulacion n={n}: ' + ' '.join(f'{e}:{cnt[e]/n:.4f}' for e in (9, 8, 7, 6)) + '  converge  OK')
 
 
+# ----------------- 8. Los dos cielos (bagua Anterior y Posterior) -----------------
+
+def _metricas_perm(perm):
+    """Ciclos, fijos, orden, paridad e inversiones de una permutacion (lista)."""
+    from math import gcd
+    n = len(perm)
+    visto = [False] * n
+    ciclos = []
+    for i in range(n):
+        if visto[i]:
+            continue
+        c, j = [], i
+        while not visto[j]:
+            visto[j] = True
+            c.append(j)
+            j = perm[j]
+        ciclos.append(c)
+    longs = sorted((len(c) for c in ciclos), reverse=True)
+    fijos = [c[0] for c in ciclos if len(c) == 1]
+    orden = 1
+    for L in longs:
+        orden = orden * L // gcd(orden, L)
+    inv = sum(1 for i in range(n) for j in range(i + 1, n) if perm[i] > perm[j])
+    paridad = 'par' if (n - len(ciclos)) % 2 == 0 else 'impar'
+    return ciclos, longs, fijos, orden, paridad, inv
+
+
+def verificar_dos_cielos():
+    # Valores 0..7 por posicion de pantalla (0 arriba, horario; sur arriba, este
+    # a la izquierda). Deben coincidir con web/lib/bagua.ts.
+    val = {t: int(TRI[t], 2) for t in TRI}
+    anterior = [val[t] for t in ['Qian', 'Xun', 'Kan', 'Gen', 'Kun', 'Zhen', 'Li', 'Dui']]
+    posterior = [val[t] for t in ['Li', 'Kun', 'Dui', 'Qian', 'Kan', 'Gen', 'Zhen', 'Xun']]
+    assert sorted(anterior) == list(range(8)) and sorted(posterior) == list(range(8))
+
+    ejes_ant = [i for i in range(4) if anterior[i] + anterior[i + 4] == 7]
+    ejes_pos = [i for i in range(4) if posterior[i] + posterior[i + 4] == 7]
+    assert len(ejes_ant) == 4, 'el Cielo Anterior debe tener 4 ejes complementarios'
+    assert len(ejes_pos) == 1, 'el Posterior debe conservar exactamente 1 eje'
+    par = sorted([posterior[ejes_pos[0]], posterior[ejes_pos[0] + 4]])
+    assert par == [2, 5], 'el eje conservado debe ser Li (5) y Kan (2)'
+
+    tau = [0] * 8
+    for p in range(8):
+        tau[anterior[p]] = posterior[p]
+    ciclos, longs, fijos, orden, paridad, inv = _metricas_perm(tau)
+    assert longs == [4, 4] and fijos == [] and orden == 4
+    assert paridad == 'par' and inv == 14
+
+    print('8. Los dos cielos (bagua Anterior y Posterior)')
+    print('   Anterior: 4 ejes complementarios (suman 7)  OK')
+    print('   Posterior: solo 1 eje conservado, Li y Kan  OK')
+    print(f'   permutacion tau: dos ciclos de 4, 0 fijos, orden 4, paridad par, {inv}/28 inversiones  OK')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -324,5 +379,7 @@ if __name__ == '__main__':
     verificar_permutacion()
     print()
     verificar_milenrama()
+    print()
+    verificar_dos_cielos()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')
