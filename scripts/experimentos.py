@@ -1176,6 +1176,25 @@ def verificar_debruijn():
     print('   las 64 ventanas ciclicas = {0..63} sin repetir; 2^26 anillos posibles  OK')
 
 
+def verificar_miniaturas():
+    """Portada: todo slug del registro tiene generador de miniatura, y ningun
+    generador huerfano sin slug. Compara web/lib/experimentos.ts con web/lib/miniaturas.tsx."""
+    import re
+    raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    reg = open(os.path.join(raiz, 'web', 'lib', 'experimentos.ts'), encoding='utf-8').read()
+    mini = open(os.path.join(raiz, 'web', 'lib', 'miniaturas.tsx'), encoding='utf-8').read()
+    slugs_registro = set(re.findall(r'slug:\s*"([a-z0-9-]+)"', reg))
+    slugs_gen = set(re.findall(r'"([a-z0-9-]+)":\s*\(c\)\s*=>', mini))
+    assert len(slugs_registro) == 27, f'slugs en registro: {len(slugs_registro)}'
+    faltan = slugs_registro - slugs_gen
+    huerfanos = slugs_gen - slugs_registro
+    assert not faltan, f'slugs sin generador de miniatura: {sorted(faltan)}'
+    assert not huerfanos, f'generadores huerfanos sin slug: {sorted(huerfanos)}'
+
+    print('28. Miniaturas de la portada')
+    print(f'   {len(slugs_gen)} generadores, uno por slug del registro; sin huerfanos  OK')
+
+
 def verificar_etiquetado():
     usadas = set()
     por_cat = {c: 0 for c in CATEGORIAS_VOCAB}
@@ -1256,6 +1275,8 @@ if __name__ == '__main__':
     verificar_leibniz()
     print()
     verificar_codones()
+    print()
+    verificar_miniaturas()
     print()
     verificar_etiquetado()
     print()
