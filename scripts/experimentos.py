@@ -645,7 +645,65 @@ ETIQUETADO = {
     'reticulo-b6':      ('geometria', ['hipercubo', 'binario', 'recorridos'], 'visualizacion', 'avanzado'),
     'arbol-fuxi':       ('geometria', ['binario', 'secuencias-historicas', 'recorridos'], 'visualizacion', 'introductorio'),
     'bosque-nuclear':   ('algebra', ['hu-gua', 'particiones', 'hipercubo'], 'visualizacion', 'intermedio'),
+    'matriz-nuclear':   ('algebra', ['hu-gua', 'algebra-lineal', 'binario'], 'visualizacion', 'avanzado'),
 }
+
+
+def verificar_matriz_nuclear():
+    """A1: hu gua como matriz sobre F2. M aplicada a los 64 = hu_gua; ranks 4 y 2; M^4=M^2."""
+    # M: fila i = linea de salida i+1; salida = (l2,l3,l4,l3,l4,l5).
+    M = [
+        [0, 1, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 1, 0],
+    ]
+
+    def vec(v):
+        return [(v >> (5 - i)) & 1 for i in range(6)]
+
+    def val(x):
+        r = 0
+        for i, b in enumerate(x):
+            r |= b << (5 - i)
+        return r
+
+    def matvec(A, x):
+        return [sum(a & x[j] for j, a in enumerate(fila)) & 1 for fila in A]
+
+    def matmul(A, B):
+        return [[sum(A[i][k] & B[k][j] for k in range(6)) & 1 for j in range(6)] for i in range(6)]
+
+    def rank(A):
+        m = [row[:] for row in A]
+        r = 0
+        for col in range(6):
+            piv = next((i for i in range(r, 6) if m[i][col]), None)
+            if piv is None:
+                continue
+            m[r], m[piv] = m[piv], m[r]
+            for i in range(6):
+                if i != r and m[i][col]:
+                    m[i] = [a ^ b for a, b in zip(m[i], m[r])]
+            r += 1
+        return r
+
+    # M reproduce hu gua bit a bit.
+    for v in range(64):
+        assert val(matvec(M, vec(v))) == hu_gua(v), f'M != hu gua en {v}'
+    M2 = matmul(M, M)
+    M4 = matmul(M2, M2)
+    assert rank(M) == 4 and rank(M2) == 2, (rank(M), rank(M2))
+    assert M4 == M2, 'debe cumplirse M^4 = M^2'
+    img2 = sorted({val(matvec(M2, vec(v))) for v in range(64)})
+    assert img2 == [0, 21, 42, 63], f'imagen de M^2: {img2}'
+
+    print('15. El operador nuclear como matriz (A1)')
+    print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
+    print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
+    print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
 
 
 def verificar_etiquetado():
@@ -662,14 +720,14 @@ def verificar_etiquetado():
         usadas.update(tags)
         por_cat[cat] += 1
 
-    # Distribucion de los 15 publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 4, 'historia': 5, 'algebra': 2, 'azar': 2, 'practica': 2}, por_cat
+    # Distribucion de los publicados: ninguna categoria vacia.
+    assert por_cat == {'geometria': 4, 'historia': 5, 'algebra': 3, 'azar': 2, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
     assert sin_uso <= RESERVADAS, f'etiqueta muerta fuera de las reservadas: {sin_uso - RESERVADAS}'
 
-    print('15. Sistema de etiquetado en facetas')
+    print('16. Sistema de etiquetado en facetas')
     print(f'   {len(ETIQUETADO)} experimentos: 1 categoria, 2 a 4 etiquetas del vocabulario cerrado  OK')
     print(f'   distribucion por categoria {por_cat}  (ninguna vacia)  OK')
     print(f'   etiquetas reservadas (sin publicar aun): {sorted(sin_uso)}')
@@ -703,6 +761,8 @@ if __name__ == '__main__':
     verificar_ordenes()
     print()
     verificar_d4()
+    print()
+    verificar_matriz_nuclear()
     print()
     verificar_etiquetado()
     print()

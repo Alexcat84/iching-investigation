@@ -369,6 +369,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#b08968",
     estado: "activo",
   },
+  {
+    slug: "matriz-nuclear",
+    titulo: "El operador nuclear como matriz",
+    subtitulo: "El hu gua es un mapa lineal sobre F2",
+    descripcion:
+      "Como cada línea del hexagrama nuclear copia una línea del original, hu gua es lineal: hay una matriz M de 6×6 con M·x = hu gua(x). Su cadena de rangos 6→4→2 explica las imágenes 64→16→4 del bosque, y M⁴=M² produce el único ciclo, Ji Ji con Wei Ji.",
+    simbolo: "M",
+    categoria: "algebra",
+    etiquetas: ["hu-gua", "algebra-lineal", "binario"],
+    tipo: "visualizacion",
+    nivel: "avanzado",
+    accent: "#b8926a",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
