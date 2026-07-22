@@ -19,7 +19,9 @@ from iching_engine import (  # noqa: E402
 
 # ————————————————————— 1. Palacios de Jing Fang —————————————————————
 
-CABEZAS = ['Qian', 'Dui', 'Li', 'Zhen', 'Xun', 'Kan', 'Gen', 'Kun']
+# Orden tradicional del bagong de Jing Fang: padre, tres hijos por edad, madre,
+# tres hijas por edad (乾震坎艮坤巽離兌).
+CABEZAS = ['Qian', 'Zhen', 'Kan', 'Gen', 'Kun', 'Xun', 'Li', 'Dui']
 LOWER = LINE_BIT(1) | LINE_BIT(2) | LINE_BIT(3)
 
 
@@ -542,7 +544,8 @@ def verificar_ordenes():
     # Valores fijados tras el primer calculo (cross-check con la tabla del sitio).
     assert metricas['Rey Wen'] == (3, 52, 0, 260, 'impar', 1013), metricas['Rey Wen']
     assert metricas['Mawangdui'] == (4, 50, 0, 600, 'par', 1008), metricas['Mawangdui']
-    assert metricas['Jing Fang'] == (8, 36, 4, 684, 'par', 696), metricas['Jing Fang']
+    # Con el orden bagong autentico, Jing Fang empata con Mawangdui en 1008 inversiones.
+    assert metricas['Jing Fang'] == (2, 57, 0, 399, 'par', 1008), metricas['Jing Fang']
     assert metricas['Fu Xi'] == (64, 1, 64, 1, 'par', 0), metricas['Fu Xi']
 
     print('13. La carrera de los ordenes (ampliacion del experimento de permutacion)')
