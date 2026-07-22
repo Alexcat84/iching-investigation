@@ -114,7 +114,7 @@ const BASE: Omit<Experimento, "n">[] = [
     titulo: "El cuadrado y el círculo",
     subtitulo: "El diagrama de Shao Yong que vio Leibniz",
     descripcion:
-      "Los 64 hexagramas dispuestos a la vez en un cuadrado 8×8 y en un círculo, en orden binario. Es el diagrama que Bouvet envió a Leibniz hacia 1701: leerlo en orden es, literalmente, contar de 0 a 63.",
+      "Los 64 hexagramas dispuestos a la vez en un cuadrado 8×8 y en un círculo, en orden binario. Es el diagrama que Bouvet envió a Leibniz hacia 1701: leerlo en orden es, literalmente, contar de 0 a 63. Con las 8 simetrías del cuadrado traducidas a operaciones de trigramas.",
     simbolo: "圓",
     categoria: "Historia",
     accent: "#6fa8b0",

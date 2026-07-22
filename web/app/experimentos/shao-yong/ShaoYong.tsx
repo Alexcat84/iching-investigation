@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { hex } from "@/lib/iching";
 import {
   anguloCirculo,
   CAMINO_LECTURA,
+  celdaDe,
   CUADRADO,
+  fijosDe,
+  ORBITAS_D4,
+  SIMETRIAS_D4,
   simetriasCirculo,
 } from "@/lib/shaoyong";
 import { ExperimentHeader, Panel, Prose, SectionLabel } from "@/components/ui";
@@ -300,6 +304,98 @@ function Circulo() {
   );
 }
 
+/** Panel: las 8 simetrías del cuadrado (grupo diédrico D4), animadas. */
+function SimetriasCuadrado() {
+  const [simId, setSimId] = useState("id");
+  const sim = SIMETRIAS_D4.find((s) => s.id === simId) ?? SIMETRIAS_D4[0];
+  const fijos = useMemo(() => new Set(fijosDe(sim)), [sim]);
+
+  const CEL = 40;
+  const PADQ = 10;
+  const SQ = CEL * 8 + PADQ * 2;
+
+  return (
+    <Panel className="mt-2">
+      <div className="mb-3 flex flex-wrap gap-1.5">
+        {SIMETRIAS_D4.map((s) => (
+          <button
+            key={s.id}
+            onClick={() => setSimId(s.id)}
+            className="rounded-full border px-2.5 py-1 font-mono text-[11px] transition-colors"
+            style={
+              simId === s.id
+                ? { background: ACCENT, color: "#0b0a08", borderColor: "transparent" }
+                : { borderColor: "#3A362E", color: "#8a8271" }
+            }
+          >
+            {s.nombre}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-[minmax(0,380px)_minmax(0,1fr)]">
+        <svg
+          viewBox={`0 0 ${SQ} ${SQ}`}
+          className="w-full max-w-[380px] select-none"
+          role="img"
+          aria-label={`Cuadrado de Shao Yong bajo la simetría ${sim.nombre}: cada glifo viaja a su celda transformada; los fijos quedan marcados`}
+        >
+          <rect x={PADQ} y={PADQ} width={CEL * 8} height={CEL * 8} fill="none" stroke="#2A2620" />
+          {/* rejilla tenue */}
+          {Array.from({ length: 7 }, (_, i) => (
+            <g key={i} stroke="#1C1915">
+              <line x1={PADQ + (i + 1) * CEL} y1={PADQ} x2={PADQ + (i + 1) * CEL} y2={PADQ + 8 * CEL} />
+              <line x1={PADQ} y1={PADQ + (i + 1) * CEL} x2={PADQ + 8 * CEL} y2={PADQ + (i + 1) * CEL} />
+            </g>
+          ))}
+          {/* glifos animados: cada hexagrama viaja a su celda transformada */}
+          {Array.from({ length: 64 }, (_, v) => {
+            const [f0, c0] = celdaDe(v);
+            const [f, c] = sim.celda(f0, c0);
+            const x = PADQ + c * CEL + CEL / 2;
+            const y = PADQ + f * CEL + CEL / 2;
+            const esFijo = fijos.has(v) && sim.id !== "id";
+            return (
+              <g
+                key={v}
+                style={{
+                  transform: `translate(${x}px, ${y}px)`,
+                  transition: "transform 750ms cubic-bezier(0.3, 0.7, 0.2, 1)",
+                }}
+              >
+                {esFijo && <circle r={15} fill="rgba(111,168,176,0.14)" stroke={ACCENT} strokeWidth={0.8} />}
+                {svgGlyph(hex(v).bits, 0, 0, CEL * 0.42, esFijo ? "#f5efdf" : "#a99f8a")}
+              </g>
+            );
+          })}
+        </svg>
+
+        <div>
+          <div className="font-mono text-[11px] uppercase tracking-widest" style={{ color: ACCENT }}>
+            {sim.nombre}
+          </div>
+          <p className="mt-1.5 text-sm leading-relaxed text-sand-300">
+            Sobre los hexagramas: <b className="text-sand-100">{sim.operacion}</b>.
+          </p>
+          <p className="mt-2 font-mono text-[11px] text-sand-500">
+            puntos fijos: {fijosDe(sim).length}
+            {sim.id === "antitransposicion" && " (la diagonal de los 8 puros)"}
+            {sim.id === "transposicion" && " (los 8 con trigramas complementarios: Tai, Pi, Xian, Heng...)"}
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-sand-400">
+            Derivado del layout real del cuadrado (columna = trigrama inferior, fila =
+            superior invertido) y verificado sobre los 64 hexagramas: la geometría del
+            papel y el álgebra de los trigramas son el mismo grupo. Las 8 simetrías
+            parten los 64 hexagramas en{" "}
+            <span style={{ color: ACCENT }}>{ORBITAS_D4} órbitas</span> (Burnside: la
+            media de puntos fijos).
+          </p>
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
 export default function ShaoYong() {
   return (
     <div>
@@ -333,6 +429,11 @@ export default function ShaoYong() {
             abajo a la izquierda, Qian (63) arriba a la derecha.
           </p>
         </Panel>
+      </div>
+
+      <div className="mb-8">
+        <SectionLabel accent={ACCENT}>Las ocho simetrías del cuadrado (D4)</SectionLabel>
+        <SimetriasCuadrado />
       </div>
 
       <div>

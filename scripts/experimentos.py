@@ -553,6 +553,49 @@ def verificar_ordenes():
     print('   Jing Fang: identico a la particion de los palacios  OK')
 
 
+# ----------------- 14. Simetrias D4 del cuadrado de Shao Yong -----------------
+
+def verificar_d4():
+    # Layout real del sitio: valorCelda(f, c) = (c << 3) | (7 - f).
+    def valor_celda(f, c):
+        return (c << 3) | (7 - f)
+
+    def celda_de(v):
+        return (7 - (v & 7), v >> 3)
+
+    d3 = lambda t: 7 - t
+    simetrias = [
+        ('identidad',        lambda f, c: (f, c),          lambda v: v),
+        ('espejo columnas',  lambda f, c: (f, 7 - c),      lambda v: (d3(v >> 3) << 3) | (v & 7)),
+        ('espejo filas',     lambda f, c: (7 - f, c),      lambda v: ((v >> 3) << 3) | d3(v & 7)),
+        ('rotacion 180',     lambda f, c: (7 - f, 7 - c),  lambda v: 63 - v),
+        ('transposicion',    lambda f, c: (c, f),          lambda v: (d3(v & 7) << 3) | d3(v >> 3)),
+        ('antitransposicion', lambda f, c: (7 - c, 7 - f), lambda v: ((v & 7) << 3) | (v >> 3)),
+        ('rotacion 90',      lambda f, c: (c, 7 - f),      lambda v: ((v & 7) << 3) | d3(v >> 3)),
+        ('rotacion 270',     lambda f, c: (7 - c, f),      lambda v: (d3(v & 7) << 3) | (v >> 3)),
+    ]
+    fijos_totales = 0
+    for nombre, celda, op in simetrias:
+        for v in range(64):
+            f, c = celda_de(v)
+            assert valor_celda(*celda(f, c)) == op(v), f'{nombre} falla en v={v}'
+        fijos_totales += sum(1 for v in range(64) if op(v) == v)
+
+    # Burnside: media de puntos fijos = numero de orbitas.
+    assert fijos_totales / 8 == 10, f'Burnside debe dar 10 orbitas: {fijos_totales / 8}'
+    # La antitransposicion (intercambio de trigramas) fija los 8 puros.
+    puros = [v for v in range(64) if ((v & 7) << 3) | (v >> 3) == v]
+    assert len(puros) == 8 and all(v >> 3 == (v & 7) for v in puros)
+    # La transposicion fija los 8 con trigramas complementarios.
+    comp = [v for v in range(64) if (d3(v & 7) << 3) | d3(v >> 3) == v]
+    assert len(comp) == 8 and all((v >> 3) + (v & 7) == 7 for v in comp)
+
+    print('14. Simetrias D4 del cuadrado de Shao Yong')
+    print('   las 8 simetrias geometricas = 8 operaciones de trigramas, en los 64  OK')
+    print('   antitransposicion fija los 8 puros; transposicion, los 8 complementarios  OK')
+    print('   Burnside: 80 fijos entre 8 simetrias -> 10 orbitas  OK')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -579,5 +622,7 @@ if __name__ == '__main__':
     verificar_bosque()
     print()
     verificar_ordenes()
+    print()
+    verificar_d4()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')
