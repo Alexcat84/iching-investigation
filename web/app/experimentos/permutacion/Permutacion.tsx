@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { hex } from "@/lib/iching";
 import { INVERSIONES_MAX } from "@/lib/permutacion";
-import { ORDENES, type OrdenHistorico } from "@/lib/ordenes";
+import { COSTO_MINIMO, ORDENES, type OrdenHistorico } from "@/lib/ordenes";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
 
 const ACCENT = "#b57bb0";
@@ -195,6 +195,7 @@ export default function Permutacion() {
                 <th className="px-3 py-2 text-right font-normal">Orden σⁿ</th>
                 <th className="px-3 py-2 text-right font-normal">Paridad</th>
                 <th className="px-3 py-2 text-right font-normal">Inversiones</th>
+                <th className="px-3 py-2 text-right font-normal">Costo en líneas</th>
               </tr>
             </thead>
             <tbody className="font-mono text-[13px]">
@@ -224,9 +225,25 @@ export default function Permutacion() {
                         ({Math.round((o.estr.inversiones / INVERSIONES_MAX) * 100)} %)
                       </span>
                     </td>
+                    <td className="px-3 py-2 text-right text-sand-300">
+                      {o.costo}{" "}
+                      <span className="text-sand-600">({(o.costo / 63).toFixed(2)}×)</span>
+                    </td>
                   </tr>
                 );
               })}
+              <tr className="border-t border-ink-700 text-sand-500">
+                <td className="px-3 py-2">
+                  Gray <span className="text-[11px] text-sand-600">mínimo posible</span>
+                </td>
+                <td className="px-3 py-2 text-right" colSpan={5}>
+                  <span className="text-sand-600">un recorrido de una línea por paso</span>
+                </td>
+                <td className="px-3 py-2 text-right">—</td>
+                <td className="px-3 py-2 text-right" style={{ color: ACCENT }}>
+                  {COSTO_MINIMO} (1.00×)
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -238,6 +255,15 @@ export default function Permutacion() {
           ciento), el mismo desorden que el Rey Wen (1013) muestra frente a Fu Xi. Tres
           arquitecturas muy distintas que, medidas contra el conteo binario, quedan casi
           a la misma distancia.
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-sand-300">
+          Pero el <b className="text-sand-200">costo en líneas</b> (la distancia de
+          Hamming total, cuántas líneas cambian al pasar de un hexagrama al siguiente) los
+          separa de nuevo: aunque Jing Fang y Mawangdui empatan en inversiones, Jing Fang
+          salta mucho menos (<b style={{ color: ACCENT }}>93</b> líneas frente a 141),
+          porque cada palacio es casi un recorrido de una línea por paso. El Rey Wen es el
+          que más salta (211) y el mínimo posible es 63, el de un recorrido Gray. Dos
+          métricas, dos retratos distintos del mismo orden.
         </p>
         <p className="mt-2 text-xs text-sand-500">
           Nota: el orden de palacios usado es el bagong tradicional de Jing Fang (乾震坎艮坤巽離兌:

@@ -548,12 +548,24 @@ def verificar_ordenes():
     assert metricas['Jing Fang'] == (2, 57, 0, 399, 'par', 1008), metricas['Jing Fang']
     assert metricas['Fu Xi'] == (64, 1, 64, 1, 'par', 0), metricas['Fu Xi']
 
+    # B3: costo en lineas (distancia de Hamming total entre consecutivos).
+    ham = lambda a, b: bin(a ^ b).count('1')
+    costo = lambda p: sum(ham(p[i], p[i + 1]) for i in range(len(p) - 1))
+    gray = [n ^ (n >> 1) for n in range(64)]
+    costos = {'Rey Wen': costo(rey_wen), 'Mawangdui': costo(mwd),
+              'Jing Fang': costo(jf), 'Fu Xi': costo(fu_xi), 'Gray': costo(gray)}
+    assert costos == {'Rey Wen': 211, 'Mawangdui': 141, 'Jing Fang': 93,
+                      'Fu Xi': 120, 'Gray': 63}, costos
+    assert costos['Gray'] == 63, 'el minimo teorico (Gray) debe ser 63'
+    assert min(costos[k] for k in ('Rey Wen', 'Mawangdui', 'Jing Fang', 'Fu Xi')) == costos['Jing Fang']
+
     print('13. La carrera de los ordenes (ampliacion del experimento de permutacion)')
     for nombre, (nc, ml, nf, o, par, inv) in metricas.items():
         print(f'   {nombre:10s} ciclos {nc:2d} · mas largo {ml:2d} · fijos {nf:2d} · '
-              f'orden {o:3d} · {par:5s} · inversiones {inv}/2016')
+              f'orden {o:3d} · {par:5s} · inversiones {inv}/2016 · costo {costos[nombre]}')
     print('   Mawangdui: 8 bloques por trigrama superior, doblado al frente  OK')
     print('   Jing Fang: identico a la particion de los palacios  OK')
+    print('   costo en lineas (B3): Gray 63 (minimo); Jing Fang 93 el mas suave; Rey Wen 211  OK')
 
 
 # ----------------- 14. Simetrias D4 del cuadrado de Shao Yong -----------------

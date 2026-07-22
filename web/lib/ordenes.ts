@@ -13,9 +13,20 @@
  *  - Jing Fang: los ocho palacios en su orden tradicional; reusa la construcción
  *    del experimento de palacios (lib/palacios.ts), no la duplica.
  */
-import { bitsOf, type TrigramName } from "./iching";
+import { bitsOf, hamming, type TrigramName } from "./iching";
 import { estructura, PERM, type EstructuraPermutacion } from "./permutacion";
 import { PALACIOS } from "./palacios";
+
+/** Costo en líneas de una secuencia: distancia de Hamming total entre consecutivos. */
+export function costoHamming(perm: number[]): number {
+  let s = 0;
+  for (let i = 0; i < perm.length - 1; i++) s += hamming(perm[i], perm[i + 1]);
+  return s;
+}
+
+/** El mínimo teórico del costo lo alcanza un recorrido Gray: 63 (una línea por paso). */
+export const GRAY_ORDEN: number[] = Array.from({ length: 64 }, (_, n) => n ^ (n >> 1));
+export const COSTO_MINIMO = costoHamming(GRAY_ORDEN); // 63
 
 const UPPER_MWD: TrigramName[] = ["Qian", "Gen", "Kan", "Zhen", "Kun", "Dui", "Li", "Xun"];
 const LOWER_MWD: TrigramName[] = ["Qian", "Kun", "Gen", "Dui", "Kan", "Li", "Zhen", "Xun"];
@@ -45,41 +56,25 @@ export interface OrdenHistorico {
   nota: string;
   perm: number[];
   estr: EstructuraPermutacion;
+  /** Costo en líneas: distancia de Hamming total entre hexagramas consecutivos. */
+  costo: number;
+}
+
+function orden(
+  id: string,
+  nombre: string,
+  epoca: string,
+  nota: string,
+  perm: number[],
+): OrdenHistorico {
+  return { id, nombre, epoca, nota, perm, estr: estructura(perm), costo: costoHamming(perm) };
 }
 
 export const ORDENES: OrdenHistorico[] = [
-  {
-    id: "reywen",
-    nombre: "Rey Wen",
-    epoca: "el libro recibido",
-    nota: "el orden tradicional de los 64 capítulos",
-    perm: PERM,
-    estr: estructura(PERM),
-  },
-  {
-    id: "mawangdui",
-    nombre: "Mawangdui",
-    epoca: "c. 168 a.C.",
-    nota: "manuscrito de seda: 8 bloques por trigrama superior",
-    perm: MAWANGDUI,
-    estr: estructura(MAWANGDUI),
-  },
-  {
-    id: "jingfang",
-    nombre: "Jing Fang",
-    epoca: "siglo I a.C.",
-    nota: "los ocho palacios, aplanados en su orden tradicional",
-    perm: JING_FANG,
-    estr: estructura(JING_FANG),
-  },
-  {
-    id: "fuxi",
-    nombre: "Fu Xi",
-    epoca: "línea base",
-    nota: "el conteo binario: la identidad, sin desorden alguno",
-    perm: FU_XI,
-    estr: estructura(FU_XI),
-  },
+  orden("reywen", "Rey Wen", "el libro recibido", "el orden tradicional de los 64 capítulos", PERM),
+  orden("mawangdui", "Mawangdui", "c. 168 a.C.", "manuscrito de seda: 8 bloques por trigrama superior", MAWANGDUI),
+  orden("jingfang", "Jing Fang", "siglo I a.C.", "los ocho palacios, aplanados en su orden tradicional", JING_FANG),
+  orden("fuxi", "Fu Xi", "línea base", "el conteo binario: la identidad, sin desorden alguno", FU_XI),
 ];
 
 // Aserciones en desarrollo: propiedades estructurales de cada orden.
@@ -102,4 +97,18 @@ if (process.env.NODE_ENV !== "production") {
   // Jing Fang: coincide con la partición del experimento de palacios (por construcción,
   // pero se comprueba la biyección y el tamaño por palacio).
   if (JING_FANG.length !== 64) console.error("[ordenes] Jing Fang debe tener 64 posiciones");
+
+  // Costo en líneas (Hamming total). El Gray alcanza el mínimo teórico, 63.
+  if (COSTO_MINIMO !== 63)
+    console.error("[ordenes] el recorrido Gray debe costar 63, cuesta", COSTO_MINIMO);
+  const costos: Record<string, number> = {};
+  for (const o of ORDENES) costos[o.id] = o.costo;
+  const esperado = { reywen: 211, mawangdui: 141, jingfang: 93, fuxi: 120 };
+  for (const [k, v] of Object.entries(esperado)) {
+    if (costos[k] !== v) console.error(`[ordenes] costo de ${k} esperado ${v}, es ${costos[k]}`);
+  }
+  // Todo orden cuesta al menos el mínimo del Gray.
+  for (const o of ORDENES)
+    if (o.costo < COSTO_MINIMO)
+      console.error(`[ordenes] ${o.id} cuesta menos que el mínimo Gray`);
 }
