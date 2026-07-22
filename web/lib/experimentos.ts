@@ -153,6 +153,17 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#58b09c",
     estado: "activo",
   },
+  {
+    slug: "sombras-6-cubo",
+    titulo: "Las sombras del 6-cubo",
+    subtitulo: "Tres proyecciones del hexeracto",
+    descripcion:
+      "El hipercubo de 6 dimensiones no cabe en la pantalla, pero sus sombras sí: el polígono de Petrie de 12 vértices, el cubo de cubos (Q3 por Q3) y los 7 niveles de líneas yang. El mismo objeto, tres siluetas, y los 192 hilos presentes en todas.",
+    simbolo: "⬡",
+    categoria: "Geometría",
+    accent: "#82a7e8",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

@@ -365,6 +365,49 @@ def verificar_dos_cielos():
     print(f'   permutacion tau: dos ciclos de 4, 0 fijos, orden 4, paridad par, {inv}/28 inversiones  OK')
 
 
+# ----------------- 9. Las sombras del 6-cubo -----------------
+
+def verificar_sombras():
+    import math
+    # Petrie: 6 direcciones separadas 30 grados; el poligono exterior tiene 12 vertices.
+    def petrie(v):
+        x = y = 0.0
+        for k in range(1, 7):
+            s = 1 if v & LINE_BIT(k) else -1
+            ang = -math.pi / 2 + (k - 1) * math.pi / 6
+            x += s * math.cos(ang)
+            y += s * math.sin(ang)
+        return x, y
+    radios = [math.hypot(*petrie(v)) for v in range(64)]
+    rmax = max(radios)
+    exteriores = sum(1 for r in radios if abs(r - rmax) < 1e-9)
+    assert exteriores == 12, f'el poligono de Petrie debe tener 12 vertices, hay {exteriores}'
+
+    # Las 192 aristas y su particion Q3 x Q3: lineas 1-3 dentro del cubo pequeno,
+    # lineas 4-6 entre cubos (el trigrama superior es la esquina del cubo grande).
+    aristas = [(v, v ^ LINE_BIT(k), k) for v in range(64) for k in range(1, 7) if v < (v ^ LINE_BIT(k))]
+    assert len(aristas) == 192
+    intra = sum(1 for _, _, k in aristas if k <= 3)
+    assert intra == 96 and len(aristas) - intra == 96, 'la particion debe ser 96 + 96'
+    for a, b, k in aristas:
+        if k <= 3:
+            assert (a & 7) == (b & 7), 'lineas 1-3 no deben cambiar el trigrama superior'
+        else:
+            assert (a >> 3) == (b >> 3), 'lineas 4-6 no deben cambiar el inferior'
+
+    # Niveles de yang: tamanos C(6,k) y toda arista cruza exactamente un nivel.
+    tam = [0] * 7
+    for v in range(64):
+        tam[bin(v).count('1')] += 1
+    assert tam == [comb(6, k) for k in range(7)], f'tamanos de nivel: {tam}'
+    assert all(abs(bin(a).count('1') - bin(b).count('1')) == 1 for a, b, _ in aristas)
+
+    print('9. Las sombras del 6-cubo')
+    print('   poligono de Petrie: 12 vertices exteriores  OK')
+    print('   cubo de cubos: particion de aristas 96 (dentro) + 96 (entre)  OK')
+    print(f'   niveles de yang: tamanos {tam}; toda arista cruza un nivel  OK')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -381,5 +424,7 @@ if __name__ == '__main__':
     verificar_milenrama()
     print()
     verificar_dos_cielos()
+    print()
+    verificar_sombras()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')
