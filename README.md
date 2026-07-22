@@ -37,6 +37,8 @@ Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensibl
 
 La lógica del sitio (`web/lib/`) es un puerto TypeScript del motor de Python; ambos se mantienen en paralelo, con aserciones en desarrollo en las libs TS y `scripts/experimentos.py` como verificación autoritativa de cada afirmación estructural que aparece en pantalla.
 
+**Sistema de fundamentos y fuentes** (`/fundamentos`, `web/lib/fundamentos.ts`): cada experimento lleva al pie un bloque de fundamento que clasifica sus afirmaciones en cinco tipos (teorema, cálculo, tradición documentada, reconstrucción académica, analogía con descargo). Los teoremas y cálculos enlazan la sección de la suite que los verifica; las tradiciones y reconstrucciones citan una fuente en formato APA 7. La **única** fuente de referencias es `docs/evidencias-fundamentos.md`, verificada, y ninguna se cita de memoria: `scripts/experimentos.py` comprueba que el render APA de cada ficha aparece verbatim en ese documento, que ninguna ficha queda sin uso y que todo experimento tiene su fundamento. Las referencias completas viven en la página `/fundamentos`, alfabéticas por apellido.
+
 ### Desarrollo local
 
 ```bash

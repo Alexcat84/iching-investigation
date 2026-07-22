@@ -49,7 +49,11 @@ export default function RootLayout({
             000000 = 0 · Qian 111111 = 63
             <br />
             <span className="text-sand-600/70">
-              Toda afirmación estructural está verificada computacionalmente.
+              Toda afirmación estructural está{" "}
+              <Link href="/fundamentos" className="underline decoration-dotted underline-offset-2 hover:text-sand-400">
+                verificada o con fuente
+              </Link>
+              .
             </span>
           </footer>
         </div>
