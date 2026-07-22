@@ -525,6 +525,22 @@ const BASE: Omit<Experimento, "n">[] = [
     descargo:
       "Los chinos no practicaban aritmética binaria: Shao Yong buscaba cosmología, y fue Leibniz quien reconoció la identidad estructural con el binario que ya había inventado.",
   },
+  {
+    slug: "codones",
+    titulo: "Los 64 codones",
+    subtitulo: "El código genético también tiene 64 = 2⁶",
+    descripcion:
+      "El código genético tiene 64 = 4³ = 2⁶ elementos, como los hexagramas. La correspondencia es un isomorfismo combinatorio, no un hecho biológico: depende de una de las 4! = 24 codificaciones base a bits, ninguna canónica. El experimento lo demuestra dejando cambiar la codificación.",
+    simbolo: "遺",
+    categoria: "algebra",
+    etiquetas: ["interdisciplinar", "binario"],
+    tipo: "visualizacion",
+    nivel: "intermedio",
+    accent: "#7cbf8a",
+    estado: "activo",
+    descargo:
+      "La coincidencia de número (64) permite emparejar hexagramas y codones, pero es un isomorfismo de estructura, no un hecho biológico ni una afinidad mística. La correspondencia es real como forma y arbitraria en los detalles.",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

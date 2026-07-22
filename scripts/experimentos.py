@@ -656,6 +656,7 @@ ETIQUETADO = {
     'conteos-astronomicos': ('geometria', ['hipercubo', 'recorridos'], 'referencia', 'intermedio'),
     'paseo-aleatorio': ('azar', ['probabilidad', 'recorridos', 'hipercubo'], 'simulador', 'intermedio'),
     'leibniz-documentos': ('historia', ['leibniz', 'binario'], 'referencia', 'introductorio'),
+    'codones': ('algebra', ['interdisciplinar', 'binario'], 'visualizacion', 'intermedio'),
 }
 
 
@@ -714,6 +715,45 @@ def verificar_matriz_nuclear():
     print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
     print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
+
+
+def verificar_codones():
+    """D1: los 64 codones. Biyeccion hexagrama<->codon; 4!=24 codificaciones;
+    tabla de aminoacidos del codigo estandar (NCBI). Ninguna codificacion canonica."""
+    from itertools import permutations
+    bases = ['A', 'C', 'G', 'U']
+    encs = [list(p) for p in permutations(bases)]
+    assert len(encs) == 24, 'deben ser 4! = 24 codificaciones'
+
+    def hex_a_codon(v, enc):
+        return enc[(v >> 4) & 3] + enc[(v >> 2) & 3] + enc[v & 3]
+
+    # cada codificacion es una biyeccion hexagrama -> codon
+    for enc in encs:
+        cods = {hex_a_codon(v, enc) for v in range(64)}
+        assert len(cods) == 64, 'codificacion no biyectiva'
+
+    # codigo genetico estandar: 64 codones definidos (NCBI, tabla 1)
+    codigo = {
+        'UUU': 'F', 'UUC': 'F', 'UUA': 'L', 'UUG': 'L', 'UCU': 'S', 'UCC': 'S', 'UCA': 'S', 'UCG': 'S',
+        'UAU': 'Y', 'UAC': 'Y', 'UAA': '*', 'UAG': '*', 'UGU': 'C', 'UGC': 'C', 'UGA': '*', 'UGG': 'W',
+        'CUU': 'L', 'CUC': 'L', 'CUA': 'L', 'CUG': 'L', 'CCU': 'P', 'CCC': 'P', 'CCA': 'P', 'CCG': 'P',
+        'CAU': 'H', 'CAC': 'H', 'CAA': 'Q', 'CAG': 'Q', 'CGU': 'R', 'CGC': 'R', 'CGA': 'R', 'CGG': 'R',
+        'AUU': 'I', 'AUC': 'I', 'AUA': 'I', 'AUG': 'M', 'ACU': 'T', 'ACC': 'T', 'ACA': 'T', 'ACG': 'T',
+        'AAU': 'N', 'AAC': 'N', 'AAA': 'K', 'AAG': 'K', 'AGU': 'S', 'AGC': 'S', 'AGA': 'R', 'AGG': 'R',
+        'GUU': 'V', 'GUC': 'V', 'GUA': 'V', 'GUG': 'V', 'GCU': 'A', 'GCC': 'A', 'GCA': 'A', 'GCG': 'A',
+        'GAU': 'D', 'GAC': 'D', 'GAA': 'E', 'GAG': 'E', 'GGU': 'G', 'GGC': 'G', 'GGA': 'G', 'GGG': 'G',
+    }
+    assert len(codigo) == 64 and codigo['AUG'] == 'M' and codigo['UAA'] == '*'
+    assert sum(1 for a in codigo.values() if a == '*') == 3, 'deben ser 3 codones de parada'
+    # ninguna codificacion es canonica: cambiar el encoding cambia el aminoacido de algun hexagrama
+    difieren = any(codigo[hex_a_codon(v, encs[0])] != codigo[hex_a_codon(v, encs[1])] for v in range(64))
+    assert difieren, 'dos codificaciones distintas dan el mismo mapeo?'
+
+    print('27. Los 64 codones (D1)')
+    print('   64 = 4^3 = 2^6; cada codificacion base->bits es biyectiva  OK')
+    print('   4! = 24 codificaciones, ninguna canonica; el mapeo cambia con la eleccion  OK')
+    print('   tabla del codigo genetico estandar (NCBI): 64 codones, 3 de parada  OK')
 
 
 def verificar_leibniz():
@@ -1157,16 +1197,17 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 6, 'historia': 7, 'algebra': 6, 'azar': 5, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 6, 'historia': 7, 'algebra': 7, 'azar': 5, 'practica': 2}, por_cat
 
-    # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
+    # Con el catalogo completo (27 experimentos), el vocabulario de 17 debe estar
+    # totalmente cubierto: ninguna etiqueta muerta.
     sin_uso = ETIQUETAS_VOCAB - usadas
-    assert sin_uso <= RESERVADAS, f'etiqueta muerta fuera de las reservadas: {sin_uso - RESERVADAS}'
+    assert sin_uso == set(), f'etiquetas del vocabulario sin uso: {sorted(sin_uso)}'
 
     print('18. Sistema de etiquetado en facetas')
     print(f'   {len(ETIQUETADO)} experimentos: 1 categoria, 2 a 4 etiquetas del vocabulario cerrado  OK')
     print(f'   distribucion por categoria {por_cat}  (ninguna vacia)  OK')
-    print(f'   etiquetas reservadas (sin publicar aun): {sorted(sin_uso)}')
+    print(f'   vocabulario de {len(ETIQUETAS_VOCAB)} etiquetas: completamente cubierto (0 muertas)  OK')
 
 
 if __name__ == '__main__':
@@ -1219,6 +1260,8 @@ if __name__ == '__main__':
     verificar_paseo()
     print()
     verificar_leibniz()
+    print()
+    verificar_codones()
     print()
     verificar_etiquetado()
     print()
