@@ -1,0 +1,642 @@
+[
+  {
+    "valor": 63,
+    "bits": "111111",
+    "kw": 1,
+    "pinyin": "Qian",
+    "nombre": "Lo Creativo",
+    "trigrama_inferior": "Qian",
+    "trigrama_superior": "Qian",
+    "unicode": "䷀"
+  },
+  {
+    "valor": 0,
+    "bits": "000000",
+    "kw": 2,
+    "pinyin": "Kun",
+    "nombre": "Lo Receptivo",
+    "trigrama_inferior": "Kun",
+    "trigrama_superior": "Kun",
+    "unicode": "䷁"
+  },
+  {
+    "valor": 34,
+    "bits": "100010",
+    "kw": 3,
+    "pinyin": "Zhun",
+    "nombre": "La Dificultad Inicial",
+    "trigrama_inferior": "Zhen",
+    "trigrama_superior": "Kan",
+    "unicode": "䷂"
+  },
+  {
+    "valor": 17,
+    "bits": "010001",
+    "kw": 4,
+    "pinyin": "Meng",
+    "nombre": "La Necedad Juvenil",
+    "trigrama_inferior": "Kan",
+    "trigrama_superior": "Gen",
+    "unicode": "䷃"
+  },
+  {
+    "valor": 58,
+    "bits": "111010",
+    "kw": 5,
+    "pinyin": "Xu",
+    "nombre": "La Espera",
+    "trigrama_inferior": "Qian",
+    "trigrama_superior": "Kan",
+    "unicode": "䷄"
+  },
+  {
+    "valor": 23,
+    "bits": "010111",
+    "kw": 6,
+    "pinyin": "Song",
+    "nombre": "El Conflicto",
+    "trigrama_inferior": "Kan",
+    "trigrama_superior": "Qian",
+    "unicode": "䷅"
+  },
+  {
+    "valor": 16,
+    "bits": "010000",
+    "kw": 7,
+    "pinyin": "Shi",
+    "nombre": "El Ejercito",
+    "trigrama_inferior": "Kan",
+    "trigrama_superior": "Kun",
+    "unicode": "䷆"
+  },
+  {
+    "valor": 2,
+    "bits": "000010",
+    "kw": 8,
+    "pinyin": "Bi",
+    "nombre": "La Solidaridad",
+    "trigrama_inferior": "Kun",
+    "trigrama_superior": "Kan",
+    "unicode": "䷇"
+  },
+  {
+    "valor": 59,
+    "bits": "111011",
+    "kw": 9,
+    "pinyin": "Xiao Chu",
+    "nombre": "Fuerza Domesticadora Menor",
+    "trigrama_inferior": "Qian",
+    "trigrama_superior": "Xun",
+    "unicode": "䷈"
+  },
+  {
+    "valor": 55,
+    "bits": "110111",
+    "kw": 10,
+    "pinyin": "Lu",
+    "nombre": "El Porte",
+    "trigrama_inferior": "Dui",
+    "trigrama_superior": "Qian",
+    "unicode": "䷉"
+  },
+  {
+    "valor": 56,
+    "bits": "111000",
+    "kw": 11,
+    "pinyin": "Tai",
+    "nombre": "La Paz",
+    "trigrama_inferior": "Qian",
+    "trigrama_superior": "Kun",
+    "unicode": "䷊"
+  },
+  {
+    "valor": 7,
+    "bits": "000111",
+    "kw": 12,
+    "pinyin": "Pi",
+    "nombre": "El Estancamiento",
+    "trigrama_inferior": "Kun",
+    "trigrama_superior": "Qian",
+    "unicode": "䷋"
+  },
+  {
+    "valor": 47,
+    "bits": "101111",
+    "kw": 13,
+    "pinyin": "Tong Ren",
+    "nombre": "Comunidad con los Hombres",
+    "trigrama_inferior": "Li",
+    "trigrama_superior": "Qian",
+    "unicode": "䷌"
+  },
+  {
+    "valor": 61,
+    "bits": "111101",
+    "kw": 14,
+    "pinyin": "Da You",
+    "nombre": "La Posesion de lo Grande",
+    "trigrama_inferior": "Qian",
+    "trigrama_superior": "Li",
+    "unicode": "䷍"
+  },
+  {
+    "valor": 8,
+    "bits": "001000",
+    "kw": 15,
+    "pinyin": "Qian",
+    "nombre": "La Modestia",
+    "trigrama_inferior": "Gen",
+    "trigrama_superior": "Kun",
+    "unicode": "䷎"
+  },
+  {
+    "valor": 4,
+    "bits": "000100",
+    "kw": 16,
+    "pinyin": "Yu",
+    "nombre": "El Entusiasmo",
+    "trigrama_inferior": "Kun",
+    "trigrama_superior": "Zhen",
+    "unicode": "䷏"
+  },
+  {
+    "valor": 38,
+    "bits": "100110",
+    "kw": 17,
+    "pinyin": "Sui",
+    "nombre": "El Seguimiento",
+    "trigrama_inferior": "Zhen",
+    "trigrama_superior": "Dui",
+    "unicode": "䷐"
+  },
+  {
+    "valor": 25,
+    "bits": "011001",
+    "kw": 18,
+    "pinyin": "Gu",
+    "nombre": "El Trabajo en lo Echado a Perder",
+    "trigrama_inferior": "Xun",
+    "trigrama_superior": "Gen",
+    "unicode": "䷑"
+  },
+  {
+    "valor": 48,
+    "bits": "110000",
+    "kw": 19,
+    "pinyin": "Lin",
+    "nombre": "El Acercamiento",
+    "trigrama_inferior": "Dui",
+    "trigrama_superior": "Kun",
+    "unicode": "䷒"
+  },
+  {
+    "valor": 3,
+    "bits": "000011",
+    "kw": 20,
+    "pinyin": "Guan",
+    "nombre": "La Contemplacion",
+    "trigrama_inferior": "Kun",
+    "trigrama_superior": "Xun",
+    "unicode": "䷓"
+  },
+  {
+    "valor": 37,
+    "bits": "100101",
+    "kw": 21,
+    "pinyin": "Shi He",
+    "nombre": "La Mordedura Tajante",
+    "trigrama_inferior": "Zhen",
+    "trigrama_superior": "Li",
+    "unicode": "䷔"
+  },
+  {
+    "valor": 41,
+    "bits": "101001",
+    "kw": 22,
+    "pinyin": "Bi",
+    "nombre": "La Gracia",
+    "trigrama_inferior": "Li",
+    "trigrama_superior": "Gen",
+    "unicode": "䷕"
+  },
+  {
+    "valor": 1,
+    "bits": "000001",
+    "kw": 23,
+    "pinyin": "Bo",
+    "nombre": "La Desintegracion",
+    "trigrama_inferior": "Kun",
+    "trigrama_superior": "Gen",
+    "unicode": "䷖"
+  },
+  {
+    "valor": 32,
+    "bits": "100000",
+    "kw": 24,
+    "pinyin": "Fu",
+    "nombre": "El Retorno",
+    "trigrama_inferior": "Zhen",
+    "trigrama_superior": "Kun",
+    "unicode": "䷗"
+  },
+  {
+    "valor": 39,
+    "bits": "100111",
+    "kw": 25,
+    "pinyin": "Wu Wang",
+    "nombre": "La Inocencia",
+    "trigrama_inferior": "Zhen",
+    "trigrama_superior": "Qian",
+    "unicode": "䷘"
+  },
+  {
+    "valor": 57,
+    "bits": "111001",
+    "kw": 26,
+    "pinyin": "Da Chu",
+    "nombre": "Fuerza Domesticadora Mayor",
+    "trigrama_inferior": "Qian",
+    "trigrama_superior": "Gen",
+    "unicode": "䷙"
+  },
+  {
+    "valor": 33,
+    "bits": "100001",
+    "kw": 27,
+    "pinyin": "Yi",
+    "nombre": "La Nutricion",
+    "trigrama_inferior": "Zhen",
+    "trigrama_superior": "Gen",
+    "unicode": "䷚"
+  },
+  {
+    "valor": 30,
+    "bits": "011110",
+    "kw": 28,
+    "pinyin": "Da Guo",
+    "nombre": "Preponderancia de lo Grande",
+    "trigrama_inferior": "Xun",
+    "trigrama_superior": "Dui",
+    "unicode": "䷛"
+  },
+  {
+    "valor": 18,
+    "bits": "010010",
+    "kw": 29,
+    "pinyin": "Kan",
+    "nombre": "Lo Abismal",
+    "trigrama_inferior": "Kan",
+    "trigrama_superior": "Kan",
+    "unicode": "䷜"
+  },
+  {
+    "valor": 45,
+    "bits": "101101",
+    "kw": 30,
+    "pinyin": "Li",
+    "nombre": "Lo Adherente",
+    "trigrama_inferior": "Li",
+    "trigrama_superior": "Li",
+    "unicode": "䷝"
+  },
+  {
+    "valor": 14,
+    "bits": "001110",
+    "kw": 31,
+    "pinyin": "Xian",
+    "nombre": "El Influjo",
+    "trigrama_inferior": "Gen",
+    "trigrama_superior": "Dui",
+    "unicode": "䷞"
+  },
+  {
+    "valor": 28,
+    "bits": "011100",
+    "kw": 32,
+    "pinyin": "Heng",
+    "nombre": "La Duracion",
+    "trigrama_inferior": "Xun",
+    "trigrama_superior": "Zhen",
+    "unicode": "䷟"
+  },
+  {
+    "valor": 15,
+    "bits": "001111",
+    "kw": 33,
+    "pinyin": "Dun",
+    "nombre": "La Retirada",
+    "trigrama_inferior": "Gen",
+    "trigrama_superior": "Qian",
+    "unicode": "䷠"
+  },
+  {
+    "valor": 60,
+    "bits": "111100",
+    "kw": 34,
+    "pinyin": "Da Zhuang",
+    "nombre": "El Poder de lo Grande",
+    "trigrama_inferior": "Qian",
+    "trigrama_superior": "Zhen",
+    "unicode": "䷡"
+  },
+  {
+    "valor": 5,
+    "bits": "000101",
+    "kw": 35,
+    "pinyin": "Jin",
+    "nombre": "El Progreso",
+    "trigrama_inferior": "Kun",
+    "trigrama_superior": "Li",
+    "unicode": "䷢"
+  },
+  {
+    "valor": 40,
+    "bits": "101000",
+    "kw": 36,
+    "pinyin": "Ming Yi",
+    "nombre": "El Oscurecimiento de la Luz",
+    "trigrama_inferior": "Li",
+    "trigrama_superior": "Kun",
+    "unicode": "䷣"
+  },
+  {
+    "valor": 43,
+    "bits": "101011",
+    "kw": 37,
+    "pinyin": "Jia Ren",
+    "nombre": "El Clan",
+    "trigrama_inferior": "Li",
+    "trigrama_superior": "Xun",
+    "unicode": "䷤"
+  },
+  {
+    "valor": 53,
+    "bits": "110101",
+    "kw": 38,
+    "pinyin": "Kui",
+    "nombre": "El Antagonismo",
+    "trigrama_inferior": "Dui",
+    "trigrama_superior": "Li",
+    "unicode": "䷥"
+  },
+  {
+    "valor": 10,
+    "bits": "001010",
+    "kw": 39,
+    "pinyin": "Jian",
+    "nombre": "El Impedimento",
+    "trigrama_inferior": "Gen",
+    "trigrama_superior": "Kan",
+    "unicode": "䷦"
+  },
+  {
+    "valor": 20,
+    "bits": "010100",
+    "kw": 40,
+    "pinyin": "Xie",
+    "nombre": "La Liberacion",
+    "trigrama_inferior": "Kan",
+    "trigrama_superior": "Zhen",
+    "unicode": "䷧"
+  },
+  {
+    "valor": 49,
+    "bits": "110001",
+    "kw": 41,
+    "pinyin": "Sun",
+    "nombre": "La Merma",
+    "trigrama_inferior": "Dui",
+    "trigrama_superior": "Gen",
+    "unicode": "䷨"
+  },
+  {
+    "valor": 35,
+    "bits": "100011",
+    "kw": 42,
+    "pinyin": "Yi",
+    "nombre": "El Aumento",
+    "trigrama_inferior": "Zhen",
+    "trigrama_superior": "Xun",
+    "unicode": "䷩"
+  },
+  {
+    "valor": 62,
+    "bits": "111110",
+    "kw": 43,
+    "pinyin": "Guai",
+    "nombre": "La Resolucion",
+    "trigrama_inferior": "Qian",
+    "trigrama_superior": "Dui",
+    "unicode": "䷪"
+  },
+  {
+    "valor": 31,
+    "bits": "011111",
+    "kw": 44,
+    "pinyin": "Gou",
+    "nombre": "Ir al Encuentro",
+    "trigrama_inferior": "Xun",
+    "trigrama_superior": "Qian",
+    "unicode": "䷫"
+  },
+  {
+    "valor": 6,
+    "bits": "000110",
+    "kw": 45,
+    "pinyin": "Cui",
+    "nombre": "La Reunion",
+    "trigrama_inferior": "Kun",
+    "trigrama_superior": "Dui",
+    "unicode": "䷬"
+  },
+  {
+    "valor": 24,
+    "bits": "011000",
+    "kw": 46,
+    "pinyin": "Sheng",
+    "nombre": "La Ascension",
+    "trigrama_inferior": "Xun",
+    "trigrama_superior": "Kun",
+    "unicode": "䷭"
+  },
+  {
+    "valor": 22,
+    "bits": "010110",
+    "kw": 47,
+    "pinyin": "Kun",
+    "nombre": "La Opresion",
+    "trigrama_inferior": "Kan",
+    "trigrama_superior": "Dui",
+    "unicode": "䷮"
+  },
+  {
+    "valor": 26,
+    "bits": "011010",
+    "kw": 48,
+    "pinyin": "Jing",
+    "nombre": "El Pozo",
+    "trigrama_inferior": "Xun",
+    "trigrama_superior": "Kan",
+    "unicode": "䷯"
+  },
+  {
+    "valor": 46,
+    "bits": "101110",
+    "kw": 49,
+    "pinyin": "Ge",
+    "nombre": "La Revolucion",
+    "trigrama_inferior": "Li",
+    "trigrama_superior": "Dui",
+    "unicode": "䷰"
+  },
+  {
+    "valor": 29,
+    "bits": "011101",
+    "kw": 50,
+    "pinyin": "Ding",
+    "nombre": "El Caldero",
+    "trigrama_inferior": "Xun",
+    "trigrama_superior": "Li",
+    "unicode": "䷱"
+  },
+  {
+    "valor": 36,
+    "bits": "100100",
+    "kw": 51,
+    "pinyin": "Zhen",
+    "nombre": "La Conmocion",
+    "trigrama_inferior": "Zhen",
+    "trigrama_superior": "Zhen",
+    "unicode": "䷲"
+  },
+  {
+    "valor": 9,
+    "bits": "001001",
+    "kw": 52,
+    "pinyin": "Gen",
+    "nombre": "El Aquietamiento",
+    "trigrama_inferior": "Gen",
+    "trigrama_superior": "Gen",
+    "unicode": "䷳"
+  },
+  {
+    "valor": 11,
+    "bits": "001011",
+    "kw": 53,
+    "pinyin": "Jian",
+    "nombre": "El Desarrollo",
+    "trigrama_inferior": "Gen",
+    "trigrama_superior": "Xun",
+    "unicode": "䷴"
+  },
+  {
+    "valor": 52,
+    "bits": "110100",
+    "kw": 54,
+    "pinyin": "Gui Mei",
+    "nombre": "La Muchacha que se Casa",
+    "trigrama_inferior": "Dui",
+    "trigrama_superior": "Zhen",
+    "unicode": "䷵"
+  },
+  {
+    "valor": 44,
+    "bits": "101100",
+    "kw": 55,
+    "pinyin": "Feng",
+    "nombre": "La Plenitud",
+    "trigrama_inferior": "Li",
+    "trigrama_superior": "Zhen",
+    "unicode": "䷶"
+  },
+  {
+    "valor": 13,
+    "bits": "001101",
+    "kw": 56,
+    "pinyin": "Lu",
+    "nombre": "El Andariego",
+    "trigrama_inferior": "Gen",
+    "trigrama_superior": "Li",
+    "unicode": "䷷"
+  },
+  {
+    "valor": 27,
+    "bits": "011011",
+    "kw": 57,
+    "pinyin": "Xun",
+    "nombre": "Lo Suave",
+    "trigrama_inferior": "Xun",
+    "trigrama_superior": "Xun",
+    "unicode": "䷸"
+  },
+  {
+    "valor": 54,
+    "bits": "110110",
+    "kw": 58,
+    "pinyin": "Dui",
+    "nombre": "Lo Sereno",
+    "trigrama_inferior": "Dui",
+    "trigrama_superior": "Dui",
+    "unicode": "䷹"
+  },
+  {
+    "valor": 19,
+    "bits": "010011",
+    "kw": 59,
+    "pinyin": "Huan",
+    "nombre": "La Disolucion",
+    "trigrama_inferior": "Kan",
+    "trigrama_superior": "Xun",
+    "unicode": "䷺"
+  },
+  {
+    "valor": 50,
+    "bits": "110010",
+    "kw": 60,
+    "pinyin": "Jie",
+    "nombre": "La Restriccion",
+    "trigrama_inferior": "Dui",
+    "trigrama_superior": "Kan",
+    "unicode": "䷻"
+  },
+  {
+    "valor": 51,
+    "bits": "110011",
+    "kw": 61,
+    "pinyin": "Zhong Fu",
+    "nombre": "La Verdad Interior",
+    "trigrama_inferior": "Dui",
+    "trigrama_superior": "Xun",
+    "unicode": "䷼"
+  },
+  {
+    "valor": 12,
+    "bits": "001100",
+    "kw": 62,
+    "pinyin": "Xiao Guo",
+    "nombre": "Preponderancia de lo Pequeno",
+    "trigrama_inferior": "Gen",
+    "trigrama_superior": "Zhen",
+    "unicode": "䷽"
+  },
+  {
+    "valor": 42,
+    "bits": "101010",
+    "kw": 63,
+    "pinyin": "Ji Ji",
+    "nombre": "Despues de la Consumacion",
+    "trigrama_inferior": "Li",
+    "trigrama_superior": "Kan",
+    "unicode": "䷾"
+  },
+  {
+    "valor": 21,
+    "bits": "010101",
+    "kw": 64,
+    "pinyin": "Wei Ji",
+    "nombre": "Antes de la Consumacion",
+    "trigrama_inferior": "Kan",
+    "trigrama_superior": "Li",
+    "unicode": "䷿"
+  }
+]
