@@ -200,7 +200,7 @@ export default function MarkovConsultas() {
             {datos.map((m) => (
               <Stat
                 key={m.id}
-                valor={sim ? sim[m.id].toFixed(2) : "·"}
+                valor={sim ? sim[m.id].toFixed(2) : "–"}
                 etiqueta={`${m.nombre}: yang medio (teoría ${m.Ey.toFixed(1)})`}
                 accent={m.color}
               />

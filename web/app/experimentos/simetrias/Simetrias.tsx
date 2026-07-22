@@ -74,7 +74,7 @@ export default function Simetrias() {
                   }}
                 >
                   <div className="mb-1 font-mono text-[10px] text-sand-500">
-                    {op.chino !== "·" && <span style={{ color: ACCENT }}>{op.chino} </span>}
+                    {op.chino !== "–" && <span style={{ color: ACCENT }}>{op.chino} </span>}
                     {op.nombre}
                   </div>
                   <Glyph bits={h.bits} size={38} className="text-sand-100" />

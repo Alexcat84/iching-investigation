@@ -123,12 +123,12 @@ export default function ComparadorSorteo() {
                       <td className="px-2 py-1.5" style={{ color: m.color }}>{m.nombre}</td>
                       {ESTADOS.map((e) => (
                         <td key={e} className="px-2 py-1.5 text-right">
-                          {s ? `${((s.counts[e] / s.n) * 100).toFixed(1)}%` : "·"}
+                          {s ? `${((s.counts[e] / s.n) * 100).toFixed(1)}%` : "–"}
                           <span className="text-sand-600"> ({((m.dieciseisavos[e] / 16) * 100).toFixed(1)})</span>
                         </td>
                       ))}
                       <td className="px-2 py-1.5 text-right" style={{ color: s && s.chi2 < 16.27 ? "#7fc79b" : "#e24b3b" }}>
-                        {s ? s.chi2.toFixed(2) : "·"}
+                        {s ? s.chi2.toFixed(2) : "–"}
                       </td>
                     </tr>
                   );

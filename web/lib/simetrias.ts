@@ -22,7 +22,7 @@ export interface OpInfo {
 }
 
 export const OPERACIONES: OpInfo[] = [
-  { id: "id", nombre: "identidad", chino: "·", aplicar: (v) => v },
+  { id: "id", nombre: "identidad", chino: "–", aplicar: (v) => v },
   { id: "fan", nombre: "volteo", chino: "反", aplicar: fan },
   { id: "dui", nombre: "opuesto", chino: "对", aplicar: dui },
   { id: "fanDui", nombre: "volteo + opuesto", chino: "反对", aplicar: fanDui },

@@ -155,9 +155,9 @@ export default function PaseoAleatorio() {
         </div>
         <Panel>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <Stat valor={sim ? sim.coverMedia.toFixed(0) : "·"} etiqueta="cobertura media (pasos)" accent={ACCENT} />
-            <Stat valor={sim ? sim.cover : "·"} etiqueta="una cobertura de ejemplo" />
-            <Stat valor={sim ? sim.ret : "·"} etiqueta="un retorno de ejemplo (teoría 64)" />
+            <Stat valor={sim ? sim.coverMedia.toFixed(0) : "–"} etiqueta="cobertura media (pasos)" accent={ACCENT} />
+            <Stat valor={sim ? sim.cover : "–"} etiqueta="una cobertura de ejemplo" />
+            <Stat valor={sim ? sim.ret : "–"} etiqueta="un retorno de ejemplo (teoría 64)" />
           </div>
           <p className="mt-3 text-sm leading-relaxed text-sand-300">
             El tiempo esperado de retorno al origen es <b style={{ color: ACCENT }}>exactamente 64</b>:
