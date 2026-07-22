@@ -509,6 +509,22 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#6ab0a0",
     estado: "activo",
   },
+  {
+    slug: "leibniz-documentos",
+    titulo: "Leibniz: los documentos",
+    subtitulo: "Bouvet, Shao Yong y la aritmética binaria de 1703",
+    descripcion:
+      "La cronología documentada del encuentro entre el I Ching y el binario europeo: Shao Yong, la carta de Bouvet (1701) y la Explication de l'Arithmétique Binaire de Leibniz (1703). Cada afirmación con su fuente.",
+    simbolo: "✉",
+    categoria: "historia",
+    etiquetas: ["leibniz", "binario"],
+    tipo: "referencia",
+    nivel: "introductorio",
+    accent: "#b89a6a",
+    estado: "activo",
+    descargo:
+      "Los chinos no practicaban aritmética binaria: Shao Yong buscaba cosmología, y fue Leibniz quien reconoció la identidad estructural con el binario que ya había inventado.",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

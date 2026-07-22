@@ -655,6 +655,7 @@ ETIQUETADO = {
     'espectro-walsh': ('algebra', ['algebra-lineal', 'secuencias-historicas', 'estadistica'], 'test', 'avanzado'),
     'conteos-astronomicos': ('geometria', ['hipercubo', 'recorridos'], 'referencia', 'intermedio'),
     'paseo-aleatorio': ('azar', ['probabilidad', 'recorridos', 'hipercubo'], 'simulador', 'intermedio'),
+    'leibniz-documentos': ('historia', ['leibniz', 'binario'], 'referencia', 'introductorio'),
 }
 
 
@@ -713,6 +714,16 @@ def verificar_matriz_nuclear():
     print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
     print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
+
+
+def verificar_leibniz():
+    """D2: pagina de referencia historica. Sin asercion numerica; la suite comprueba
+    que la entrada existe y esta bien etiquetada (tipo referencia, etiquetas leibniz/binario)."""
+    e = ETIQUETADO['leibniz-documentos']
+    assert e == ('historia', ['leibniz', 'binario'], 'referencia', 'introductorio'), e
+    print('26. Leibniz: los documentos (D2)')
+    print('   entrada de referencia, bien etiquetada (leibniz, binario)  OK')
+    print('   cada afirmacion historica lleva su fuente en la pagina (1703, Bouvet, Ryan 1996)')
 
 
 def verificar_paseo():
@@ -1146,7 +1157,7 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 6, 'historia': 6, 'algebra': 6, 'azar': 5, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 6, 'historia': 7, 'algebra': 6, 'azar': 5, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
@@ -1206,6 +1217,8 @@ if __name__ == '__main__':
     verificar_conteos()
     print()
     verificar_paseo()
+    print()
+    verificar_leibniz()
     print()
     verificar_etiquetado()
     print()
