@@ -85,7 +85,7 @@ export function coincideConOraculo(): boolean {
   );
 }
 
-// ————— Muestreo bajo el supuesto del modelo (para el recorrido y la simulación) —————
+// === Muestreo bajo el supuesto del modelo (para el recorrido y la simulación) ===
 
 export interface Operacion {
   pileInicial: number;

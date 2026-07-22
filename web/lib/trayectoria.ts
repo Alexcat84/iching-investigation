@@ -99,7 +99,7 @@ export function palacioIndice(v: number): number {
   return CLASIFICACION[v].palacio;
 }
 
-// —————————————————— Generador de trayectoria de ejemplo ——————————————————
+// === Generador de trayectoria de ejemplo ===
 
 /** Echa seis monedas y devuelve el hexagrama presente (P(yang) = 1/2 por línea). */
 export function echarPresente(rng: () => number = Math.random): number {

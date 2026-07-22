@@ -86,7 +86,7 @@ export function palindromosSonParesEspeciales(): boolean {
   return true;
 }
 
-// ————————————————— Dinámica del hexagrama nuclear —————————————————
+// === Dinámica del hexagrama nuclear ===
 
 export interface DinamicaNuclear {
   ciclos: number[][]; // atractores (ciclos del mapa)
@@ -145,7 +145,7 @@ export function dinamicaNuclear(): DinamicaNuclear {
 
 export const NUCLEAR = dinamicaNuclear();
 
-// ————————————————— Espectro del hipercubo Q6 —————————————————
+// === Espectro del hipercubo Q6 ===
 
 function comb(n: number, k: number): number {
   let r = 1;

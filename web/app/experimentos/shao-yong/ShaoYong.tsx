@@ -16,7 +16,7 @@ import { ExperimentHeader, Panel, Prose, SectionLabel } from "@/components/ui";
 
 const ACCENT = "#6fa8b0";
 
-// —————————————————— glifo inline para SVG ——————————————————
+// === glifo inline para SVG ===
 function svgGlyph(bits: string, cx: number, cy: number, w: number, color: string) {
   const bar = w * 0.11;
   const gap = w * 0.08;
@@ -39,7 +39,7 @@ function svgGlyph(bits: string, cx: number, cy: number, w: number, color: string
   return <g>{rects}</g>;
 }
 
-// —————————————————— El cuadrado ——————————————————
+// === El cuadrado ===
 const CELL = 66;
 const PAD = 26;
 const SIZE = CELL * 8;
@@ -210,7 +210,7 @@ function Cuadrado() {
   );
 }
 
-// —————————————————— El círculo ——————————————————
+// === El círculo ===
 const CX = 200;
 const CY = 200;
 const RC = 168;

@@ -42,7 +42,7 @@ export function verificarCuadrado(): boolean {
   return vals.size === 64;
 }
 
-// ————————————————————— El círculo —————————————————————
+// === El círculo ===
 
 /** Ángulo (radianes) de un valor en el círculo Fu Xi (0 arriba, sentido horario). */
 export function anguloCirculo(v: number): number {
@@ -58,7 +58,7 @@ export function simetriasCirculo(v: number): { dui: number; antipoda: number } {
   return { dui: 63 - v, antipoda: v ^ 32 };
 }
 
-// ————————————————————— Las 8 simetrías del cuadrado (grupo diédrico D4) —————————————————————
+// === Las 8 simetrías del cuadrado (grupo diédrico D4) ===
 //
 // Derivadas del layout REAL de este archivo: valorCelda(f, c) = (c << 3) | (7 - f),
 // es decir, trigrama inferior = columna y trigrama superior = 7 - fila. Cada

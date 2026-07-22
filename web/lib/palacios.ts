@@ -129,7 +129,7 @@ export function verificarParticion(): { ok: boolean; distintos: number } {
   return { ok: vistos.size === 64, distintos: vistos.size };
 }
 
-// Aserción en desarrollo — refleja scripts/experimentos.py.
+// Aserción en desarrollo: refleja scripts/experimentos.py.
 if (process.env.NODE_ENV !== "production") {
   const { ok } = verificarParticion();
   if (!ok) console.error("[palacios] la partición falló: hay hexagramas repetidos");

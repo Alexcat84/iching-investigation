@@ -12,7 +12,7 @@
  */
 import { EDGES, lineBit } from "./iching";
 
-// ————— 1. Proyección de Petrie —————
+// === 1. Proyección de Petrie ===
 
 /** Dirección de la línea k (1..6): ángulos separados 30 grados, línea 1 hacia arriba. */
 function direccion(k: number): [number, number] {
@@ -45,7 +45,7 @@ export const PETRIE_EXTERIOR: { radio: number; cuantos: number } = (() => {
   return { radio, cuantos };
 })();
 
-// ————— 2. Cubo de cubos (Q3 x Q3) —————
+// === 2. Cubo de cubos (Q3 x Q3) ===
 
 /** Coordenadas 3D (+-1) de un trigrama 0..7: bit alto = x, medio = y, bajo = z. */
 function esquina(t: number): [number, number, number] {
@@ -82,7 +82,7 @@ export const PARTICION_ARISTAS: { intra: number; entre: number } = (() => {
   return { intra, entre };
 })();
 
-// ————— 3. Niveles de líneas yang —————
+// === 3. Niveles de líneas yang ===
 
 export function nivelYang(v: number): number {
   let n = 0;

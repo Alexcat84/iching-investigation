@@ -175,7 +175,7 @@ export function hex(v: number): Hexagram {
   return HEX_BY_VALUE[((v % 64) + 64) % 64];
 }
 
-// —————————————————————— Operaciones de bits ——————————————————————
+// === Operaciones de bits ===
 
 /** Bit de la línea k (1 = abajo → 32, … 6 = arriba → 1). */
 export const lineBit = (k: number): number => 1 << (6 - k);

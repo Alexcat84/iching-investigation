@@ -38,7 +38,7 @@ function Varillas({ n, tono = "#cfc7b2" }: { n: number; tono?: string }) {
 }
 
 export default function RitualMilenrama() {
-  // ——— Recorrido interactivo ———
+  // === Recorrido interactivo ===
   const [ops, setOps] = useState<Operacion[]>([]);
   const [pendiente, setPendiente] = useState<Operacion | null>(null);
   const [tally, setTally] = useState<Record<Estado, number>>({ 6: 0, 7: 0, 8: 0, 9: 0 });
@@ -66,7 +66,7 @@ export default function RitualMilenrama() {
 
   const totalTally = ESTADOS.reduce((s, e) => s + tally[e], 0);
 
-  // ——— Simulación masiva ———
+  // === Simulación masiva ===
   const [sim, setSim] = useState<{ n: number; cnt: Record<Estado, number> } | null>(null);
   const simular = (n: number) => {
     const cnt: Record<Estado, number> = { 6: 0, 7: 0, 8: 0, 9: 0 };
