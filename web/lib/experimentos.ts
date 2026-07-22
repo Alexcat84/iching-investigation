@@ -125,7 +125,7 @@ const BASE: Omit<Experimento, "n">[] = [
     titulo: "Rey Wen como permutación",
     subtitulo: "Cuánto desordena el libro la geometría",
     descripcion:
-      "Si Fu Xi es la identidad, el Rey Wen es una permutación de los 64 números. La descomponemos en ciclos y medimos su desorden: puntos fijos, orden, paridad e inversiones.",
+      "Si Fu Xi es la identidad, el Rey Wen es una permutación de los 64 números. La descomponemos en ciclos y medimos su desorden: puntos fijos, orden, paridad e inversiones. Y la hacemos competir con los órdenes de Mawangdui y de los palacios de Jing Fang.",
     simbolo: "σ",
     categoria: "Álgebra",
     accent: "#b57bb0",

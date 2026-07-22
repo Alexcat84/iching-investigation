@@ -496,6 +496,63 @@ def verificar_bosque():
           ' verificado en la seccion 3  OK')
 
 
+# ----------------- 13. La carrera de los ordenes (ampliacion del 09) -----------------
+
+def verificar_ordenes():
+    # Mawangdui: reconstruccion estandar del manuscrito de seda (c. 168 a.C.);
+    # ver E. Shaughnessy, "I Ching: The Classic of Changes" (1996). Agrupa por
+    # trigrama superior (Qian, Gen, Kan, Zhen, Kun, Dui, Li, Xun); dentro de cada
+    # grupo abre el trigrama doblado y siguen los inferiores en el orden fijo
+    # Qian, Kun, Gen, Dui, Kan, Li, Zhen, Xun.
+    UP = ['Qian', 'Gen', 'Kan', 'Zhen', 'Kun', 'Dui', 'Li', 'Xun']
+    LO = ['Qian', 'Kun', 'Gen', 'Dui', 'Kan', 'Li', 'Zhen', 'Xun']
+    mwd = []
+    for U in UP:
+        mwd.append(value_of(bits_of(U, U)))
+        for L in LO:
+            if L != U:
+                mwd.append(value_of(bits_of(L, U)))
+    assert sorted(mwd) == list(range(64)), 'Mawangdui no es biyeccion'
+    for b in range(8):
+        bloque = mwd[8 * b:8 * b + 8]
+        assert len({v & 7 for v in bloque}) == 1, f'bloque {b} mezcla trigramas superiores'
+        assert bloque[0] >> 3 == bloque[0] & 7, f'bloque {b} no abre con el doblado'
+    # Los primeros 8 en numeros Rey Wen deben ser 1, 12, 33, 10, 6, 13, 25, 44.
+    assert [BY_VALUE[v]['kw'] for v in mwd[:8]] == [1, 12, 33, 10, 6, 13, 25, 44]
+
+    # Jing Fang: los ocho palacios aplanados; coincide con la particion del
+    # experimento de palacios (se reconstruye aqui de forma independiente).
+    jf = [v for c in CABEZAS for v in palacio(c)]
+    assert sorted(jf) == list(range(64)), 'Jing Fang no es biyeccion'
+    vistos = set()
+    for c in CABEZAS:
+        p = set(palacio(c))
+        assert len(p) == 8 and not (p & vistos), 'los palacios no particionan'
+        vistos |= p
+
+    rey_wen = [BY_KW[k + 1]['valor'] for k in range(64)]
+    fu_xi = list(range(64))
+
+    metricas = {}
+    for nombre, perm in [('Rey Wen', rey_wen), ('Mawangdui', mwd),
+                         ('Jing Fang', jf), ('Fu Xi', fu_xi)]:
+        ciclos, longs, fijos, orden, paridad, inv = _metricas_perm(perm)
+        metricas[nombre] = (len(ciclos), longs[0], len(fijos), orden, paridad, inv)
+
+    # Valores fijados tras el primer calculo (cross-check con la tabla del sitio).
+    assert metricas['Rey Wen'] == (3, 52, 0, 260, 'impar', 1013), metricas['Rey Wen']
+    assert metricas['Mawangdui'] == (4, 50, 0, 600, 'par', 1008), metricas['Mawangdui']
+    assert metricas['Jing Fang'] == (8, 36, 4, 684, 'par', 696), metricas['Jing Fang']
+    assert metricas['Fu Xi'] == (64, 1, 64, 1, 'par', 0), metricas['Fu Xi']
+
+    print('13. La carrera de los ordenes (ampliacion del experimento de permutacion)')
+    for nombre, (nc, ml, nf, o, par, inv) in metricas.items():
+        print(f'   {nombre:10s} ciclos {nc:2d} · mas largo {ml:2d} · fijos {nf:2d} · '
+              f'orden {o:3d} · {par:5s} · inversiones {inv}/2016')
+    print('   Mawangdui: 8 bloques por trigrama superior, doblado al frente  OK')
+    print('   Jing Fang: identico a la particion de los palacios  OK')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -520,5 +577,7 @@ if __name__ == '__main__':
     verificar_arbol()
     print()
     verificar_bosque()
+    print()
+    verificar_ordenes()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')
