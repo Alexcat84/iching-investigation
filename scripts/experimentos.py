@@ -651,6 +651,7 @@ ETIQUETADO = {
     'rey-wen-aleatorio': ('historia', ['estadistica', 'permutaciones', 'secuencias-historicas'], 'test', 'avanzado'),
     'markov-consultas': ('azar', ['probabilidad', 'adivinacion', 'hipercubo'], 'simulador', 'avanzado'),
     'comparador-sorteo': ('azar', ['adivinacion', 'probabilidad', 'estadistica'], 'simulador', 'introductorio'),
+    'comparador-particiones': ('algebra', ['particiones', 'estadistica'], 'calculadora', 'avanzado'),
 }
 
 
@@ -709,6 +710,82 @@ def verificar_matriz_nuclear():
     print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
     print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
+
+
+def verificar_particiones():
+    """A3: comparador de particiones (ARI). Palacios != cosets; mascaras no subgrupo."""
+    from math import comb
+    from collections import defaultdict
+    # particiones (reconstruidas de forma independiente)
+    pal = {}
+    for pi, c in enumerate(CABEZAS):
+        for v in palacio(c):
+            pal[v] = pi
+    # cuencas nucleares
+    en = [False] * 64
+    for v in range(64):
+        s = f = v
+        while True:
+            s = hu_gua(s)
+            f = hu_gua(hu_gua(f))
+            if s == f:
+                break
+        c = s
+        while True:
+            en[c] = True
+            c = hu_gua(c)
+            if c == s:
+                break
+    idc = [-1] * 64
+    ncy = 0
+    for v in range(64):
+        if en[v] and idc[v] == -1:
+            c = v
+            while True:
+                idc[c] = ncy
+                c = hu_gua(c)
+                if c == v:
+                    break
+            ncy += 1
+    cuenca = {}
+    for v in range(64):
+        c = v
+        while not en[c]:
+            c = hu_gua(c)
+        cuenca[v] = idc[c]
+    coset = {v: (v >> 3) ^ (v & 7) for v in range(64)}
+    triinf = {v: v >> 3 for v in range(64)}
+    trisup = {v: v & 7 for v in range(64)}
+    parts = {'palacios': pal, 'cuencas': cuenca, 'cosets': coset, 'tri_inf': triinf, 'tri_sup': trisup}
+
+    def ari(A, B):
+        ct = defaultdict(int); a = defaultdict(int); b = defaultdict(int)
+        for v in range(64):
+            ct[(A[v], B[v])] += 1; a[A[v]] += 1; b[B[v]] += 1
+        sij = sum(comb(n, 2) for n in ct.values())
+        sa = sum(comb(n, 2) for n in a.values()); sb = sum(comb(n, 2) for n in b.values())
+        exp = sa * sb / comb(64, 2); mx = (sa + sb) / 2
+        return 1.0 if mx == exp else (sij - exp) / (mx - exp)
+
+    # propiedades del ARI: identidad = 1, simetria
+    for n, p in parts.items():
+        assert abs(ari(p, p) - 1) < 1e-9, f'ARI({n},{n}) != 1'
+    for n1 in parts:
+        for n2 in parts:
+            assert abs(ari(parts[n1], parts[n2]) - ari(parts[n2], parts[n1])) < 1e-9
+
+    # palacios != cosets; mascaras de generacion no forman subgrupo
+    assert any(pal[v] != coset[v] for v in range(64)), 'palacios no deberia ser cosets'
+    puros = [value_of(bits_of(c, c)) for c in CABEZAS]
+    M = set(v ^ puros[0] for v in palacio('Qian'))
+    sub = all((a ^ b) in M for a in M for b in M)
+    assert not sub, 'las mascaras de generacion no deberian ser subgrupo'
+    assert abs(ari(pal, coset) - (-0.125)) < 1e-4, ari(pal, coset)
+
+    print('22. Comparador de particiones (A3)')
+    print('   ARI: identidad = 1 y simetrico  OK')
+    print(f'   mascaras de generacion {sorted(M)}: subgrupo? {sub}  OK')
+    print(f'   palacios vs cosets: ARI = {ari(pal, coset):+.4f} (mas distintas que el azar)  OK')
 
 
 def verificar_sorteo():
@@ -973,7 +1050,7 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 4, 'azar': 4, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 5, 'azar': 4, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
@@ -1025,6 +1102,8 @@ if __name__ == '__main__':
     verificar_markov()
     print()
     verificar_sorteo()
+    print()
+    verificar_particiones()
     print()
     verificar_etiquetado()
     print()

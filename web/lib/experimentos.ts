@@ -453,6 +453,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#d98f6b",
     estado: "activo",
   },
+  {
+    slug: "comparador-particiones",
+    titulo: "Comparador de particiones",
+    subtitulo: "¿Cuánto se parecen dos formas de agrupar los 64?",
+    descripcion:
+      "Toma dos particiones cualesquiera de los 64 (palacios, cuencas nucleares, cosets, trigramas) y mide su similitud con el índice de Rand ajustado, más la matriz de cruce. Hallazgo: los palacios no son los cosets (ARI −0,125), porque las 8 máscaras de generación no forman subgrupo.",
+    simbolo: "≈",
+    categoria: "algebra",
+    etiquetas: ["particiones", "estadistica"],
+    tipo: "calculadora",
+    nivel: "avanzado",
+    accent: "#7f8fd0",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
