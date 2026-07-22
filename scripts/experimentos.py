@@ -599,6 +599,70 @@ def verificar_d4():
     print('   Burnside: 80 fijos entre 8 simetrias -> 10 orbitas  OK')
 
 
+# ----------------- 15. Sistema de etiquetado en facetas -----------------
+
+# Vocabulario cerrado (espejo de web/lib/experimentos.ts).
+CATEGORIAS_VOCAB = {'geometria', 'algebra', 'historia', 'azar', 'practica'}
+ETIQUETAS_VOCAB = {
+    'hipercubo', 'binario', 'permutaciones', 'secuencias-historicas', 'trigramas',
+    'hu-gua', 'simetrias', 'particiones', 'probabilidad', 'adivinacion', 'recorridos',
+    'algebra-lineal', 'teoria-de-grupos', 'estadistica', 'leibniz', 'interdisciplinar',
+    'consulta-propia',
+}
+TIPOS_VOCAB = {'visualizacion', 'simulador', 'calculadora', 'test', 'referencia'}
+NIVELES_VOCAB = {'introductorio', 'intermedio', 'avanzado'}
+
+# Etiquetas reservadas: en el vocabulario pero sin experimento publicado todavia
+# (viven en el catalogo aun por construir: A1/A4, A2, D1).
+RESERVADAS = {'algebra-lineal', 'teoria-de-grupos', 'interdisciplinar'}
+
+# Asignacion de los publicados (slug: categoria, etiquetas, tipo, nivel).
+ETIQUETADO = {
+    'hipercubo':        ('geometria', ['hipercubo', 'binario', 'recorridos'], 'visualizacion', 'introductorio'),
+    'palacios':         ('historia', ['secuencias-historicas', 'particiones', 'recorridos'], 'visualizacion', 'intermedio'),
+    'mapa-lectura':     ('practica', ['consulta-propia', 'hipercubo', 'binario'], 'calculadora', 'introductorio'),
+    'probabilidades':   ('azar', ['probabilidad', 'adivinacion'], 'visualizacion', 'introductorio'),
+    'simetrias':        ('algebra', ['simetrias', 'hu-gua', 'hipercubo'], 'visualizacion', 'intermedio'),
+    'trayectoria':      ('practica', ['consulta-propia', 'recorridos', 'hipercubo'], 'visualizacion', 'introductorio'),
+    'rey-wen':          ('historia', ['secuencias-historicas', 'simetrias', 'binario'], 'visualizacion', 'introductorio'),
+    'shao-yong':        ('historia', ['secuencias-historicas', 'trigramas', 'simetrias', 'leibniz'], 'visualizacion', 'intermedio'),
+    'permutacion':      ('historia', ['permutaciones', 'secuencias-historicas', 'estadistica'], 'visualizacion', 'avanzado'),
+    'ritual-milenrama': ('azar', ['adivinacion', 'probabilidad'], 'simulador', 'introductorio'),
+    'dos-cielos':       ('historia', ['trigramas', 'permutaciones', 'simetrias'], 'visualizacion', 'intermedio'),
+    'sombras-6-cubo':   ('geometria', ['hipercubo', 'simetrias'], 'visualizacion', 'intermedio'),
+    'reticulo-b6':      ('geometria', ['hipercubo', 'binario', 'recorridos'], 'visualizacion', 'avanzado'),
+    'arbol-fuxi':       ('geometria', ['binario', 'secuencias-historicas', 'recorridos'], 'visualizacion', 'introductorio'),
+    'bosque-nuclear':   ('algebra', ['hu-gua', 'particiones', 'hipercubo'], 'visualizacion', 'intermedio'),
+}
+
+
+def verificar_etiquetado():
+    usadas = set()
+    por_cat = {c: 0 for c in CATEGORIAS_VOCAB}
+    for slug, (cat, tags, tipo, nivel) in ETIQUETADO.items():
+        assert cat in CATEGORIAS_VOCAB, f'{slug}: categoria invalida {cat}'
+        assert 2 <= len(tags) <= 4, f'{slug}: debe tener 2 a 4 etiquetas, tiene {len(tags)}'
+        assert len(tags) == len(set(tags)), f'{slug}: etiquetas repetidas'
+        for t in tags:
+            assert t in ETIQUETAS_VOCAB, f'{slug}: etiqueta fuera del vocabulario: {t}'
+        assert tipo in TIPOS_VOCAB, f'{slug}: tipo invalido {tipo}'
+        assert nivel in NIVELES_VOCAB, f'{slug}: nivel invalido {nivel}'
+        usadas.update(tags)
+        por_cat[cat] += 1
+
+    # Distribucion de los 15 publicados: ninguna categoria vacia.
+    assert por_cat == {'geometria': 4, 'historia': 5, 'algebra': 2, 'azar': 2, 'practica': 2}, por_cat
+
+    # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
+    sin_uso = ETIQUETAS_VOCAB - usadas
+    assert sin_uso <= RESERVADAS, f'etiqueta muerta fuera de las reservadas: {sin_uso - RESERVADAS}'
+
+    print('15. Sistema de etiquetado en facetas')
+    print(f'   {len(ETIQUETADO)} experimentos: 1 categoria, 2 a 4 etiquetas del vocabulario cerrado  OK')
+    print(f'   distribucion por categoria {por_cat}  (ninguna vacia)  OK')
+    print(f'   etiquetas reservadas (sin publicar aun): {sorted(sin_uso)}')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -627,5 +691,7 @@ if __name__ == '__main__':
     verificar_ordenes()
     print()
     verificar_d4()
+    print()
+    verificar_etiquetado()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')
