@@ -168,8 +168,9 @@ export default function Simetrias() {
               El hexagrama nuclear (hu gua) toma las líneas interiores para formar uno
               nuevo. A diferencia de fan y dui, <b>no es reversible</b>: aplicado una y
               otra vez, todo hexagrama termina cayendo en uno de{" "}
-              <b>{NUCLEAR.ciclos.length} atractores</b>, en a lo sumo {NUCLEAR.maxPasos}{" "}
-              pasos.
+              <b>{NUCLEAR.ciclos.length} atractores</b>: dos puntos fijos y un ciclo de 2
+              ({NUCLEAR.ciclos.reduce((s, c) => s + c.length, 0)} hexagramas atractores),
+              en a lo sumo {NUCLEAR.maxPasos} pasos.
             </p>
           </Prose>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">

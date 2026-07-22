@@ -83,7 +83,7 @@ export const EXPERIMENTOS: Experimento[] = [
     titulo: "Las simetrías del hipercubo",
     subtitulo: "Órbitas, palíndromos y el mapa nuclear",
     descripcion:
-      "El grupo de Klein generado por el volteo (fan) y el opuesto (dui) parte los 64 hexagramas en 20 órbitas. Los 8 palíndromos resultan ser exactamente los pares especiales del Rey Wen. Y el hexagrama nuclear, iterado, cae siempre en cuatro atractores.",
+      "El grupo de Klein generado por el volteo (fan) y el opuesto (dui) parte los 64 hexagramas en 20 órbitas. Los 8 palíndromos resultan ser exactamente los pares especiales del Rey Wen. Y el hexagrama nuclear, iterado, cae en 3 atractores: dos puntos fijos y un ciclo de 2 (4 hexagramas atractores).",
     simbolo: "䷾",
     categoria: "Álgebra",
     accent: "#9c6bc9",

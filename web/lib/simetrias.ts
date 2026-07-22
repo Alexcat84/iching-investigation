@@ -166,4 +166,32 @@ if (process.env.NODE_ENV !== "production") {
     console.error("[simetrias] los palíndromos no coinciden con los pares especiales");
   const totalMult = ESPECTRO.reduce((s, e) => s + e.mult, 0);
   if (totalMult !== 64) console.error("[simetrias] el espectro no suma 64");
+
+  // Hecho completo de la dinámica nuclear (redacción unificada del sitio):
+  // 3 atractores: dos puntos fijos y un ciclo de 2 (4 hexagramas atractores).
+  // Atractores = {Qian}, {Kun} y {Ji Ji, Wei Ji}; cuencas 16, 16 y 32; caída máxima 2.
+  const QIAN = 63;
+  const KUN = 0;
+  const JIJI = 42;
+  const WEIJI = 21;
+  const cuencaPorClave = new Map<string, number>();
+  NUCLEAR.ciclos.forEach((c, i) => {
+    const clave = [...c].sort((a, b) => a - b).join(",");
+    cuencaPorClave.set(clave, NUCLEAR.cuencas[i]);
+  });
+  const esperado: [string, number][] = [
+    [String(QIAN), 16],
+    [String(KUN), 16],
+    [[JIJI, WEIJI].sort((a, b) => a - b).join(","), 32],
+  ];
+  if (NUCLEAR.ciclos.length !== 3)
+    console.error("[simetrias] atractores esperados: 3, hay", NUCLEAR.ciclos.length);
+  if (NUCLEAR.ciclos.reduce((s, c) => s + c.length, 0) !== 4)
+    console.error("[simetrias] hexagramas atractores esperados: 4");
+  for (const [clave, cuenca] of esperado) {
+    if (cuencaPorClave.get(clave) !== cuenca)
+      console.error(`[simetrias] atractor {${clave}} con cuenca ${cuenca} no encontrado`);
+  }
+  if (NUCLEAR.maxPasos !== 2)
+    console.error("[simetrias] profundidad máxima esperada 2, hay", NUCLEAR.maxPasos);
 }

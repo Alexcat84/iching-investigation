@@ -149,6 +149,30 @@ def verificar_simetrias():
                     break
             ciclos.append(cyc)
 
+    # Hecho completo (redaccion unificada del sitio): 3 atractores, dos puntos
+    # fijos y un ciclo de 2 (4 hexagramas atractores). Atractores = {Qian}, {Kun}
+    # y {Ji Ji, Wei Ji}; cuencas 16, 16 y 32; profundidad maxima de caida 2.
+    QIAN, KUN = BY_KW[1]['valor'], BY_KW[2]['valor']
+    JIJI, WEIJI = BY_KW[63]['valor'], BY_KW[64]['valor']
+    conjuntos = sorted(tuple(sorted(c)) for c in ciclos)
+    assert conjuntos == sorted([(QIAN,), (KUN,), tuple(sorted((JIJI, WEIJI)))]), \
+        f'atractores inesperados: {conjuntos}'
+    assert sum(len(c) for c in ciclos) == 4, '4 hexagramas atractores esperados'
+    pasos = []
+    for v in range(64):
+        c, s = v, 0
+        while not en_ciclo[c]:
+            c = hu_gua(c)
+            s += 1
+        pasos.append((s, id_ciclo[c]))
+    cuenca = {}
+    for _, cid in pasos:
+        cuenca[cid] = cuenca.get(cid, 0) + 1
+    por_conjunto = {tuple(sorted(ciclos[cid])): n for cid, n in cuenca.items()}
+    assert por_conjunto[(QIAN,)] == 16 and por_conjunto[(KUN,)] == 16, 'cuencas de 16'
+    assert por_conjunto[tuple(sorted((JIJI, WEIJI)))] == 32, 'cuenca de 32'
+    assert max(s for s, _ in pasos) == 2, 'profundidad maxima de caida 2'
+
     espectro = {6 - 2 * k: comb(6, k) for k in range(7)}
     assert sum(espectro.values()) == 64, 'el espectro no suma 64'
 
@@ -158,6 +182,8 @@ def verificar_simetrias():
     print(f'   8 palindromos == pares especiales del Rey Wen {pares_especiales}  OK')
     nombres = [' + '.join(BY_VALUE[v]['pinyin'] for v in c) for c in ciclos]
     print(f'   mapa nuclear -> {len(ciclos)} atractores: {"; ".join(nombres)}')
+    print('   dos puntos fijos y un ciclo de 2 (4 hexagramas atractores);'
+          ' cuencas 16, 16 y 32; caida maxima 2  OK')
     print(f'   espectro Q6: {espectro}  (suma {sum(espectro.values())})')
 
 
