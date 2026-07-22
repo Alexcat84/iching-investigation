@@ -425,6 +425,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#a89a5e",
     estado: "activo",
   },
+  {
+    slug: "markov-consultas",
+    titulo: "La cadena de Markov de las consultas",
+    subtitulo: "¿Hacia dónde deriva una serie de lecturas?",
+    descripcion:
+      "Encadenar consultas define una cadena de Markov sobre los 64 estados. Con monedas la estacionaria es uniforme; con milenrama se sesga al yin (Kun es 729 veces más probable que Qian), porque el yang viejo muta más que el yin viejo. Ambos mezclan a la misma velocidad, pero a destinos distintos.",
+    simbolo: "π",
+    categoria: "azar",
+    etiquetas: ["probabilidad", "adivinacion", "hipercubo"],
+    tipo: "simulador",
+    nivel: "avanzado",
+    accent: "#6a9fd0",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

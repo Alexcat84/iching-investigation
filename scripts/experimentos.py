@@ -649,6 +649,7 @@ ETIQUETADO = {
     'serpiente-debruijn': ('geometria', ['recorridos', 'binario', 'hipercubo'], 'visualizacion', 'intermedio'),
     'grupo-sierpinski': ('algebra', ['teoria-de-grupos', 'particiones', 'binario'], 'visualizacion', 'intermedio'),
     'rey-wen-aleatorio': ('historia', ['estadistica', 'permutaciones', 'secuencias-historicas'], 'test', 'avanzado'),
+    'markov-consultas': ('azar', ['probabilidad', 'adivinacion', 'hipercubo'], 'simulador', 'avanzado'),
 }
 
 
@@ -707,6 +708,75 @@ def verificar_matriz_nuclear():
     print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
     print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
+
+
+def verificar_markov():
+    """C1: cadena de Markov de las consultas. Estacionaria cerrada; piP=pi.
+    Monedas uniforme; milenrama sesgada al yin (corr -0.73, Kun/Qian = 729)."""
+    pc = lambda v: bin(v).count('1')
+
+    def q(m):
+        d = SESAVOS[m]
+        return d[9] / (d[9] + d[7]), d[6] / (d[6] + d[8])
+
+    def matriz(m):
+        qy, qi = q(m)
+        P = [[0.0] * 64 for _ in range(64)]
+        for i in range(64):
+            for mask in range(64):
+                j = i ^ mask
+                p = 1.0
+                for k in range(6):
+                    yang = (i >> (5 - k)) & 1
+                    muta = (mask >> (5 - k)) & 1
+                    qq = qy if yang else qi
+                    p *= qq if muta else (1 - qq)
+                P[i][j] += p
+        return P
+
+    def estacionaria(m):
+        qy, qi = q(m)
+        py = qi / (qy + qi)
+        return [py ** pc(v) * (1 - py) ** (6 - pc(v)) for v in range(64)]
+
+    def corr(pi):
+        xs = [pc(v) for v in range(64)]
+        mx = sum(xs) / 64
+        my = sum(pi) / 64
+        sx = (sum((x - mx) ** 2 for x in xs) / 64) ** 0.5
+        sy = (sum((y - my) ** 2 for y in pi) / 64) ** 0.5
+        if sx == 0 or sy == 0:
+            return 0.0
+        return sum((xs[i] - mx) * (pi[i] - my) for i in range(64)) / 64 / (sx * sy)
+
+    resultados = {}
+    for m in ('monedas', 'milenrama'):
+        P = matriz(m)
+        # cada fila suma 1
+        assert all(abs(sum(r) - 1) < 1e-12 for r in P), f'{m}: filas'
+        pi = estacionaria(m)
+        assert abs(sum(pi) - 1) < 1e-12
+        # piP = pi dentro de 1e-9
+        piP = [sum(pi[i] * P[i][j] for i in range(64)) for j in range(64)]
+        assert max(abs(piP[j] - pi[j]) for j in range(64)) < 1e-9, f'{m}: piP!=pi'
+        qy, qi = q(m)
+        lam2 = 1 - qy - qi
+        resultados[m] = (pi, corr(pi), sum(pi[v] * pc(v) for v in range(64)), lam2)
+
+    pi_mon, c_mon, ey_mon, lam_mon = resultados['monedas']
+    pi_mil, c_mil, ey_mil, lam_mil = resultados['milenrama']
+    assert all(abs(p - 1 / 64) < 1e-12 for p in pi_mon), 'monedas no uniforme'
+    assert abs(c_mon) < 1e-9 and abs(ey_mon - 3.0) < 1e-9
+    assert abs(c_mil - (-0.7300)) < 1e-4, c_mil
+    assert abs(ey_mil - 1.5) < 1e-9
+    assert abs(pi_mil[0] / pi_mil[63] - 729) < 1e-6  # Kun/Qian = 3^6
+    assert abs(lam_mon - 0.5) < 1e-12 and abs(lam_mil - 0.5) < 1e-12
+
+    print('20. La cadena de Markov de las consultas (C1)')
+    print('   piP=pi (forma cerrada), cada fila de P suma 1  OK')
+    print(f'   monedas: estacionaria uniforme (corr {c_mon:.2f}, yang esperado {ey_mon:.1f})  OK')
+    print(f'   milenrama: sesgo al yin (corr {c_mil:.2f}, yang esperado {ey_mil:.1f}, Kun/Qian = 729)  OK')
+    print('   ambos mezclan igual (lambda2 = 0.5, relajacion 2 pasos), a destinos distintos  OK')
 
 
 def verificar_rey_wen_aleatorio():
@@ -862,7 +932,7 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 4, 'azar': 2, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 4, 'azar': 3, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
@@ -910,6 +980,8 @@ if __name__ == '__main__':
     verificar_grupo_sierpinski()
     print()
     verificar_rey_wen_aleatorio()
+    print()
+    verificar_markov()
     print()
     verificar_etiquetado()
     print()
