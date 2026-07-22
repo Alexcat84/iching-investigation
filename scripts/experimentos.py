@@ -653,6 +653,7 @@ ETIQUETADO = {
     'comparador-sorteo': ('azar', ['adivinacion', 'probabilidad', 'estadistica'], 'simulador', 'introductorio'),
     'comparador-particiones': ('algebra', ['particiones', 'estadistica'], 'calculadora', 'avanzado'),
     'espectro-walsh': ('algebra', ['algebra-lineal', 'secuencias-historicas', 'estadistica'], 'test', 'avanzado'),
+    'conteos-astronomicos': ('geometria', ['hipercubo', 'recorridos'], 'referencia', 'intermedio'),
 }
 
 
@@ -711,6 +712,22 @@ def verificar_matriz_nuclear():
     print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
     print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
+
+
+def verificar_conteos():
+    """B4: conteos con formula cerrada del cubo Q6. Los citados (Gray ciclicos) no
+    se computan; en el sitio van con fuente (OEIS), sin reproducir digitos."""
+    from math import factorial
+    dist = [comb(6, k) for k in range(7)]
+    assert dist == [1, 6, 15, 20, 15, 6, 1] and sum(dist) == 64
+    assert 2 ** 6 * factorial(6) == 46080, 'automorfismos'  # Z2 wr S6
+    assert 2 ** (2 ** 5 - 6) == 67108864, 'De Bruijn = 2^26'
+    assert factorial(6) == 720, 'cadenas maximales'
+    assert 6 * 2 ** 6 // 2 == 192, 'aristas'
+    print('24. Conteos astronomicos del cubo (B4)')
+    print('   automorfismos 2^6 * 6! = 46080; De Bruijn 2^26 = 67108864  OK')
+    print('   distancias C(6,k) = 1,6,15,20,15,6,1 (suman 64); cadenas 6! = 720  OK')
+    print('   ciclos hamiltonianos de Q6: citados a OEIS (no se reproducen)  OK')
 
 
 def verificar_walsh():
@@ -1082,7 +1099,7 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 6, 'azar': 4, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 6, 'historia': 6, 'algebra': 6, 'azar': 4, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
@@ -1138,6 +1155,8 @@ if __name__ == '__main__':
     verificar_particiones()
     print()
     verificar_walsh()
+    print()
+    verificar_conteos()
     print()
     verificar_etiquetado()
     print()

@@ -481,6 +481,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#5aa0a8",
     estado: "activo",
   },
+  {
+    slug: "conteos-astronomicos",
+    titulo: "Conteos astronómicos del cubo",
+    subtitulo: "Los números grandes de Q6, con fuente",
+    descripcion:
+      "Página de referencia con las cifras del hipercubo de los hexagramas: 46080 automorfismos (2⁶·6!), 2²⁶ secuencias de De Bruijn, la distribución C(6,k) por distancia, 720 cadenas. Los computables se verifican; los enormes (códigos Gray cíclicos de Q6) se citan a OEIS. Ninguna cifra sin fuente.",
+    simbolo: "∞",
+    categoria: "geometria",
+    etiquetas: ["hipercubo", "recorridos"],
+    tipo: "referencia",
+    nivel: "intermedio",
+    accent: "#8a9bb0",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
