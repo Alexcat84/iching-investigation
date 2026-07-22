@@ -231,10 +231,17 @@ export default function Permutacion() {
           </table>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-sand-300">
-          Mawangdui agrupa en 8 bloques por trigrama superior y Jing Fang recorre sus
-          ocho palacios (la misma partición del experimento de los palacios): dos
-          órdenes con arquitectura clara. El Rey Wen, en cambio, no deja ver fórmula, y
-          sus inversiones rondan el 50 por ciento: la marca del desorden casi máximo.
+          Mawangdui agrupa en 8 bloques por trigrama superior; Jing Fang recorre sus
+          ocho palacios (la misma partición del experimento de los palacios). Y ocurre
+          algo notable: con el orden histórico auténtico, los dos{" "}
+          <b className="text-sand-200">empatan exactamente en 1008 inversiones</b> (50 por
+          ciento), el mismo desorden que el Rey Wen (1013) muestra frente a Fu Xi. Tres
+          arquitecturas muy distintas que, medidas contra el conteo binario, quedan casi
+          a la misma distancia.
+        </p>
+        <p className="mt-2 text-xs text-sand-500">
+          Nota: el orden de palacios usado es el bagong tradicional de Jing Fang (乾震坎艮坤巽離兌:
+          padre, tres hijos por edad, madre, tres hijas por edad).
         </p>
       </div>
 
