@@ -12,6 +12,7 @@ export type Estado = "activo" | "proximamente";
 
 export interface Experimento {
   slug: string;
+  /** Número visible: derivado de la posición en el registro, nunca cableado. */
   n: number;
   titulo: string;
   subtitulo: string;
@@ -25,10 +26,11 @@ export interface Experimento {
   destacado?: boolean;
 }
 
-export const EXPERIMENTOS: Experimento[] = [
+/** Entradas sin número: el orden de este arreglo ES la numeración.
+ *  Reordenar experimentos = reordenar aquí, nada más. */
+const BASE: Omit<Experimento, "n">[] = [
   {
     slug: "hipercubo",
-    n: 1,
     titulo: "El hipercubo del I Ching",
     subtitulo: "64 hexagramas · 192 mutaciones · un recorrido Gray",
     descripcion:
@@ -41,7 +43,6 @@ export const EXPERIMENTOS: Experimento[] = [
   },
   {
     slug: "palacios",
-    n: 2,
     titulo: "Los ocho palacios de Jing Fang",
     subtitulo: "Caminos sobre el hipercubo, descritos en el siglo II a.C.",
     descripcion:
@@ -54,7 +55,6 @@ export const EXPERIMENTOS: Experimento[] = [
   },
   {
     slug: "mapa-lectura",
-    n: 3,
     titulo: "El mapa de la lectura",
     subtitulo: "Toda consulta es un salto en el hipercubo",
     descripcion:
@@ -67,7 +67,6 @@ export const EXPERIMENTOS: Experimento[] = [
   },
   {
     slug: "probabilidades",
-    n: 4,
     titulo: "Monedas contra milenrama",
     subtitulo: "Las probabilidades ocultas del oráculo",
     descripcion:
@@ -79,7 +78,6 @@ export const EXPERIMENTOS: Experimento[] = [
   },
   {
     slug: "simetrias",
-    n: 5,
     titulo: "Las simetrías del hipercubo",
     subtitulo: "Órbitas, palíndromos y el mapa nuclear",
     descripcion:
@@ -91,7 +89,6 @@ export const EXPERIMENTOS: Experimento[] = [
   },
   {
     slug: "trayectoria",
-    n: 6,
     titulo: "Trayectoria personal",
     subtitulo: "Tu historial como ruta por los 64 estados",
     descripcion:
@@ -103,7 +100,6 @@ export const EXPERIMENTOS: Experimento[] = [
   },
   {
     slug: "rey-wen",
-    n: 7,
     titulo: "La secuencia del Rey Wen",
     subtitulo: "La regla de pares y la búsqueda de una fórmula",
     descripcion:
@@ -115,7 +111,6 @@ export const EXPERIMENTOS: Experimento[] = [
   },
   {
     slug: "shao-yong",
-    n: 8,
     titulo: "El cuadrado y el círculo",
     subtitulo: "El diagrama de Shao Yong que vio Leibniz",
     descripcion:
@@ -127,7 +122,6 @@ export const EXPERIMENTOS: Experimento[] = [
   },
   {
     slug: "permutacion",
-    n: 9,
     titulo: "Rey Wen como permutación",
     subtitulo: "Cuánto desordena el libro la geometría",
     descripcion:
@@ -138,6 +132,11 @@ export const EXPERIMENTOS: Experimento[] = [
     estado: "activo",
   },
 ];
+
+export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
+  ...e,
+  n: i + 1,
+}));
 
 export const EXPERIMENTOS_ACTIVOS = EXPERIMENTOS.filter(
   (e) => e.estado === "activo",
