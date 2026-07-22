@@ -1,5 +1,5 @@
 /**
- * El cuadrado y el círculo de Shao Yong — el diagrama "Xiantian" (先天).
+ * El cuadrado y el círculo de Shao Yong: el diagrama "Xiantian" (先天).
  *
  * Shao Yong (siglo XI) dispuso los 64 hexagramas a la vez en un cuadrado 8×8 y en un
  * círculo, ambos en orden binario Fu Xi. Ese diagrama, enviado por Bouvet a Leibniz

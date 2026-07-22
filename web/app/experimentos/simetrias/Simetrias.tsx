@@ -41,7 +41,7 @@ export default function Simetrias() {
             invertir el orden de las líneas) y el <b>opuesto</b> (dui 对, complementar
             cada línea). Conmutan, de modo que junto con la identidad forman el{" "}
             <b>grupo de Klein</b> V₄. Ese grupo parte los 64 hexagramas en{" "}
-            <b>{ORBITAS.length} órbitas</b> — familias de hexagramas equivalentes bajo
+            <b>{ORBITAS.length} órbitas</b>: familias de hexagramas equivalentes bajo
             simetría.
           </p>
         </Prose>
@@ -74,7 +74,7 @@ export default function Simetrias() {
                   }}
                 >
                   <div className="mb-1 font-mono text-[10px] text-sand-500">
-                    {op.chino !== "—" && <span style={{ color: ACCENT }}>{op.chino} </span>}
+                    {op.chino !== "·" && <span style={{ color: ACCENT }}>{op.chino} </span>}
                     {op.nombre}
                   </div>
                   <Glyph bits={h.bits} size={38} className="text-sand-100" />
@@ -93,7 +93,7 @@ export default function Simetrias() {
           <p className="text-center font-mono text-[11px] text-sand-500">
             Órbita de {hex(sel).py}: {orb.length}{" "}
             {orb.length === 1 ? "hexagrama" : "hexagramas"} ·{" "}
-            {orb.map((v) => hex(v).kw).join(" · ")} — clic en cualquiera para moverte por
+            {orb.map((v) => hex(v).kw).join(" · ")}. Clic en cualquiera para moverte por
             ella.
           </p>
           <div className="mt-3 flex flex-wrap justify-center gap-1">
@@ -127,8 +127,8 @@ export default function Simetrias() {
             <p>
               Un hexagrama es <b>palíndromo</b> cuando el volteo lo deja igual
               (línea 1 = línea 6, 2 = 5, 3 = 4). Hay exactamente 8. Y resulta que son,
-              uno a uno, los hexagramas de los <b>4 pares del Rey Wen</b> que —al no
-              poder distinguirse por volteo— se emparejan por opuesto (dui) en vez de
+              uno a uno, los hexagramas de los <b>4 pares del Rey Wen</b> que (al no
+              poder distinguirse por volteo) se emparejan por opuesto (dui) en vez de
               por fan.{" "}
               {palTie ? (
                 <span style={{ color: ACCENT }}>Verificado: coinciden los 8.</span>
@@ -212,8 +212,8 @@ export default function Simetrias() {
           <Prose>
             <p>
               Como grafo, el hipercubo tiene 7 autovalores: <code>6 − 2k</code> con
-              multiplicidad <code>C(6,k)</code>. Son sus modos armónicos —de la
-              vibración global (+6) a la más alterna (−6)— y sus multiplicidades suman
+              multiplicidad <code>C(6,k)</code>. Son sus modos armónicos, de la
+              vibración global (+6) a la más alterna (−6), y sus multiplicidades suman
               los 64 hexagramas.
             </p>
           </Prose>

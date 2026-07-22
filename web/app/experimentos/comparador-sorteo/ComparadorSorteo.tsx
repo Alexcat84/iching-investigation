@@ -38,7 +38,7 @@ export default function ComparadorSorteo() {
           <p>
             Hay varias formas de generar una línea, y <b>no todas dan lo mismo</b>. Las
             tres monedas reparten los cuatro resultados de forma simétrica; la milenrama
-            (49 varillas), no. Y las <b>16 fichas</b> —una simplificación moderna— se
+            (49 varillas), no. Y las <b>16 fichas</b> (una simplificación moderna) se
             construyen para reproducir exactamente la milenrama. Aquí están las tres
             distribuciones y un simulador que converge a ellas en vivo. Lo importante para
             quien consulta de verdad: monedas y milenrama <b>no son intercambiables</b>.
@@ -123,12 +123,12 @@ export default function ComparadorSorteo() {
                       <td className="px-2 py-1.5" style={{ color: m.color }}>{m.nombre}</td>
                       {ESTADOS.map((e) => (
                         <td key={e} className="px-2 py-1.5 text-right">
-                          {s ? `${((s.counts[e] / s.n) * 100).toFixed(1)}%` : "—"}
+                          {s ? `${((s.counts[e] / s.n) * 100).toFixed(1)}%` : "·"}
                           <span className="text-sand-600"> ({((m.dieciseisavos[e] / 16) * 100).toFixed(1)})</span>
                         </td>
                       ))}
                       <td className="px-2 py-1.5 text-right" style={{ color: s && s.chi2 < 16.27 ? "#7fc79b" : "#e24b3b" }}>
-                        {s ? s.chi2.toFixed(2) : "—"}
+                        {s ? s.chi2.toFixed(2) : "·"}
                       </td>
                     </tr>
                   );

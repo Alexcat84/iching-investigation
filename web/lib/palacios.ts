@@ -33,7 +33,7 @@ export const POSICIONES: PosicionInfo[] = [
     idx: 6,
     etiqueta: "Alma errante",
     chino: "游魂",
-    desc: "revierte la línea 4 — un salto hacia adentro",
+    desc: "revierte la línea 4, un salto hacia adentro",
   },
   {
     idx: 7,

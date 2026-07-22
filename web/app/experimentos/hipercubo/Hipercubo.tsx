@@ -337,7 +337,7 @@ export default function Hipercubo() {
       </div>
       {step === 63 && (
         <p className="-mt-3 mb-6 text-center text-xs text-sand-500">
-          El recorrido empezó en Kun (Lo Receptivo, 0) y terminó en Fu — «El Retorno»
+          El recorrido empezó en Kun (Lo Receptivo, 0) y terminó en Fu, «El Retorno»
           (32). Cada paso cambió exactamente una línea.
         </p>
       )}

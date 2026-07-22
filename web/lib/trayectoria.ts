@@ -1,5 +1,5 @@
 /**
- * Trayectoria personal — el historial de consultas como un camino por Q6.
+ * Trayectoria personal: el historial de consultas como un camino por Q6.
  *
  * Cada consulta es un estado (un hexagrama). La sucesión de consultas es una ruta
  * por el hipercubo: mide su longitud (distancia de Hamming acumulada), sus regiones

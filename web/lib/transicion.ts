@@ -2,8 +2,8 @@
  * La cadena de Markov de las consultas (C1), y el motor compartido con el
  * comparador de sorteos (C3).
  *
- * Si encadenamos consultas —tomando el hexagrama futuro de una como el presente de
- * la siguiente— tenemos una cadena de Markov sobre los 64 estados. Dado el presente,
+ * Si encadenamos consultas (tomando el hexagrama futuro de una como el presente de
+ * la siguiente) tenemos una cadena de Markov sobre los 64 estados. Dado el presente,
  * cada línea muta de forma independiente con una probabilidad que depende de si la
  * línea es yang o yin y del método (derivada de las probabilidades de web/lib/oraculo):
  *

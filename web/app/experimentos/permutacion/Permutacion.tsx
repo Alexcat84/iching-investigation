@@ -239,7 +239,7 @@ export default function Permutacion() {
                 <td className="px-3 py-2 text-right" colSpan={5}>
                   <span className="text-sand-600">un recorrido de una línea por paso</span>
                 </td>
-                <td className="px-3 py-2 text-right">—</td>
+                <td className="px-3 py-2 text-right">·</td>
                 <td className="px-3 py-2 text-right" style={{ color: ACCENT }}>
                   {COSTO_MINIMO} (1.00×)
                 </td>

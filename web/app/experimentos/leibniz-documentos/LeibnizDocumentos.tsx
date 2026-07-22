@@ -63,7 +63,7 @@ export default function LeibnizDocumentos() {
                 cuadrado y el círculo de Shao Yong
               </Link>
               : leerlo en orden es contar de 0 a 63. Que dos tradiciones tan distintas
-              —una cosmología del siglo XI y una aritmética del XVII— describan la misma
+              (una cosmología del siglo XI y una aritmética del XVII) describan la misma
               estructura es el corazón de este laboratorio. Lo demás es leer con cuidado
               quién hizo qué, y cuándo.
             </p>

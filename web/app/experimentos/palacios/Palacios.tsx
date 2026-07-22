@@ -40,8 +40,8 @@ export default function Palacios() {
         <Prose>
           <p>
             Jing Fang (78–37 a.C.) ordenó los 64 hexagramas en <b>ocho palacios</b>.
-            Cada palacio nace de un hexagrama <b>puro</b> —un trigrama repetido arriba y
-            abajo— y engendra siete descendientes cambiando líneas en un orden fijo: primero
+            Cada palacio nace de un hexagrama <b>puro</b> (un trigrama repetido arriba y
+            abajo) y engendra siete descendientes cambiando líneas en un orden fijo: primero
             la 1, luego la 2, la 3, la 4 y la 5, cada paso una sola línea. Después el
             <b> alma errante</b> (游魂) revierte la línea 4, y el <b>alma que retorna</b> (歸魂)
             recupera el trigrama inferior de origen.
@@ -59,7 +59,7 @@ export default function Palacios() {
         <Stat valor="8 × 8" etiqueta="palacios × posiciones" accent={ACCENT} />
         <Stat
           valor={`${particion.distintos}/64`}
-          etiqueta={particion.ok ? "distintos — partición ✓" : "¡colisión!"}
+          etiqueta={particion.ok ? "distintos, partición ✓" : "¡colisión!"}
           accent={ACCENT}
         />
         <Stat valor="1·1·1·1·1·1·3" etiqueta="perfil de saltos (Hamming)" />
@@ -143,7 +143,7 @@ export default function Palacios() {
       </div>
       <p className="mb-8 text-center font-mono text-[11px] text-sand-500">
         Cada fila es un palacio; cada columna, una etapa de la generación. La última
-        columna (alma que retorna) cambia solo la línea 5 respecto al hexagrama puro —
+        columna (alma que retorna) cambia solo la línea 5 respecto al hexagrama puro,
         de ahí el salto de{" "}
         <span style={{ color: ACCENT }}>3 líneas</span> en el perfil{" "}
         {PERFIL_SALTOS.join("·")}.
@@ -189,7 +189,7 @@ export default function Palacios() {
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {celda.cambiosDesdePuro.length === 0 ? (
                     <span className="font-mono text-xs text-sand-500">
-                      ninguna — es el hexagrama puro
+                      ninguna, es el hexagrama puro
                     </span>
                   ) : (
                     celda.cambiosDesdePuro.map((k) => (

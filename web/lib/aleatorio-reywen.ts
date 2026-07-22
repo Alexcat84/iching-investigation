@@ -2,7 +2,7 @@
  * ¿Es el Rey Wen aleatorio? Un test de hipótesis sobre el orden tradicional.
  *
  * Hipótesis nula: el orden del Rey Wen es un barajado cualquiera que respeta su
- * regla de pares — los 32 pares fan/dui en cualquier orden, y cada par en cualquiera
+ * regla de pares: los 32 pares fan/dui en cualquier orden, y cada par en cualquiera
  * de sus dos orientaciones. Bajo esa nula medimos la distribución de inversiones (y
  * del costo en líneas de B3) frente a Fu Xi, y situamos el valor real (1013, 211).
  *

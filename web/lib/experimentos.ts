@@ -1,5 +1,5 @@
 /**
- * Registro de experimentos — fuente de verdad del menú.
+ * Registro de experimentos: fuente de verdad del menú.
  *
  * Diseño en facetas (ver docs/etiquetado-experimentos.md):
  *   1. Categoría (exactamente una por experimento, navegación principal).

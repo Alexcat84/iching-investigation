@@ -148,7 +148,7 @@ export default function MapaLectura() {
             Una consulta del I Ching ya es un movimiento en el grafo: partes de un
             hexagrama y las <b>líneas mutantes</b> te trasladan a otro. La distancia
             del salto es, exactamente, el número de líneas que cambian. Construye una
-            lectura abajo —o <b>echa las monedas</b>— y observa el trayecto.
+            lectura abajo (o <b>echa las monedas</b>) y observa el trayecto.
           </p>
         </Prose>
       </div>
@@ -267,7 +267,7 @@ export default function MapaLectura() {
           {moving.length > 0 && (
             <div className="mt-6 border-t border-ink-700 pt-4">
               <SectionLabel accent={ACCENT}>
-                Lo que mueve — {moving.length}{" "}
+                Lo que mueve: {moving.length}{" "}
                 {moving.length === 1 ? "línea mutante" : "líneas mutantes"}
               </SectionLabel>
               <div className="mt-2 space-y-2">
@@ -281,7 +281,7 @@ export default function MapaLectura() {
                     </span>
                     <span className="text-sand-200">
                       <b className="font-semibold">{LINE_MEANING[k].titulo}</b>
-                      <span className="text-sand-400"> — {LINE_MEANING[k].texto}.</span>
+                      <span className="text-sand-400">: {LINE_MEANING[k].texto}.</span>
                     </span>
                   </div>
                 ))}

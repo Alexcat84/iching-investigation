@@ -2,8 +2,8 @@
  * Simetrías de los 64 hexagramas.
  *
  * Dos involuciones clásicas actúan sobre el hipercubo:
- *   fan (反)  — volteo vertical: invierte el orden de las 6 líneas.
- *   dui (对)  — opuesto: complementa cada línea (NOT).
+ *   fan (反): volteo vertical: invierte el orden de las 6 líneas.
+ *   dui (对): opuesto, complementa cada línea (NOT).
  * Conmutan, así que {id, fan, dui, fan∘dui} forman el grupo de Klein V₄.
  * Por Burnside, V₄ parte los 64 hexagramas en 20 órbitas.
  *
@@ -22,7 +22,7 @@ export interface OpInfo {
 }
 
 export const OPERACIONES: OpInfo[] = [
-  { id: "id", nombre: "identidad", chino: "—", aplicar: (v) => v },
+  { id: "id", nombre: "identidad", chino: "·", aplicar: (v) => v },
   { id: "fan", nombre: "volteo", chino: "反", aplicar: fan },
   { id: "dui", nombre: "opuesto", chino: "对", aplicar: dui },
   { id: "fanDui", nombre: "volteo + opuesto", chino: "反对", aplicar: fanDui },

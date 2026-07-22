@@ -17,8 +17,7 @@ from iching_engine import (  # noqa: E402
     BY_KW, BY_VALUE, LINE_BIT, TRI, bits_of, dui, fan, hamming, hu_gua, value_of,
 )
 
-# ————————————————————— 1. Palacios de Jing Fang —————————————————————
-
+# === 1. Palacios de Jing Fang ===
 # Orden tradicional del bagong de Jing Fang: padre, tres hijos por edad, madre,
 # tres hijas por edad (乾震坎艮坤巽離兌).
 CABEZAS = ['Qian', 'Zhen', 'Kan', 'Gen', 'Kun', 'Xun', 'Li', 'Dui']
@@ -63,8 +62,7 @@ def verificar_palacios():
     print('   alma errante = puro voltea {1,2,3,5}; alma que retorna = puro voltea {5}')
 
 
-# ————————————————————— 2. Monedas vs milenrama —————————————————————
-
+# === 2. Monedas vs milenrama ===
 # Probabilidad de cada estado en dieciseisavos: 9=yang viejo, 8=yin joven, 7=yang joven, 6=yin viejo
 SESAVOS = {
     'monedas':   {9: 2, 8: 6, 7: 6, 6: 2},
@@ -99,8 +97,7 @@ def verificar_oraculo():
     print(f'   yang esperado futuro: monedas {mon[3]:.2f} · milenrama {mil[3]:.2f}   el futuro se inclina al yin')
 
 
-# ————————————————————— 3. Simetrias del hipercubo —————————————————————
-
+# === 3. Simetrias del hipercubo ===
 def fan_dui(v):
     return dui(fan(v))
 
@@ -189,8 +186,7 @@ def verificar_simetrias():
     print(f'   espectro Q6: {espectro}  (suma {sum(espectro.values())})')
 
 
-# ————————————————————— 4. Secuencia del Rey Wen —————————————————————
-
+# === 4. Secuencia del Rey Wen ===
 def verificar_rey_wen():
     fan_pairs = dui_pairs = 0
     for n in range(1, 33):
@@ -214,8 +210,7 @@ def verificar_rey_wen():
     print('   fan conserva el nº de yang; dui lo complementa (yang <-> 6-yang)  OK')
 
 
-# ————————————————————— 5. Cuadrado y circulo de Shao Yong —————————————————————
-
+# === 5. Cuadrado y circulo de Shao Yong ===
 def verificar_shao_yong():
     def celda(fila, col):
         return (col << 3) | (7 - fila)
@@ -230,8 +225,7 @@ def verificar_shao_yong():
     print('   circulo: dui = 63-v (reflexion vertical); antipoda = voltear linea 1  OK')
 
 
-# ————————————————————— 6. Rey Wen como permutacion —————————————————————
-
+# === 6. Rey Wen como permutacion ===
 def verificar_permutacion():
     from math import gcd
     perm = [BY_KW[k + 1]['valor'] for k in range(64)]

@@ -105,8 +105,8 @@ export default function MarkovConsultas() {
       <div className="mb-6">
         <Prose>
           <p>
-            Si encadenamos consultas —tomando el hexagrama <b>futuro</b> de una como el{" "}
-            <b>presente</b> de la siguiente— tenemos una cadena de Markov sobre los 64
+            Si encadenamos consultas (tomando el hexagrama <b>futuro</b> de una como el{" "}
+            <b>presente</b> de la siguiente) tenemos una cadena de Markov sobre los 64
             estados. Cada línea muta según su método (derivado de{" "}
             <Link href="/experimentos/probabilidades" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
               monedas contra milenrama
@@ -200,7 +200,7 @@ export default function MarkovConsultas() {
             {datos.map((m) => (
               <Stat
                 key={m.id}
-                valor={sim ? sim[m.id].toFixed(2) : "—"}
+                valor={sim ? sim[m.id].toFixed(2) : "·"}
                 etiqueta={`${m.nombre}: yang medio (teoría ${m.Ey.toFixed(1)})`}
                 accent={m.color}
               />

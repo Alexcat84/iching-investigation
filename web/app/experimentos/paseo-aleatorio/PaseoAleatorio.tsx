@@ -155,15 +155,15 @@ export default function PaseoAleatorio() {
         </div>
         <Panel>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <Stat valor={sim ? sim.coverMedia.toFixed(0) : "—"} etiqueta="cobertura media (pasos)" accent={ACCENT} />
-            <Stat valor={sim ? sim.cover : "—"} etiqueta="una cobertura de ejemplo" />
-            <Stat valor={sim ? sim.ret : "—"} etiqueta="un retorno de ejemplo (teoría 64)" />
+            <Stat valor={sim ? sim.coverMedia.toFixed(0) : "·"} etiqueta="cobertura media (pasos)" accent={ACCENT} />
+            <Stat valor={sim ? sim.cover : "·"} etiqueta="una cobertura de ejemplo" />
+            <Stat valor={sim ? sim.ret : "·"} etiqueta="un retorno de ejemplo (teoría 64)" />
           </div>
           <p className="mt-3 text-sm leading-relaxed text-sand-300">
             El tiempo esperado de retorno al origen es <b style={{ color: ACCENT }}>exactamente 64</b>:
             como el paseo es simétrico, su estacionaria es uniforme (1/64 cada estado) y el
-            retorno medio es su inverso. La cobertura de los 64 tarda mucho más —unos{" "}
-            <b>360 pasos</b> de media—: visitar el último puñado de estados nuevos es lo
+            retorno medio es su inverso. La cobertura de los 64 tarda mucho más, unos{" "}
+            <b>360 pasos</b> de media: visitar el último puñado de estados nuevos es lo
             que más cuesta. La simulación con semilla fija queda dentro de esa banda,
             verificada por la suite.
           </p>

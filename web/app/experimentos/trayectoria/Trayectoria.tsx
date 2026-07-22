@@ -151,7 +151,7 @@ export default function Trayectoria() {
       <div className="mb-6">
         <Prose>
           <p>
-            Cada consulta te deja en un estado —un hexagrama—, y la sucesión de
+            Cada consulta te deja en un estado (un hexagrama), y la sucesión de
             consultas traza un camino por el hipercubo. Ese camino tiene una{" "}
             <b>longitud</b> (cuántas líneas cambiaste en total), <b>regiones
             recurrentes</b> y un <b>palacio dominante</b>: el territorio donde

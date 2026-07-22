@@ -31,12 +31,12 @@ export default function ReyWen() {
       <div className="mb-6">
         <Prose>
           <p>
-            La secuencia Fu Xi <b>es</b> contar en binario de 0 a 63. La del Rey Wen —el
-            orden en que aparecen los hexagramas en el libro— no sigue ninguna fórmula
+            La secuencia Fu Xi <b>es</b> contar en binario de 0 a 63. La del Rey Wen (el
+            orden en que aparecen los hexagramas en el libro) no sigue ninguna fórmula
             numérica conocida. Lo que <b>sí</b> tiene es una regla de <b>pares</b>: los 64
             se agrupan de dos en dos, y el segundo de cada par es el <b>volteo</b> (fan
-            反) del primero. Solo en los 4 pares cuyo hexagrama es un palíndromo —donde
-            voltear no cambia nada— se usa el <b>opuesto</b> (dui 对).
+            反) del primero. Solo en los 4 pares cuyo hexagrama es un palíndromo (donde
+            voltear no cambia nada) se usa el <b>opuesto</b> (dui 对).
           </p>
         </Prose>
       </div>
@@ -116,11 +116,11 @@ export default function ReyWen() {
         <SectionLabel accent={ACCENT}>¿Hay una fórmula? El valor binario a lo largo de la secuencia</SectionLabel>
         <Panel className="mt-2">
           <div className="mb-2 font-mono text-[10px] text-sand-500">
-            Fu Xi — el valor sube limpio de 0 a 63 (es contar)
+            Fu Xi: el valor sube limpio de 0 a 63 (es contar)
           </div>
           <ValueStrip values={Array.from({ length: 64 }, (_, i) => i)} color="#5b8fd9" />
           <div className="mb-2 mt-4 font-mono text-[10px] text-sand-500">
-            Rey Wen — el mismo valor, ahora sin patrón aparente
+            Rey Wen: el mismo valor, ahora sin patrón aparente
           </div>
           <ValueStrip values={FUXI_EN_ORDEN_KW} color={ACCENT} />
           <p className="mt-3 text-sm text-sand-400">
@@ -133,7 +133,7 @@ export default function ReyWen() {
 
       {/* Onda de yang */}
       <div>
-        <SectionLabel accent={ACCENT}>La regularidad que sí hay — líneas yang por posición</SectionLabel>
+        <SectionLabel accent={ACCENT}>La regularidad que sí hay: líneas yang por posición</SectionLabel>
         <Panel className="mt-2">
           <YangWave />
           <p className="mt-3 text-sm text-sand-400">

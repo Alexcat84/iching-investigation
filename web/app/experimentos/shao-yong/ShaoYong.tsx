@@ -411,7 +411,7 @@ export default function ShaoYong() {
           <p>
             Shao Yong dispuso los 64 hexagramas a la vez en un <b>cuadrado</b> 8×8 y en un{" "}
             <b>círculo</b>, ambos en orden binario. Cuando el jesuita Joachim Bouvet le
-            envió este diagrama a Leibniz —que ya había inventado la aritmética binaria—,
+            envió este diagrama a Leibniz (que ya había inventado la aritmética binaria),
             Leibniz reconoció al instante la identidad: leer el cuadrado en orden es
             contar de 0 a 63. Lo citó en su publicación de 1703.
           </p>
@@ -419,7 +419,7 @@ export default function ShaoYong() {
       </div>
 
       <div className="mb-8">
-        <SectionLabel accent={ACCENT}>El cuadrado — leerlo es contar en binario</SectionLabel>
+        <SectionLabel accent={ACCENT}>El cuadrado: leerlo es contar en binario</SectionLabel>
         <Panel className="mt-2">
           <Cuadrado />
           <p className="mt-3 text-sm text-sand-400">
@@ -437,14 +437,14 @@ export default function ShaoYong() {
       </div>
 
       <div>
-        <SectionLabel accent={ACCENT}>El círculo — y sus simetrías</SectionLabel>
+        <SectionLabel accent={ACCENT}>El círculo y sus simetrías</SectionLabel>
         <Panel className="mt-2">
           <Circulo />
           <p className="mt-3 text-sm text-sand-400">
             En el círculo, el <b className="text-sand-200">opuesto</b> de cada hexagrama
             (dui, sus seis líneas invertidas) es su <b className="text-sand-200">reflejo</b>{" "}
             exacto sobre el eje vertical Qian–Kun. Su <b className="text-sand-200">antípoda</b>{" "}
-            —el punto diametralmente opuesto— es, en cambio, solo voltear la línea inferior.
+            (el punto diametralmente opuesto) es, en cambio, solo voltear la línea inferior.
             Toca cualquier hexagrama para verlo.
           </p>
         </Panel>

@@ -1,5 +1,5 @@
 /**
- * Motor binario del I Ching — puerto TypeScript de scripts/iching_engine.py
+ * Motor binario del I Ching: puerto TypeScript de scripts/iching_engine.py
  *
  * Convención Shao Yong–Leibniz: yang = 1, yin = 0, líneas leídas de abajo hacia
  * arriba; la línea inferior es el bit más significativo (valor 32). Kun = 0, Qian = 63.

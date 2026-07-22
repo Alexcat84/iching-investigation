@@ -4,10 +4,10 @@ Repositorio de experimentación e investigación sobre la estructura matemática
 
 El proyecto tiene dos capas: una de **investigación verificada** (Python) y una **web de experimentos** (Next.js), pensada para publicarse en Vercel. Cada afirmación estructural del sitio está comprobada computacionalmente por los scripts.
 
-## Capa de investigación — `scripts/` y `data/`
+## Capa de investigación: `scripts/` y `data/`
 
 - `scripts/iching_engine.py`: motor binario verificado. Operaciones tradicionales (mutación, dui, fan, hu gua, trigramas) como operaciones de bits, secuencias Fu Xi y Rey Wen, recorrido Gray, distancia de Hamming, y suite de verificación (biyección 0 a 63, estructura de pares del Rey Wen, camino hamiltoniano).
-- `scripts/experimentos.py`: verifica las afirmaciones de los experimentos del sitio contra el motor — partición de los palacios de Jing Fang, probabilidades de monedas vs. milenrama, y las simetrías (órbitas de Klein, palíndromos, dinámica nuclear, espectro de Q6).
+- `scripts/experimentos.py`: verifica las afirmaciones de los experimentos del sitio contra el motor: partición de los palacios de Jing Fang, probabilidades de monedas vs. milenrama, y las simetrías (órbitas de Klein, palíndromos, dinámica nuclear, espectro de Q6).
 - `data/hexagramas.json`: dataset de los 64 hexagramas. Generado por el motor; regenerar con `python3 scripts/iching_engine.py`.
 - `docs/analisis-binario.md`: análisis completo con las tablas de ambas secuencias.
 - `docs/ideas-aplicaciones.md`: ideas de aplicación.
@@ -17,7 +17,7 @@ python3 scripts/iching_engine.py    # verifica el motor y regenera el dataset
 python3 scripts/experimentos.py     # verifica las afirmaciones de los experimentos
 ```
 
-## Capa web — `web/`
+## Capa web: `web/`
 
 Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensible de experimentos** filtrable por facetas, cada uno en su propia página visual e interactiva. La numeración sale del orden del registro (`web/lib/experimentos.ts`): reordenar experimentos es reordenar ese arreglo.
 

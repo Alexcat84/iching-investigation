@@ -1,5 +1,5 @@
 /**
- * La secuencia del Rey Wen — la regla de pares y la búsqueda de una estructura global.
+ * La secuencia del Rey Wen: la regla de pares y la búsqueda de una estructura global.
  *
  * El orden tradicional agrupa los 64 en 32 pares (1-2, 3-4, …). Cada par par es el
  * volteo (fan 反) del impar anterior; salvo en los 8 palíndromos, donde el volteo no
