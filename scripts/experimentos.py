@@ -648,6 +648,7 @@ ETIQUETADO = {
     'matriz-nuclear':   ('algebra', ['hu-gua', 'algebra-lineal', 'binario'], 'visualizacion', 'avanzado'),
     'serpiente-debruijn': ('geometria', ['recorridos', 'binario', 'hipercubo'], 'visualizacion', 'intermedio'),
     'grupo-sierpinski': ('algebra', ['teoria-de-grupos', 'particiones', 'binario'], 'visualizacion', 'intermedio'),
+    'rey-wen-aleatorio': ('historia', ['estadistica', 'permutaciones', 'secuencias-historicas'], 'test', 'avanzado'),
 }
 
 
@@ -706,6 +707,72 @@ def verificar_matriz_nuclear():
     print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
     print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
+
+
+def verificar_rey_wen_aleatorio():
+    """B2: test de hipotesis. Nula = barajado que respeta la regla de pares.
+    N=20000, semilla fija. Media/sigma congeladas; el generador respeta pares."""
+    import random
+    pairs = [(BY_KW[2 * k - 1]['valor'], BY_KW[2 * k]['valor']) for k in range(1, 33)]
+    validos = set()
+    for a, b in pairs:
+        validos.add((a, b))
+        validos.add((b, a))
+
+    def inv(seq):
+        bit = [0] * 65
+        c = 0
+        for x in reversed(seq):
+            i = x
+            while i > 0:
+                c += bit[i]
+                i -= i & -i
+            i = x + 1
+            while i <= 64:
+                bit[i] += 1
+                i += i & -i
+        return c
+
+    ham = lambda a, b: bin(a ^ b).count('1')
+    cost = lambda s: sum(ham(s[i], s[i + 1]) for i in range(63))
+    real = [BY_KW[k + 1]['valor'] for k in range(64)]
+    real_inv, real_cost = inv(real), cost(real)
+    assert real_inv == 1013 and real_cost == 211
+
+    SEED, N = 20260722, 20000
+    rng = random.Random(SEED)
+    invs, costs = [], []
+    for _ in range(N):
+        pr = pairs[:]
+        rng.shuffle(pr)
+        seq = []
+        for a, b in pr:
+            if rng.random() < 0.5:
+                a, b = b, a
+            seq += [a, b]
+        # el generador respeta la regla de pares y es una permutacion de 0..63
+        assert len(set(seq)) == 64
+        assert all((seq[i], seq[i + 1]) in validos for i in range(0, 64, 2))
+        invs.append(inv(seq))
+        costs.append(cost(seq))
+
+    mi = sum(invs) / N
+    si = (sum((x - mi) ** 2 for x in invs) / N) ** 0.5
+    mc = sum(costs) / N
+    sc = (sum((x - mc) ** 2 for x in costs) / N) ** 0.5
+    p_inv = sum(1 for x in invs if abs(x - mi) >= abs(real_inv - mi)) / N
+    p_cost = sum(1 for x in costs if abs(x - mc) >= abs(real_cost - mc)) / N
+
+    # Congelados (deben coincidir con web/lib/aleatorio-reywen.ts).
+    assert abs(mi - 1009.1236) < 1e-3 and abs(si - 80.3191) < 1e-3, (mi, si)
+    assert abs(mc - 214.0762) < 1e-3 and abs(sc - 6.4934) < 1e-3, (mc, sc)
+    assert abs(p_inv - 0.9662) < 1e-4 and abs(p_cost - 0.6499) < 1e-4, (p_inv, p_cost)
+
+    print('19. Es el Rey Wen aleatorio? (B2)')
+    print(f'   nula (regla de pares), N={N}, semilla {SEED}; generador valido  OK')
+    print(f'   inversiones: real {real_inv} vs media {mi:.1f} (sigma {si:.1f}) -> z={(real_inv-mi)/si:.3f}, p={p_inv:.4f}')
+    print(f'   costo: real {real_cost} vs media {mc:.1f} (sigma {sc:.1f}) -> z={(real_cost-mc)/sc:.3f}, p={p_cost:.4f}')
+    print('   indistinguible de aleatorio bajo su propia regla de pares  (hallazgo legitimo)')
 
 
 def verificar_grupo_sierpinski():
@@ -795,7 +862,7 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 5, 'historia': 5, 'algebra': 4, 'azar': 2, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 4, 'azar': 2, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
@@ -841,6 +908,8 @@ if __name__ == '__main__':
     verificar_debruijn()
     print()
     verificar_grupo_sierpinski()
+    print()
+    verificar_rey_wen_aleatorio()
     print()
     verificar_etiquetado()
     print()

@@ -411,6 +411,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#9a86c8",
     estado: "activo",
   },
+  {
+    slug: "rey-wen-aleatorio",
+    titulo: "¿Es el Rey Wen aleatorio?",
+    subtitulo: "El empate 1013 puesto a prueba",
+    descripcion:
+      "Convertimos el hallazgo del empate en un test de hipótesis. Bajo la nula (un barajado que respeta su regla de pares), las 1013 inversiones del Rey Wen caen en el centro exacto de la campana: es indistinguible de aleatorio, y también en el costo en líneas. Un hallazgo legítimo, no un fracaso.",
+    simbolo: "≟",
+    categoria: "historia",
+    etiquetas: ["estadistica", "permutaciones", "secuencias-historicas"],
+    tipo: "test",
+    nivel: "avanzado",
+    accent: "#a89a5e",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
