@@ -48,6 +48,25 @@ export const ENERGIA_ORDEN: number[] = (() => {
 
 export const ENERGIA_TOTAL_SIN_DC = ENERGIA_ORDEN.slice(1).reduce((a, b) => a + b, 0);
 
+/** Número de coeficientes por orden = C(6,k) = [1,6,15,20,15,6,1]. Derivado, no cableado. */
+export const NUM_POR_ORDEN: number[] = (() => {
+  const c = new Array(7).fill(0);
+  for (let w = 0; w < 64; w++) c[popcount(w)]++;
+  return c;
+})();
+
+/** Energía en los órdenes pares 2 y 4 (interacciones entre pares y cuartetos de líneas). */
+export const ENERGIA_PARES = ENERGIA_ORDEN[2] + ENERGIA_ORDEN[4];
+
+/** Fracción de la energía (sin DC) que vive en los órdenes pares 2 y 4. */
+export const FRACCION_PARES = ENERGIA_PARES / ENERGIA_TOTAL_SIN_DC;
+
+/** Fracción que un orden aleatorio repartiría en los órdenes 2 y 4: proporcional al
+ *  número de coeficientes, (C(6,2)+C(6,4)) / 63. La referencia contra la que comparar. */
+export const FRACCION_PARES_AZAR =
+  (NUM_POR_ORDEN[2] + NUM_POR_ORDEN[4]) /
+  NUM_POR_ORDEN.slice(1).reduce((a, b) => a + b, 0);
+
 /** Líneas (1..6) del subconjunto w. w = valor con línea k en el bit 6−k. */
 export function lineasDe(w: number): number[] {
   const out: number[] = [];
@@ -81,4 +100,9 @@ if (process.env.NODE_ENV !== "production") {
   const esperado = [4326400, 57856, 703072, 199616, 379232, 57728, 256];
   if (ENERGIA_ORDEN.join(",") !== esperado.join(","))
     console.error("[walsh] energía por orden inesperada", ENERGIA_ORDEN);
+  // Concentración en órdenes pares: 77,4% real frente a 47,6% del azar.
+  if (Math.abs(FRACCION_PARES - 0.7743) > 0.001)
+    console.error("[walsh] fracción de órdenes pares inesperada", FRACCION_PARES);
+  if (Math.abs(FRACCION_PARES_AZAR - 30 / 63) > 1e-9)
+    console.error("[walsh] fracción de azar (órdenes pares) inesperada", FRACCION_PARES_AZAR);
 }

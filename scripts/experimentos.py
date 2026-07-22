@@ -847,10 +847,20 @@ def verificar_walsh():
     assert en == [4326400, 57856, 703072, 199616, 379232, 57728, 256], en
     sin_dc = sum(en) - en[0]
     assert en[2] / sin_dc > 0.5 and en[1] / sin_dc < 0.05  # orden 2 domina, orden 1 minimo
+    # Cierre B2 <-> A4: los ordenes pares 2 y 4 concentran la energia frente al azar.
+    num = [0] * 7
+    for w in range(64):
+        num[bin(w).count('1')] += 1
+    assert num == [1, 6, 15, 20, 15, 6, 1], num
+    frac_pares = (en[2] + en[4]) / sin_dc
+    frac_pares_azar = (num[2] + num[4]) / (sum(num) - num[0])
+    assert abs(frac_pares - 0.7743) < 0.001, frac_pares
+    assert abs(frac_pares_azar - 30 / 63) < 1e-9, frac_pares_azar
 
     print('23. El espectro de Walsh-Hadamard (A4)')
     print('   Parseval, WHT(delta)=cte, WHT^2 = 64 f  OK')
     print(f'   energia sin DC: orden 2 = {en[2]/sin_dc*100:.1f}% (pares de lineas), orden 1 = {en[1]/sin_dc*100:.1f}%  OK')
+    print(f'   ordenes pares 2 y 4 = {frac_pares*100:.1f}% vs {frac_pares_azar*100:.1f}% del azar: confirma B2 por otra via  OK')
     print('   la estructura del Rey Wen vive en interacciones de a dos, no en la lineal  OK')
 
 

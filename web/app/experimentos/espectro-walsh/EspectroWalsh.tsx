@@ -5,6 +5,8 @@ import {
   ENERGIA_ORDEN,
   ENERGIA_TOTAL_SIN_DC,
   ESPECTRO,
+  FRACCION_PARES,
+  FRACCION_PARES_AZAR,
   popcount,
   TOP,
 } from "@/lib/walsh";
@@ -115,6 +117,18 @@ export default function EspectroWalsh() {
             4%). El orden 6 (las seis líneas a la vez) es casi nulo. Encaja con el test de
             aleatoriedad: globalmente parece azar, pero la poca señal que tiene son
             correlaciones de a dos.
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-sand-300">
+            Sumados, los <b style={{ color: ACCENT }}>órdenes pares 2 y 4</b> reúnen el{" "}
+            <b style={{ color: ACCENT }}>{(FRACCION_PARES * 100).toFixed(1)}%</b> de la
+            energía, frente al {(FRACCION_PARES_AZAR * 100).toFixed(0)}% que repartiría un
+            orden al azar. Es la confirmación espectral, por una vía independiente, de lo
+            que{" "}
+            <Link href="/experimentos/rey-wen-aleatorio" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
+              ¿es el Rey Wen aleatorio?
+            </Link>{" "}
+            encontró por Monte Carlo: la única estructura real del orden tradicional es su
+            regla de pares, que aquí aparece como interacciones de orden par entre líneas.
           </p>
         </Panel>
       </div>
