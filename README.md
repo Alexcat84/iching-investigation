@@ -23,12 +23,12 @@ Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensibl
 
 **Sistema de etiquetado en facetas** (`docs/etiquetado-experimentos.md`): cada experimento tiene exactamente 1 **categoría** (geometría, álgebra, historia, azar, práctica), 2 a 4 **etiquetas** de un vocabulario cerrado de 17 (union types que el compilador valida), un **tipo** y un **nivel**. La portada filtra por categoría (pestañas) y etiquetas (chips combinables).
 
-Experimentos actuales (21), por categoría:
+Experimentos actuales (25), por categoría:
 
-- **Geometría**: el hipercubo (anillo + recorrido Gray), las sombras del 6-cubo, el árbol de Fu Xi, la serpiente de De Bruijn (los 64 en un anillo de 64 bits).
-- **Álgebra y estructura**: las simetrías del hipercubo (Klein, palíndromos, nuclear), Rey Wen como permutación (con la carrera de los órdenes y el costo en líneas), el retículo booleano B6, el bosque nuclear, el operador nuclear como matriz sobre F2, el grupo (Z/2)⁶ y el Sierpinski.
-- **Historia y secuencias**: los ocho palacios de Jing Fang, la secuencia del Rey Wen, el cuadrado y el círculo de Shao Yong (con las simetrías D4), los dos cielos (bagua), ¿es el Rey Wen aleatorio? (test de hipótesis).
-- **Azar y dinámica**: monedas contra milenrama, el ritual de las 49 varillas, la cadena de Markov de las consultas, el comparador de métodos de sorteo.
+- **Geometría**: el hipercubo (anillo + recorrido Gray), las sombras del 6-cubo, el árbol de Fu Xi, la serpiente de De Bruijn, los conteos astronómicos del cubo (referencia).
+- **Álgebra y estructura**: las simetrías del hipercubo, Rey Wen como permutación (carrera de los órdenes + costo en líneas), el retículo booleano B6, el bosque nuclear, el operador nuclear como matriz sobre F2, el grupo (Z/2)⁶ y el Sierpinski, el comparador de particiones (ARI), el espectro de Walsh-Hadamard.
+- **Historia y secuencias**: los ocho palacios de Jing Fang, la secuencia del Rey Wen, el cuadrado y el círculo de Shao Yong (con D4), los dos cielos (bagua), ¿es el Rey Wen aleatorio? (test).
+- **Azar y dinámica**: monedas contra milenrama, el ritual de las 49 varillas, la cadena de Markov de las consultas, el comparador de métodos de sorteo, el paseo aleatorio y cobertura.
 - **Tu práctica**: el mapa de la lectura, trayectoria personal.
 
 La lógica del sitio (`web/lib/`) es un puerto TypeScript del motor de Python; ambos se mantienen en paralelo y `scripts/experimentos.py` verifica cada afirmación estructural que aparece en pantalla.
