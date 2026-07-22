@@ -651,6 +651,7 @@ ETIQUETADO = {
     'paseo-aleatorio': ('azar', ['probabilidad', 'recorridos', 'hipercubo'], 'simulador', 'intermedio'),
     'leibniz-documentos': ('historia', ['leibniz', 'binario'], 'referencia', 'introductorio'),
     'codones': ('algebra', ['interdisciplinar', 'binario'], 'visualizacion', 'intermedio'),
+    'calendario-soberanos': ('historia', ['secuencias-historicas', 'recorridos', 'hipercubo'], 'visualizacion', 'introductorio'),
 }
 
 
@@ -1176,6 +1177,56 @@ def verificar_debruijn():
     print('   las 64 ventanas ciclicas = {0..63} sin repetir; 2^26 anillos posibles  OK')
 
 
+# === 29. Calendario de los soberanos (bi gua) ===
+def verificar_soberanos():
+    """Los 12 hexagramas soberanos (bi gua, xiao xi gua) asignados a los meses lunares
+    por la tradicion Han (Meng Xi, escuela de Jing Fang). La asignacion a los meses es
+    tradicion documentada, no un teorema; lo que se verifica son las cuatro propiedades
+    geometricas de los 12 valores. Espejo de web/lib/soberanos.ts."""
+    # Meses (empezando en el 11, solsticio de invierno) y valores Fu Xi de los 12.
+    meses = [11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    valores = [32, 48, 56, 60, 62, 63, 31, 15, 7, 3, 1, 0]
+    kw_esperado = [24, 19, 11, 34, 43, 1, 44, 33, 12, 20, 23, 2]
+    assert len(meses) == 12 and len(valores) == 12
+
+    pc = lambda v: bin(v).count('1')
+    # La linea que cambia (1..6): d = a^b es una sola potencia de 2; 1<<(6-k) = d.
+    linea_cambia = lambda a, b: 6 - ((a ^ b).bit_length() - 1)
+
+    # 0. Los 12 valores corresponden a los numeros del Rey Wen de la tradicion.
+    assert [BY_VALUE[v]['kw'] for v in valores] == kw_esperado, 'los KW no coinciden'
+
+    # 1. Ciclo Gray cerrado: cada mes difiere del siguiente en una linea (incluye Kun->Fu).
+    difs = [valores[i] ^ valores[(i + 1) % 12] for i in range(12)]
+    assert all(pc(d) == 1 for d in difs), 'no forman un ciclo Gray cerrado'
+
+    # 2. La linea que cambia avanza 2,3,4,5,6,1,... y el yang describe una onda triangular.
+    lineas = [linea_cambia(valores[i], valores[(i + 1) % 12]) for i in range(12)]
+    assert lineas == [2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1], lineas
+    onda = [pc(v) for v in valores]
+    assert onda == [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0], onda
+
+    # 3. El mes m y el mes m+6 son complementos dui exactos (XOR = 63).
+    assert all((valores[i] ^ valores[i + 6]) == 63 for i in range(6)), 'antipodas no son dui'
+    assert dui(value_of('111000')) == value_of('000111'), 'Tai (mes 1) y Pi (mes 7) no son opuestos'
+
+    # 4. Son exactamente los 12 hexagramas monotonos de Q6.
+    def es_monotono(v):
+        b = format(v, '06b')
+        y = pc(v)
+        return b == '1' * y + '0' * (6 - y) or b == '0' * (6 - y) + '1' * y
+    monotonos = sorted(v for v in range(64) if es_monotono(v))
+    assert len(monotonos) == 12, f'monotonos de Q6: {len(monotonos)}'
+    assert sorted(valores) == monotonos, 'los 12 soberanos no coinciden con los monotonos'
+
+    print('29. El calendario de los soberanos (bi gua)')
+    print('   los 12 valores corresponden a los numeros del Rey Wen de la tradicion  OK')
+    print('   ciclo Gray cerrado de 12 meses, incluido Kun->Fu: una linea por paso  OK')
+    print('   lineas que cambian 2,3,4,5,6,1,... ; onda de yang 1,2,3,4,5,6,5,4,3,2,1,0  OK')
+    print('   meses opuestos (m, m+6) complementos dui exactos: 6 pares  OK')
+    print('   los 12 = los 12 hexagramas monotonos de Q6 (igualdad de conjuntos)  OK')
+
+
 def verificar_miniaturas():
     """Portada: todo slug del registro tiene generador de miniatura, y ningun
     generador huerfano sin slug. Compara web/lib/experimentos.ts con web/lib/miniaturas.tsx."""
@@ -1185,7 +1236,7 @@ def verificar_miniaturas():
     mini = open(os.path.join(raiz, 'web', 'lib', 'miniaturas.tsx'), encoding='utf-8').read()
     slugs_registro = set(re.findall(r'slug:\s*"([a-z0-9-]+)"', reg))
     slugs_gen = set(re.findall(r'"([a-z0-9-]+)":\s*\(c\)\s*=>', mini))
-    assert len(slugs_registro) == 27, f'slugs en registro: {len(slugs_registro)}'
+    assert len(slugs_registro) == 28, f'slugs en registro: {len(slugs_registro)}'
     faltan = slugs_registro - slugs_gen
     huerfanos = slugs_gen - slugs_registro
     assert not faltan, f'slugs sin generador de miniatura: {sorted(faltan)}'
@@ -1210,9 +1261,9 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 6, 'historia': 7, 'algebra': 7, 'azar': 5, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 6, 'historia': 8, 'algebra': 7, 'azar': 5, 'practica': 2}, por_cat
 
-    # Con el catalogo completo (27 experimentos), el vocabulario de 17 debe estar
+    # Con el catalogo completo (28 experimentos), el vocabulario de 17 debe estar
     # totalmente cubierto: ninguna etiqueta muerta.
     sin_uso = ETIQUETAS_VOCAB - usadas
     assert sin_uso == set(), f'etiquetas del vocabulario sin uso: {sorted(sin_uso)}'
@@ -1275,6 +1326,8 @@ if __name__ == '__main__':
     verificar_leibniz()
     print()
     verificar_codones()
+    print()
+    verificar_soberanos()
     print()
     verificar_miniaturas()
     print()

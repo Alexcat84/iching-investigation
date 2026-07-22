@@ -549,6 +549,20 @@ const BASE: Omit<Experimento, "n">[] = [
     descargo:
       "La coincidencia de número (64) permite emparejar hexagramas y codones, pero es un isomorfismo de estructura, no un hecho biológico ni una afinidad mística. La correspondencia es real como forma y arbitraria en los detalles.",
   },
+  {
+    slug: "calendario-soberanos",
+    titulo: "El calendario de los soberanos",
+    subtitulo: "Los 12 hexagramas del flujo y reflujo del año",
+    descripcion:
+      "La tradición Han apartó 12 hexagramas soberanos (bi gua) y los asignó a los meses lunares. Leídos en orden, el yang sube una línea por mes y el yin lo vacía después: un ciclo Gray cerrado de 12 aristas sobre el hipercubo. Verificamos sus cuatro propiedades; la asignación a los meses es tradición documentada, no un teorema.",
+    simbolo: "辟",
+    categoria: "historia",
+    etiquetas: ["secuencias-historicas", "recorridos", "hipercubo"],
+    tipo: "visualizacion",
+    nivel: "introductorio",
+    accent: "#d99a4e",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

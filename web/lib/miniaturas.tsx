@@ -10,7 +10,8 @@
  * que no haya generadores huérfanos.
  */
 import type { ReactNode } from "react";
-import { bitsOf, gray, hex, lineBit, type TrigramName } from "./iching";
+import { bitsOf, gray, hex, lineBit, LINE_COLOR, type TrigramName } from "./iching";
+import { SOBERANOS, LINEAS_CAMBIO } from "./soberanos";
 import { SECUENCIA } from "./debruijn";
 import { sierpinski } from "./grupo";
 import { M } from "./matriz-nuclear";
@@ -435,6 +436,26 @@ export const GENERADORES: Record<string, Generador> = {
       </>
     );
   },
+  "calendario-soberanos": (c) => {
+    const pos = (i: number, r = 44): [number, number] => {
+      const a = ((-90 + i * 30) * Math.PI) / 180;
+      return [CX + r * Math.cos(a), CY + r * Math.sin(a)];
+    };
+    return (
+      <>
+        {SOBERANOS.map((_, i) => {
+          const [x1, y1] = pos(i);
+          const [x2, y2] = pos((i + 1) % 12);
+          return <line key={`e${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke={LINE_COLOR[LINEAS_CAMBIO[i]]} strokeWidth={1.1} opacity={0.85} />;
+        })}
+        {SOBERANOS.map((s, i) => {
+          const [x, y] = pos(i);
+          return <circle key={i} cx={x} cy={y} r={s.solsticio ? 2.6 : 1.8} fill={s.solsticio ? c : GRIS} />;
+        })}
+        <circle cx={CX} cy={CY} r={2.2} fill={c} />
+      </>
+    );
+  },
 };
 
 export const MINIATURA_SLUGS = Object.keys(GENERADORES);
@@ -452,5 +473,5 @@ export function Miniatura({ slug, color }: { slug: string; color: string }) {
 // Aserción en desarrollo.
 if (process.env.NODE_ENV !== "production") {
   if (puros.length !== 8) console.error("[miniaturas] deberían ser 8 hexagramas puros");
-  if (MINIATURA_SLUGS.length !== 27) console.error("[miniaturas] se esperaban 27 generadores");
+  if (MINIATURA_SLUGS.length !== 28) console.error("[miniaturas] se esperaban 28 generadores");
 }
