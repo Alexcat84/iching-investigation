@@ -467,6 +467,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#7f8fd0",
     estado: "activo",
   },
+  {
+    slug: "espectro-walsh",
+    titulo: "El espectro de Walsh-Hadamard",
+    subtitulo: "¿En qué dimensiones del cubo vive el Rey Wen?",
+    descripcion:
+      "La transformada de Walsh descompone la secuencia del Rey Wen en los 64 caracteres del cubo. La mitad de su energía (sin la media) vive en interacciones de orden 2, entre pares de líneas; casi nada en la estructura lineal. Complementa el test de aleatoriedad diciendo en qué frecuencias se aparta.",
+    simbolo: "≋",
+    categoria: "algebra",
+    etiquetas: ["algebra-lineal", "secuencias-historicas", "estadistica"],
+    tipo: "test",
+    nivel: "avanzado",
+    accent: "#5aa0a8",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

@@ -652,6 +652,7 @@ ETIQUETADO = {
     'markov-consultas': ('azar', ['probabilidad', 'adivinacion', 'hipercubo'], 'simulador', 'avanzado'),
     'comparador-sorteo': ('azar', ['adivinacion', 'probabilidad', 'estadistica'], 'simulador', 'introductorio'),
     'comparador-particiones': ('algebra', ['particiones', 'estadistica'], 'calculadora', 'avanzado'),
+    'espectro-walsh': ('algebra', ['algebra-lineal', 'secuencias-historicas', 'estadistica'], 'test', 'avanzado'),
 }
 
 
@@ -710,6 +711,37 @@ def verificar_matriz_nuclear():
     print('   M aplicada a los 64 coincide con hu gua bit a bit  OK')
     print('   rank(M)=4 (imagen 16), rank(M^2)=2 (imagen 4), M^4=M^2  OK')
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
+
+
+def verificar_walsh():
+    """A4: Walsh-Hadamard de la secuencia del Rey Wen. Parseval, delta, involucion,
+    y energia por orden (la estructura vive en orden 2)."""
+    def wht(f):
+        return [sum(f[v] * (-1 if bin(w & v).count('1') & 1 else 1) for v in range(64)) for w in range(64)]
+
+    senal = [BY_VALUE[v]['kw'] for v in range(64)]
+    F = wht(senal)
+    # Parseval
+    assert sum(x * x for x in F) == 64 * sum(x * x for x in senal), 'Parseval'
+    # delta -> constante
+    delta = [1] + [0] * 63
+    assert len(set(wht(delta))) == 1, 'WHT(delta) no constante'
+    # involucion
+    assert wht(F) == [64 * s for s in senal], 'WHT^2 != 64 f'
+    # DC = 64 * media
+    assert F[0] == 2080
+    # energia por orden
+    en = [0] * 7
+    for w in range(64):
+        en[bin(w).count('1')] += F[w] * F[w]
+    assert en == [4326400, 57856, 703072, 199616, 379232, 57728, 256], en
+    sin_dc = sum(en) - en[0]
+    assert en[2] / sin_dc > 0.5 and en[1] / sin_dc < 0.05  # orden 2 domina, orden 1 minimo
+
+    print('23. El espectro de Walsh-Hadamard (A4)')
+    print('   Parseval, WHT(delta)=cte, WHT^2 = 64 f  OK')
+    print(f'   energia sin DC: orden 2 = {en[2]/sin_dc*100:.1f}% (pares de lineas), orden 1 = {en[1]/sin_dc*100:.1f}%  OK')
+    print('   la estructura del Rey Wen vive en interacciones de a dos, no en la lineal  OK')
 
 
 def verificar_particiones():
@@ -1050,7 +1082,7 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 5, 'azar': 4, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 5, 'historia': 6, 'algebra': 6, 'azar': 4, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
@@ -1104,6 +1136,8 @@ if __name__ == '__main__':
     verificar_sorteo()
     print()
     verificar_particiones()
+    print()
+    verificar_walsh()
     print()
     verificar_etiquetado()
     print()
