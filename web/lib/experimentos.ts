@@ -397,6 +397,20 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#63b6a6",
     estado: "activo",
   },
+  {
+    slug: "grupo-sierpinski",
+    titulo: "El grupo (Z/2)⁶ y el Sierpinski",
+    subtitulo: "XOR, ocho cosets y un fractal que sale de Pascal",
+    descripcion:
+      "Con XOR, los 64 hexagramas forman el grupo (Z/2)⁶; los 8 puros son un subgrupo cuyos 8 cosets particionan el conjunto. Y la matriz de dominancia (j submáscara de i) coincide con Pascal mod 2 por el teorema de Lucas: dibujada, es el triángulo de Sierpinski, la sombra del retículo B6.",
+    simbolo: "⊕",
+    categoria: "algebra",
+    etiquetas: ["teoria-de-grupos", "particiones", "binario"],
+    tipo: "visualizacion",
+    nivel: "intermedio",
+    accent: "#9a86c8",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

@@ -647,6 +647,7 @@ ETIQUETADO = {
     'bosque-nuclear':   ('algebra', ['hu-gua', 'particiones', 'hipercubo'], 'visualizacion', 'intermedio'),
     'matriz-nuclear':   ('algebra', ['hu-gua', 'algebra-lineal', 'binario'], 'visualizacion', 'avanzado'),
     'serpiente-debruijn': ('geometria', ['recorridos', 'binario', 'hipercubo'], 'visualizacion', 'intermedio'),
+    'grupo-sierpinski': ('algebra', ['teoria-de-grupos', 'particiones', 'binario'], 'visualizacion', 'intermedio'),
 }
 
 
@@ -707,6 +708,44 @@ def verificar_matriz_nuclear():
     print('   imagen de M^2 = {0,21,42,63} = Kun, Wei Ji, Ji Ji, Qian  OK')
 
 
+def verificar_grupo_sierpinski():
+    """A2: (Z/2)^6 con XOR; subgrupo de puros y sus cosets; matriz = Pascal mod 2."""
+    puros = [v for v in range(64) if v >> 3 == (v & 7)]
+    assert len(puros) == 8
+    sp = set(puros)
+    for a in puros:
+        for b in puros:
+            assert (a ^ b) in sp, 'los puros no son cerrados bajo XOR'
+    # 8 cosets por (upper XOR lower); particionan.
+    cosets = {}
+    for v in range(64):
+        cosets.setdefault((v >> 3) ^ (v & 7), []).append(v)
+    assert len(cosets) == 8 and all(len(c) == 8 for c in cosets.values())
+    assert sum(len(c) for c in cosets.values()) == 64
+
+    # La matriz de dominancia (j submascara de i) coincide con C(i,j) mod 2 (Lucas).
+    from math import comb
+    unos = 0
+    for i in range(64):
+        for j in range(64):
+            dom = 1 if (i & j) == j else 0
+            assert dom == comb(i, j) % 2, f'Lucas falla en ({i},{j})'
+            unos += dom
+    assert unos == 3 ** 6, f'unos del Sierpinski: {unos}'
+    # Autosimilaridad recursiva S = [[S,0],[S,S]].
+    def S(i, j):
+        return 1 if (i & j) == j else 0
+    for i in range(32):
+        for j in range(32):
+            assert S(i, j + 32) == 0
+            assert S(i + 32, j) == S(i, j) and S(i + 32, j + 32) == S(i, j)
+
+    print('17. El grupo (Z/2)^6 y el Sierpinski (A2)')
+    print('   (Z/2)^6 con XOR; los 8 puros cerrados bajo XOR (subgrupo)  OK')
+    print('   8 cosets por (upper XOR lower) particionan los 64  OK')
+    print(f'   matriz de dominancia = Pascal mod 2 (Lucas); {unos} = 3^6 unos; recursion de Sierpinski  OK')
+
+
 def verificar_debruijn():
     """B1: secuencia de De Bruijn B(2,6) canonica; las 64 ventanas son {0..63}."""
     def fkm(n, k=2):
@@ -736,7 +775,7 @@ def verificar_debruijn():
     assert sorted(wins) == list(range(64)), 'las 64 ventanas no cubren {0..63}'
     assert 2 ** (2 ** 5 - 6) == 67108864, 'deben ser 2^26 secuencias'
 
-    print('17. La serpiente de De Bruijn (B1)')
+    print('16. La serpiente de De Bruijn (B1)')
     print('   B(2,6) canonica de 64 bits: cada ventana de 6 es un hexagrama distinto  OK')
     print('   las 64 ventanas ciclicas = {0..63} sin repetir; 2^26 anillos posibles  OK')
 
@@ -756,13 +795,13 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 5, 'historia': 5, 'algebra': 3, 'azar': 2, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 5, 'historia': 5, 'algebra': 4, 'azar': 2, 'practica': 2}, por_cat
 
     # Etiquetas sin uso: deben ser exactamente las reservadas para el catalogo.
     sin_uso = ETIQUETAS_VOCAB - usadas
     assert sin_uso <= RESERVADAS, f'etiqueta muerta fuera de las reservadas: {sin_uso - RESERVADAS}'
 
-    print('16. Sistema de etiquetado en facetas')
+    print('18. Sistema de etiquetado en facetas')
     print(f'   {len(ETIQUETADO)} experimentos: 1 categoria, 2 a 4 etiquetas del vocabulario cerrado  OK')
     print(f'   distribucion por categoria {por_cat}  (ninguna vacia)  OK')
     print(f'   etiquetas reservadas (sin publicar aun): {sorted(sin_uso)}')
@@ -800,6 +839,8 @@ if __name__ == '__main__':
     verificar_matriz_nuclear()
     print()
     verificar_debruijn()
+    print()
+    verificar_grupo_sierpinski()
     print()
     verificar_etiquetado()
     print()
