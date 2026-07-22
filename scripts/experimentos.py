@@ -450,6 +450,30 @@ def verificar_reticulo():
     print('   conos: 2^k por debajo y 2^(6-k) por encima, para los 64  OK')
 
 
+# ----------------- 11. El arbol de Fu Xi -----------------
+
+def verificar_arbol():
+    # Arbol de bifurcacion: yin (0) a la izquierda, yang (1) a la derecha.
+    # Nivel k decide la linea k (desde abajo). Con la convencion del sitio
+    # (linea inferior = bit mas significativo), las hojas leidas de izquierda a
+    # derecha deben ser exactamente 0..63.
+    hojas = ['']
+    for _ in range(6):
+        hojas = [p + bit for p in hojas for bit in ('0', '1')]
+    valores = [int(b, 2) for b in hojas]
+    assert valores == list(range(64)), 'las hojas no reproducen el orden 0..63'
+    # El camino de bits de la hoja i es exactamente la lectura del hexagrama i.
+    for i, b in enumerate(hojas):
+        assert BY_VALUE[i]['bits'] == b, f'hoja {i}: camino {b} != bits {BY_VALUE[i]["bits"]}'
+    total_nodos = sum(2 ** n for n in range(7))
+    assert total_nodos == 127
+
+    print('11. El arbol de Fu Xi')
+    print('   hojas de izquierda a derecha = orden binario 0..63  OK')
+    print('   el camino raiz->hoja coincide bit a bit con las lineas del hexagrama  OK')
+    print(f'   nodos del arbol: {total_nodos} (1+2+4+8+16+32+64)  OK')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -470,5 +494,7 @@ if __name__ == '__main__':
     verificar_sombras()
     print()
     verificar_reticulo()
+    print()
+    verificar_arbol()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')

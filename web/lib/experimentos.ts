@@ -175,6 +175,17 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#8f7fd6",
     estado: "activo",
   },
+  {
+    slug: "arbol-fuxi",
+    titulo: "El árbol de Fu Xi",
+    subtitulo: "Cómo se genera el orden binario",
+    descripcion:
+      "Del taiji a los dos, los cuatro, los ocho... hasta 64: el árbol de bifurcación yin y yang que construye la secuencia de Shao Yong. Cada hoja es un hexagrama y el camino desde la raíz es, literalmente, su lectura en bits.",
+    simbolo: "木",
+    categoria: "Geometría",
+    accent: "#8fae5a",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
