@@ -1284,6 +1284,126 @@ def verificar_etiquetado():
     print(f'   vocabulario de {len(ETIQUETAS_VOCAB)} etiquetas: completamente cubierto (0 muertas)  OK')
 
 
+# === 30. El hipercubo Q6 (fundamento de 01, 03, 06) ===
+def verificar_hipercubo():
+    """Fundamento comun de hipercubo (01), mapa-lectura (03) y trayectoria (06): la
+    estructura de Q6 (biyeccion 0-63, ciclo Gray, 192 aristas, mutacion = XOR, Hamming)."""
+    assert sorted(BY_VALUE) == list(range(64)), 'la correspondencia no es biyectiva'
+    # Codigo Gray reflejado: permutacion de 0..63, una linea por paso, cierra en ciclo.
+    g = [n ^ (n >> 1) for n in range(64)]
+    assert sorted(g) == list(range(64)), 'Gray no es permutacion de 0..63'
+    for i in range(64):
+        d = g[i] ^ g[(i + 1) % 64]
+        assert bin(d).count('1') == 1, 'Gray: un paso cambia mas de una linea'
+    aristas = sum(1 for v in range(64) for k in range(1, 7) if v < (v ^ LINE_BIT(k)))
+    assert aristas == 192, aristas
+    # Mutacion = XOR de lineas; distancia original-resultante = numero de lineas cambiadas.
+    for v in (0, 21, 42, 63):
+        for lineas in ([1], [2, 5], [1, 3, 6]):
+            m = v
+            for k in lineas:
+                m ^= LINE_BIT(k)
+            assert hamming(v, m) == len(lineas), (v, lineas)
+
+    print('30. El hipercubo Q6 (fundamento de 01, 03, 06)')
+    print('   biyeccion 0-63, ciclo Gray hamiltoniano (1 linea/paso), 192 aristas  OK')
+    print('   mutacion = XOR de lineas; distancia original-resultante = lineas cambiadas  OK')
+
+
+# === 31. Sistema de fundamentos y fuentes ===
+def verificar_fundamentos():
+    """web/lib/fundamentos.ts contra docs/evidencias-fundamentos.md (fuente unica).
+    (a) los 28 experimentos tienen afirmacion; (b) teorema/calculo referencian una seccion
+    de suite existente; (c) tradicion/reconstruccion/analogia con clave valida; (d) ninguna
+    ficha sin uso; (e) el render APA de cada ficha aparece verbatim en el documento."""
+    import re
+    from collections import Counter
+    raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    fund = open(os.path.join(raiz, 'web', 'lib', 'fundamentos.ts'), encoding='utf-8').read()
+    reg = open(os.path.join(raiz, 'web', 'lib', 'experimentos.ts'), encoding='utf-8').read()
+    doc = open(os.path.join(raiz, 'docs', 'evidencias-fundamentos.md'), encoding='utf-8').read()
+    suite = open(os.path.abspath(__file__), encoding='utf-8').read()
+
+    claves_bib = set(re.findall(r'clave:\s*"([a-z0-9-]+)"', fund))
+    esperadas = {'shaughnessy1996', 'nielsen2003', 'ryan1996', 'leibniz1703',
+                 'debruijn1946', 'fkm1978', 'oeis-a003042', 'knuth4a'}
+    assert claves_bib == esperadas, claves_bib
+
+    # (e) El render APA congelado esta, verbatim, en el documento (sin markdown).
+    doc_sin_md = doc.replace('*', '')
+    apas = re.findall(r'apa:\s*"((?:[^"\\]|\\.)*)"', fund)
+    assert len(apas) == len(claves_bib), f'apas {len(apas)} != fichas {len(claves_bib)}'
+    for apa in apas:
+        u = apa.replace('\\"', '"').replace('\\\\', '\\')
+        assert u in doc_sin_md, f'render APA no esta en el documento: {u[:70]}'
+
+    secciones = set(re.findall(r'def (verificar_[a-z0-9_]+)\(', suite))
+
+    afs = re.findall(r'\n  a\("([^"]+)",\s*"([^"]+)",\s*(null|"[^"]*"),\s*\[([^\]]*)\]', fund)
+    assert afs, 'no se parsearon afirmaciones de fundamentos.ts'
+    por_slug = {}
+    claves_usadas = set()
+    for slug, tipo, respaldo, claves_raw in afs:
+        por_slug.setdefault(slug, []).append(tipo)
+        cs = re.findall(r'"([a-z0-9-]+)"', claves_raw)
+        claves_usadas.update(cs)
+        for c in cs:
+            assert c in claves_bib, f'{slug}: clave inexistente {c}'
+        resp = None if respaldo == 'null' else respaldo.strip('"')
+        if tipo in ('teorema', 'calculo'):
+            assert resp in secciones, f'{slug}: respaldo {resp} no es seccion de suite'
+        if tipo in ('tradicion', 'reconstruccion'):
+            assert cs, f'{slug}: {tipo} sin clave'
+        if tipo == 'analogia':
+            assert (resp in secciones) or cs, f'{slug}: analogia sin respaldo ni clave'
+
+    slugs_reg = re.findall(r'slug:\s*"([a-z0-9-]+)"', reg)
+    faltan = [s for s in slugs_reg if s not in por_slug]
+    extra = [s for s in por_slug if s not in slugs_reg]
+    assert not faltan, f'experimentos sin afirmacion: {faltan}'
+    assert not extra, f'afirmaciones con slug fuera del registro: {extra}'
+
+    sin_uso = claves_bib - claves_usadas
+    assert sin_uso == set(), f'fichas sin uso: {sin_uso}'
+
+    dist = Counter(t for lst in por_slug.values() for t in lst)
+    print('31. Sistema de fundamentos y fuentes')
+    print(f'   {len(afs)} afirmaciones en {len(por_slug)} experimentos; los {len(slugs_reg)} del registro cubiertos  OK')
+    print(f'   por tipo: {dict(dist)}  OK')
+    print(f'   {len(claves_bib)} fichas APA, todas en uso y verbatim en el documento de evidencias  OK')
+    print('   teorema/calculo enlazan seccion de suite; tradicion/reconstruccion/analogia con fuente  OK')
+
+
+# === 32. Chequeo de guiones (arbitro de estilo) ===
+def verificar_guiones():
+    """Em dash prohibido siempre (prosa, comentarios, copy). En dash permitido solo en
+    referencias y rangos APA. El chequeo falla ante cualquier guion largo del repo."""
+    raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    em = chr(0x2014)  # guion largo
+    en = chr(0x2013)  # guion medio
+    exts = ('.ts', '.tsx', '.py', '.md', '.css')
+    total_em = 0
+    total_en = 0
+    ofensores = []
+    for base, dirs, files in os.walk(raiz):
+        dirs[:] = [d for d in dirs if d not in ('node_modules', '.next', '.git', '__pycache__')]
+        for fn in files:
+            if not fn.endswith(exts):
+                continue
+            p = os.path.join(base, fn)
+            s = open(p, encoding='utf-8', errors='ignore').read()
+            ne = s.count(em)
+            total_em += ne
+            total_en += s.count(en)
+            if ne:
+                ofensores.append((os.path.relpath(p, raiz), ne))
+    assert total_em == 0, f'guiones largos (em dash) prohibidos: {ofensores}'
+
+    print('32. Chequeo de guiones (arbitro de estilo)')
+    print(f'   guion largo (em dash) en todo el repo: {total_em}  OK (prohibido siempre)')
+    print(f'   guion medio (en dash): {total_en}  (permitido solo en referencias y rangos APA)')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -1342,5 +1462,11 @@ if __name__ == '__main__':
     verificar_miniaturas()
     print()
     verificar_etiquetado()
+    print()
+    verificar_hipercubo()
+    print()
+    verificar_fundamentos()
+    print()
+    verificar_guiones()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')

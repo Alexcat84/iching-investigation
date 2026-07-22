@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
-/* ————————————————————————————————————————————————
-   Sistema de diseño — estética "tinta y pergamino"
+/* ================================================
+   Sistema de diseño: estética "tinta y pergamino"
    Heredada de la visualización original del hipercubo:
    fondo de tinta casi negra, texto pergamino, acento cinabrio.
-   ———————————————————————————————————————————————— */
+   ================================================ */
 @theme {
   --color-ink-950: #0b0a08;
   --color-ink-900: #100f0d;
@@ -48,7 +48,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Trama sutil de fondo — puntos tenues como papel envejecido */
+/* Trama sutil de fondo: puntos tenues como papel envejecido */
 body::before {
   content: "";
   position: fixed;

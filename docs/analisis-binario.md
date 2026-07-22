@@ -1,8 +1,8 @@
-# El I Ching en binario — las dos secuencias
+# El I Ching en binario: las dos secuencias
 
 **Convención:** yang (línea entera) = 1, yin (línea partida) = 0. Las líneas se leen de abajo hacia arriba; la línea inferior es el bit más significativo (valor 32) y la superior el menos significativo (valor 1). Esta es la convención del ordenamiento de Shao Yong / Fu Xi que estudió Leibniz. Con ella, Kun (todo yin) = 000000 = 0 y Qian (todo yang) = 111111 = 63.
 
-## Tabla 1 — Secuencia del Rey Wen (orden tradicional) con su valor binario
+## Tabla 1: Secuencia del Rey Wen (orden tradicional) con su valor binario
 
 | N° Rey Wen | Hexagrama | Nombre | Líneas (abajo→arriba) | Valor decimal |
 |---|---|---|---|---|
@@ -71,7 +71,7 @@
 | 63 | ䷾ | Ji Ji 既濟 | 101010 | 42 |
 | 64 | ䷿ | Wei Ji 未濟 | 010101 | 21 |
 
-## Tabla 2 — Secuencia Fu Xi / binaria (Shao Yong–Leibniz): conteo 0 → 63
+## Tabla 2: Secuencia Fu Xi / binaria (Shao Yong–Leibniz): conteo 0 → 63
 
 | Valor binario | Bits | Hexagrama | N° Rey Wen | Nombre |
 |---|---|---|---|---|
