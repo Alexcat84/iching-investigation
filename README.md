@@ -19,16 +19,19 @@ python3 scripts/experimentos.py     # verifica las afirmaciones de los experimen
 
 ## Capa web — `web/`
 
-Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensible de experimentos**, cada uno en su propia página visual e interactiva. La numeración sale del orden del registro (`web/lib/experimentos.ts`): reordenar experimentos es reordenar ese arreglo.
+Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensible de experimentos** filtrable por facetas, cada uno en su propia página visual e interactiva. La numeración sale del orden del registro (`web/lib/experimentos.ts`): reordenar experimentos es reordenar ese arreglo.
 
-Experimentos actuales (15), por categoría:
+**Sistema de etiquetado en facetas** (`docs/etiquetado-experimentos.md`): cada experimento tiene exactamente 1 **categoría** (geometría, álgebra, historia, azar, práctica), 2 a 4 **etiquetas** de un vocabulario cerrado de 17 (union types que el compilador valida), un **tipo** y un **nivel**. La portada filtra por categoría (pestañas) y etiquetas (chips combinables).
 
-- **Geometría**: el hipercubo (anillo + recorrido Gray), las sombras del 6-cubo (Petrie, cubo de cubos, niveles de yang), el árbol de Fu Xi (la bifurcación que genera el orden binario).
-- **Historia**: los ocho palacios de Jing Fang, la secuencia del Rey Wen (regla de pares), el cuadrado y el círculo de Shao Yong (con las 8 simetrías D4 del cuadrado), los dos cielos (bagua Anterior y Posterior).
-- **Oráculo**: el mapa de la lectura, monedas contra milenrama, el ritual de las 49 varillas (derivación exacta de las probabilidades), trayectoria personal (localStorage).
-- **Álgebra**: las simetrías del hipercubo (Klein, palíndromos, mapa nuclear), Rey Wen como permutación (con la carrera contra Mawangdui y Jing Fang), el retículo booleano B6, el bosque nuclear (la dinámica completa del hu gua).
+Experimentos actuales (18), por categoría:
 
-La lógica del sitio (`web/lib/`) es un puerto TypeScript del motor de Python; ambos se mantienen en paralelo y `scripts/experimentos.py` verifica cada afirmación estructural que aparece en pantalla.
+- **Geometría**: el hipercubo (anillo + recorrido Gray), las sombras del 6-cubo, el árbol de Fu Xi, la serpiente de De Bruijn (los 64 en un anillo de 64 bits).
+- **Álgebra y estructura**: las simetrías del hipercubo (Klein, palíndromos, nuclear), Rey Wen como permutación (con la carrera de los órdenes y el costo en líneas), el retículo booleano B6, el bosque nuclear, el operador nuclear como matriz sobre F2, el grupo (Z/2)⁶ y el Sierpinski.
+- **Historia y secuencias**: los ocho palacios de Jing Fang, la secuencia del Rey Wen, el cuadrado y el círculo de Shao Yong (con las simetrías D4), los dos cielos (bagua).
+- **Azar y dinámica**: monedas contra milenrama, el ritual de las 49 varillas.
+- **Tu práctica**: el mapa de la lectura, trayectoria personal.
+
+La lógica del sitio (`web/lib/`) es un puerto TypeScript del motor de Python; ambos se mantienen en paralelo y `scripts/experimentos.py` verifica cada afirmación estructural que aparece en pantalla (18 secciones).
 
 ### Desarrollo local
 
