@@ -73,7 +73,8 @@ export default function Serpiente() {
             hexagramas aparecen <b>una sola vez</b> cada uno. Es el libro entero
             comprimido al máximo: 64 hexagramas en 64 bits, sin desperdiciar ninguno. Y no
             es único: hay <b>2²⁶</b> anillos así; este es el canónico (el lexicográficamente
-            mínimo).
+            mínimo), construido con el algoritmo de Fredricksen y Maiorana (1978), mientras
+            que el objeto se remonta a de Bruijn (1946).
           </p>
         </Prose>
       </div>

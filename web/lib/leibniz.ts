@@ -29,11 +29,11 @@ export const HITOS: Hito[] = [
     fuente: "Leibniz, De Progressione Dyadica (1679), manuscrito; ver Archivo Leibniz de Hannover.",
   },
   {
-    fecha: "noviembre de 1701",
+    fecha: "4 de noviembre de 1701",
     titulo: "La carta de Bouvet",
     texto:
-      "El jesuita Joachim Bouvet (1656–1730), misionero en China, escribe a Leibniz y le envía el diagrama de los hexagramas de Fu Xi, señalando su parecido con la numeración binaria. La carta llega a Leibniz en 1703.",
-    fuente: "Correspondencia Bouvet–Leibniz; ver Ryan (1996) y el Archivo Leibniz.",
+      "El jesuita Joachim Bouvet (1656–1730), misionero en China, escribe a Leibniz el 4 de noviembre de 1701 y le adjunta los diagramas circular y cuadrado de los hexagramas de Fu Xi, señalando su parecido con la numeración binaria. Leibniz no recibe la carta hasta el 1 de abril de 1703.",
+    fuente: "Correspondencia Bouvet–Leibniz; cronología en Ryan (1996) y el Archivo Leibniz.",
   },
   {
     fecha: "1703",

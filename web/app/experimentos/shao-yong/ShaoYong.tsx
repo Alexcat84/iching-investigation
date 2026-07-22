@@ -402,7 +402,7 @@ export default function ShaoYong() {
       <ExperimentHeader
         kicker="圓 · 先天 · Shao Yong, siglo XI"
         titulo="El cuadrado y el círculo"
-        subtitulo="El diagrama que Bouvet envió a Leibniz hacia 1701"
+        subtitulo="El diagrama que Bouvet envió a Leibniz (carta de 1701, citada en 1703)"
         accent={ACCENT}
       />
 
@@ -410,10 +410,11 @@ export default function ShaoYong() {
         <Prose>
           <p>
             Shao Yong dispuso los 64 hexagramas a la vez en un <b>cuadrado</b> 8×8 y en un{" "}
-            <b>círculo</b>, ambos en orden binario. Cuando el jesuita Joachim Bouvet le
-            envió este diagrama a Leibniz (que ya había inventado la aritmética binaria),
-            Leibniz reconoció al instante la identidad: leer el cuadrado en orden es
-            contar de 0 a 63. Lo citó en su publicación de 1703.
+            <b>círculo</b>, ambos en orden binario. El jesuita Joachim Bouvet le envió
+            este diagrama a Leibniz (que ya había inventado la aritmética binaria) en una
+            carta del 4 de noviembre de 1701 que Leibniz recibió el 1 de abril de 1703;
+            reconoció al instante la identidad: leer el cuadrado en orden es contar de 0 a
+            63. Lo citó en la Explication de ese mismo año.
           </p>
         </Prose>
       </div>
