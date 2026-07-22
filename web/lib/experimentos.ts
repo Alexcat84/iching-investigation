@@ -186,6 +186,17 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#8fae5a",
     estado: "activo",
   },
+  {
+    slug: "bosque-nuclear",
+    titulo: "El bosque nuclear",
+    subtitulo: "La dinámica completa del hu gua",
+    descripcion:
+      "Cada hexagrama apunta a su nuclear: un mapa de 64 flechas que colapsa rápido. La imagen cae de 64 a 16 (los nucleares clásicos) y de 16 a 4, hasta 3 atractores: dos puntos fijos y un ciclo de 2 (4 hexagramas atractores).",
+    simbolo: "互",
+    categoria: "Álgebra",
+    accent: "#b08968",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

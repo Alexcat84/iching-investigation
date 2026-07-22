@@ -474,6 +474,28 @@ def verificar_arbol():
     print(f'   nodos del arbol: {total_nodos} (1+2+4+8+16+32+64)  OK')
 
 
+# ----------------- 12. El bosque nuclear -----------------
+
+def verificar_bosque():
+    im1 = sorted(set(hu_gua(v) for v in range(64)))
+    im2 = sorted(set(hu_gua(v) for v in im1))
+    assert len(im1) == 16, f'primera imagen: {len(im1)}'
+    assert len(im2) == 4, f'segunda imagen: {len(im2)}'
+    QIAN, KUN = BY_KW[1]['valor'], BY_KW[2]['valor']
+    JIJI, WEIJI = BY_KW[63]['valor'], BY_KW[64]['valor']
+    assert set(im2) == {QIAN, KUN, JIJI, WEIJI}, 'la segunda imagen debe ser los 4 atractores'
+    assert set(im2) <= set(im1), 'im2 debe estar contenida en im1'
+    # La tercera aplicacion ya no reduce: hu(im2) == im2 como conjunto.
+    assert sorted(set(hu_gua(v) for v in im2)) == im2
+
+    kw16 = sorted(BY_VALUE[v]['kw'] for v in im1)
+    print('12. El bosque nuclear')
+    print(f'   imagenes del mapa: 64 -> {len(im1)} -> {len(im2)}  OK')
+    print(f'   los 16 nucleares clasicos (numeros Rey Wen): {kw16}')
+    print('   3 atractores (dos fijos + ciclo de 2), cuencas 16/16/32, caida <= 2:'
+          ' verificado en la seccion 3  OK')
+
+
 if __name__ == '__main__':
     verificar_palacios()
     print()
@@ -496,5 +518,7 @@ if __name__ == '__main__':
     verificar_reticulo()
     print()
     verificar_arbol()
+    print()
+    verificar_bosque()
     print()
     print('Todas las afirmaciones de los experimentos verificadas.')
