@@ -28,6 +28,17 @@ function sinDosCircular(s: string, bit: string): boolean {
   return !(s[s.length - 1] === bit && s[0] === bit);
 }
 
+/** Predicados publicos sobre una figura de bits (bits[0] = linea 1, abajo). */
+export const sinDosYin = (bits: string): boolean => !bits.includes("00");
+export const sinDosYang = (bits: string): boolean => !bits.includes("11");
+export const sinDosYinCircular = (bits: string): boolean =>
+  sinDosYin(bits) && !(bits[0] === "0" && bits[bits.length - 1] === "0");
+
+/** Todas las figuras de n lineas como cadenas de bits (bits[0] = linea 1, abajo). */
+export function figuras(n: number): string[] {
+  return Array.from({ length: 1 << n }, (_, m) => m.toString(2).padStart(n, "0"));
+}
+
 export type Regla = "yin" | "yang" | "ambas";
 
 /** Los hexagramas que sobreviven a una regla, en la version lineal o circular. */
@@ -52,6 +63,34 @@ export const SIN_DOS_YANG: number[] = supervivientes("yang", false);
 export const ALTERNANTES: number[] = supervivientes("ambas", false);
 /** Version circular sin dos yin: deben ser 18 = L(6). */
 export const CIRCULAR_YIN: number[] = supervivientes("yin", true);
+
+// === Las cuatro regiones del Venn (los 64 hexagramas) ===
+/** Solo sin dos yin (pero con algun par de yang): 19. */
+export const SOLO_YIN: number[] = SIN_DOS_YIN.filter((v) => !sinDosYang(bitsDe(v)));
+/** Solo sin dos yang: 19. */
+export const SOLO_YANG: number[] = SIN_DOS_YANG.filter((v) => !sinDosYin(bitsDe(v)));
+/** Fuera de ambas reglas (con un par de yin y un par de yang): 24. */
+export const NINGUNA: number[] = (() => {
+  const out: number[] = [];
+  for (let v = 0; v < 64; v++) {
+    const s = bitsDe(v);
+    if (!sinDosYin(s) && !sinDosYang(s)) out.push(v);
+  }
+  return out;
+})();
+
+/** Conteos de la escalera por fila (n = 1..6); en circular, la fila 6 baja a L(6). */
+export function escaleraConteos(circular: boolean): number[] {
+  const c = [...ESCALERA];
+  if (circular) c[5] = CIRCULAR_YIN.length;
+  return c;
+}
+
+/** Razones entre supervivientes consecutivos: F(n+3)/F(n+2), convergen a phi. */
+export function razonesEscalera(circular: boolean): number[] {
+  const c = escaleraConteos(circular);
+  return c.slice(1).map((v, i) => v / c[i]);
+}
 
 /** Numero de figuras de n lineas sin dos yin consecutivos = F(n+2). */
 export function figurasSinDosYin(n: number): number {
@@ -115,4 +154,11 @@ if (process.env.NODE_ENV !== "production") {
   if (alt.join(",") !== "21,42") console.error("[fibonacci] alternantes != {21,42}", alt);
   const kw = alt.map((v) => HEX_BY_VALUE[v].kw).sort((a, b) => a - b);
   if (kw.join(",") !== "63,64") console.error("[fibonacci] alternantes no son Ji Ji y Wei Ji", kw);
+  if (SOLO_YIN.length !== 19) console.error("[fibonacci] solo yin deben ser 19");
+  if (SOLO_YANG.length !== 19) console.error("[fibonacci] solo yang deben ser 19");
+  if (NINGUNA.length !== 24) console.error("[fibonacci] fuera deben ser 24");
+  if (SOLO_YIN.length + SOLO_YANG.length + ALTERNANTES.length + NINGUNA.length !== 64)
+    console.error("[fibonacci] las regiones del Venn no suman 64");
+  if (razonesEscalera(false).some((r, i) => Math.abs(r - fib(i + 4) / fib(i + 3)) > 1e-9))
+    console.error("[fibonacci] las razones no son F(n+3)/F(n+2)");
 }

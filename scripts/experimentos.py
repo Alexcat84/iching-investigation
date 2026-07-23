@@ -1434,12 +1434,27 @@ def verificar_fibonacci():
     #    F(n+2) cuenta los independientes de P_n; L(n) los de C_n.
     assert fib(8) == 21 and lucas(6) == 18
 
+    # 7. Las cuatro regiones del Venn de los 64: solo yin, solo yang, ambas, ninguna.
+    solo_yin = [v for v in sin_yin if v not in inter]
+    solo_yang = [v for v in sin_yang if v not in inter]
+    fuera = [v for v in range(64) if v not in sin_yin and v not in sin_yang]
+    assert len(solo_yin) == 19 and len(solo_yang) == 19, (len(solo_yin), len(solo_yang))
+    assert len(inter) == 2 and len(fuera) == 24, (len(inter), len(fuera))
+    assert len(solo_yin) + len(solo_yang) + len(inter) + len(fuera) == 64
+
+    # 8. La sucesion de razones entre supervivientes consecutivos = F(n+3)/F(n+2).
+    razones = [escalera[i + 1] / escalera[i] for i in range(5)]
+    for n in range(1, 6):
+        assert abs(razones[n - 1] - fib(n + 3) / fib(n + 2)) < 1e-9, (n, razones[n - 1])
+
     print('34. Fibonacci en el hexagrama')
     print('   sin dos yin: 21 = F(8) | sin dos yang: 21 (simetria)  OK')
     print(f'   escalera n=1..6: {escalera} = F(n+2); con 3 lineas, 5 trigramas  OK')
     print('   desglose por yin 1,6,10,4 = C(7-k,k) (diagonales de Pascal, exp. 18)  OK')
     print('   circular (C6): 18 = L(6)  OK')
     print('   interseccion (alternancia): Ji Ji (63) y Wei Ji (64)  OK')
+    print(f'   Venn de los 64: 19 + 19 + 2 + 24 = 64  OK')
+    print(f'   razones {[round(r, 3) for r in razones]} = F(n+3)/F(n+2) -> phi  OK')
 
 
 # === 33. Pistas de uso (comoUsar) ===

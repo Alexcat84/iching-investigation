@@ -630,7 +630,7 @@ const BASE: Omit<Experimento, "n">[] = [
     titulo: "Fibonacci en el hexagrama",
     subtitulo: "Contar sin dos yin seguidos dibuja la sucesión",
     comoUsar:
-      "Activa una regla (sin dos yin seguidos, sin dos yang, o ambas) y mira qué hexagramas sobreviven y cómo la cuenta dibuja Fibonacci.",
+      "Recorre la escalera y deja que el color explique la recurrencia, o abre el Venn: en la intersección solo quedan Ji Ji y Wei Ji.",
     descripcion:
       "Los hexagramas cuyas líneas yin nunca son adyacentes son exactamente 21 = F(8), y la escalera por número de líneas es F(n+2). Son los conjuntos independientes del camino de 6 vértices; en la versión circular, del ciclo, y el conteo baja a 18 = L(6). La intersección con la regla del yang deja solo Ji Ji y Wei Ji.",
     simbolo: "斐",

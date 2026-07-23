@@ -2,89 +2,277 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { hex, HEX_BY_VALUE } from "@/lib/iching";
+import { hex } from "@/lib/iching";
 import {
-  supervivientes,
-  ESCALERA,
-  DESGLOSE_K,
+  figuras,
+  sinDosYin,
+  sinDosYinCircular,
+  SOLO_YIN,
+  SOLO_YANG,
+  ALTERNANTES,
+  NINGUNA,
+  SIN_DOS_YIN,
   fib,
   lucas,
-  type Regla,
 } from "@/lib/fibonacci";
-import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
+import { ExperimentHeader, Panel, Prose, Stat } from "@/components/ui";
 
+const C = {
+  tinta: "#E8E1D0",
+  dim: "#3A352C",
+  gris: "#6B6353",
+  azul: "#5B8FD9",
+  verde: "#5FAE7F",
+  oro: "#E5C558",
+  naranja: "#E8883A",
+  cinabrio: "#C24C33",
+  morado: "#9C6BC9",
+};
 const ACCENT = "#5ab89a";
 
-/** Glifo pequeño de un hexagrama (6 líneas, la 1 abajo). */
-function Glifo({ bits, color }: { bits: string; color: string }) {
-  const w = 26;
-  const bar = 2.4;
-  const gap = 2.2;
-  const rows = [];
-  for (let k = 6; k >= 1; k--) {
-    const yang = bits[k - 1] === "1";
-    const y = (6 - k) * (gap + bar);
-    if (yang) {
-      rows.push(<rect key={k} x={0} y={y} width={w} height={bar} rx={0.4} fill={color} />);
+/** Glifo de una figura: s[0] = línea 1 (abajo), s[n-1] = línea n (arriba). */
+function Glifo({
+  s,
+  x = 0,
+  y = 0,
+  w = 14,
+  bar = 2,
+  gap = 2,
+  color = C.tinta,
+  opacity = 1,
+}: {
+  s: string;
+  x?: number;
+  y?: number;
+  w?: number;
+  bar?: number;
+  gap?: number;
+  color?: string;
+  opacity?: number;
+}) {
+  const n = s.length;
+  const filas: React.ReactNode[] = [];
+  for (let k = n - 1; k >= 0; k--) {
+    const yy = y + (n - 1 - k) * (bar + gap);
+    if (s[k] === "1") {
+      filas.push(<rect key={k} x={x} y={yy} width={w} height={bar} rx={0.6} fill={color} opacity={opacity} />);
     } else {
-      const seg = w * 0.4;
-      rows.push(
-        <rect key={`${k}a`} x={0} y={y} width={seg} height={bar} rx={0.4} fill={color} />,
-        <rect key={`${k}b`} x={w - seg} y={y} width={seg} height={bar} rx={0.4} fill={color} />,
+      filas.push(
+        <rect key={`${k}a`} x={x} y={yy} width={w * 0.4} height={bar} rx={0.6} fill={color} opacity={opacity} />,
+        <rect key={`${k}b`} x={x + w * 0.6} y={yy} width={w * 0.4} height={bar} rx={0.6} fill={color} opacity={opacity} />,
       );
     }
   }
-  const H = 6 * bar + 5 * gap;
+  return <g>{filas}</g>;
+}
+
+interface Fila {
+  n: number;
+  idx: number;
+  todas: string[];
+  total: number;
+  y: number;
+  alto: number;
+  pad: number;
+  w: number;
+  gapX: number;
+  bar: number;
+  gapY: number;
+  x0: number;
+  esUlt: boolean;
+  mostradas: number;
+}
+
+/** Vista 1: la escalera, con la recurrencia F(n+2) = F(n+1) + F(n) hecha color. */
+function Escalera({ circular }: { circular: boolean }) {
+  const anchoVB = 760;
+  const izq = 64;
+  const der = 112;
+  const disp = anchoVB - izq - der;
+  const BANDAS = [C.azul, C.verde, C.oro, C.morado, C.naranja, C.cinabrio];
+  const coma = (x: number) => x.toFixed(3).replace(".", ",");
+
+  const layout: Fila[] = [];
+  let yCursor = 24;
+  for (let idx = 0; idx < 6; idx++) {
+    const n = idx + 1;
+    const todas = figuras(n);
+    const total = todas.length;
+    const gapX = n <= 3 ? 10 : n === 4 ? 8 : n === 5 ? 4.5 : 2.2;
+    const w = Math.min(n <= 3 ? 22 : 18, (disp - (total - 1) * gapX) / total);
+    const bar = n <= 4 ? 2.6 : 2;
+    const gapY = 2;
+    const anchoFila = total * w + (total - 1) * gapX;
+    const x0 = izq + (disp - anchoFila) / 2;
+    const alto = n * bar + (n - 1) * gapY;
+    const pad = 13;
+    const esUlt = n === 6;
+    const vivasN = todas.filter(sinDosYin).length;
+    const mostradas = esUlt && circular ? todas.filter(sinDosYinCircular).length : vivasN;
+    layout.push({ n, idx, todas, total, y: yCursor, alto, pad, w, gapX, bar, gapY, x0, esUlt, mostradas });
+    yCursor += alto + 2 * pad + 14;
+  }
+
   return (
-    <svg viewBox={`0 0 ${w} ${H}`} width={w} height={H} aria-hidden="true">
-      {rows}
+    <svg
+      viewBox={`0 0 760 ${yCursor + 4}`}
+      className="w-full"
+      role="img"
+      aria-label="Escalera de figuras por número de líneas: las que no tienen dos yin seguidos crecen como Fibonacci (2, 3, 5, 8, 13, 21). Cada superviviente que termina en yang viene de la fila anterior (azul) y cada uno que termina en yin viene de dos filas atrás (verde). La razón entre filas consecutivas converge a la razón áurea."
+    >
+      <line x1={anchoVB - der + 4} y1={10} x2={anchoVB - der + 4} y2={yCursor - 4} stroke="#2E2820" strokeWidth={1} />
+      {layout.map((f) => {
+        const tono = f.esUlt && circular ? C.naranja : BANDAS[f.idx];
+        return (
+          <g key={f.n}>
+            <rect x={4} y={f.y - f.pad} width={anchoVB - 8} height={f.alto + 2 * f.pad} rx={7} fill={tono} opacity={0.06} />
+            <line x1={4} y1={f.y - f.pad} x2={anchoVB - 4} y2={f.y - f.pad} stroke={tono} strokeWidth={1} opacity={0.22} />
+            <text x={12} y={f.y + f.alto / 2 + 3} fontSize={11} fill={C.gris} fontFamily="ui-monospace, monospace">
+              {f.n} {f.n > 1 ? "líneas" : "línea"}
+            </text>
+            <text x={anchoVB - der + 14} y={f.y + f.alto / 2 - 3} fontSize={13} fill={C.tinta} fontFamily="ui-monospace, monospace">
+              {f.mostradas} <tspan fill={C.gris} fontSize={9}>/ {f.total}</tspan>
+            </text>
+            <text x={anchoVB - der + 14} y={f.y + f.alto / 2 + 11} fontSize={9} fill={f.esUlt && circular ? C.naranja : tono} fontFamily="ui-monospace, monospace">
+              {f.esUlt && circular ? "Lucas L(6)" : `F(${f.n + 2})`}
+            </text>
+            {f.todas.map((s, i) => {
+              const viva = sinDosYin(s);
+              const muereEnCiclo = f.esUlt && circular && viva && !sinDosYinCircular(s);
+              const topYang = s[s.length - 1] === "1";
+              const color = !viva ? C.dim : muereEnCiclo ? C.naranja : topYang ? C.azul : C.verde;
+              return <Glifo key={i} s={s} x={f.x0 + i * (f.w + f.gapX)} y={f.y} w={f.w} bar={f.bar} gap={f.gapY} color={color} opacity={viva ? 1 : 0.55} />;
+            })}
+          </g>
+        );
+      })}
+      {layout.slice(0, -1).map((fila, idx) => {
+        const sig = layout[idx + 1];
+        const r = sig.mostradas / fila.mostradas;
+        const yRazon = fila.y + fila.alto + fila.pad + 7;
+        const esCambioRegimen = sig.esUlt && circular;
+        const esUltimaRazon = idx === layout.length - 2;
+        return (
+          <text key={`r${idx}`} x={anchoVB - der + 14} y={yRazon + 3} fontSize={9.5} fill={esCambioRegimen ? C.naranja : C.oro} opacity={0.85} fontFamily="ui-monospace, monospace">
+            ×{coma(r)}
+            {esUltimaRazon && !esCambioRegimen ? "  → φ = 1,618…" : ""}
+          </text>
+        );
+      })}
     </svg>
   );
 }
 
-const REGLAS: { id: Regla; nombre: string }[] = [
-  { id: "yin", nombre: "sin dos yin" },
-  { id: "yang", nombre: "sin dos yang" },
-  { id: "ambas", nombre: "ambas" },
-];
+/** Vista 2: el Venn con los 64 hexagramas reales repartidos por región. */
+function Venn() {
+  const W = 760;
+  const H = 500;
+  const r = 168;
+  const ax = 285;
+  const bx = 475;
+  const cy = 210;
+  const enA = (x: number, y: number) => (x - ax) ** 2 + (y - cy) ** 2 <= r * r;
+  const enB = (x: number, y: number) => (x - bx) ** 2 + (y - cy) ** 2 <= r * r;
+  const margen = 22;
+  const aFull = (x: number, y: number) => (x - ax) ** 2 + (y - cy) ** 2 <= (r - margen) ** 2;
+  const bFull = (x: number, y: number) => (x - bx) ** 2 + (y - cy) ** 2 <= (r - margen) ** 2;
+
+  const candA: [number, number][] = [];
+  const candB: [number, number][] = [];
+  for (let gy = 58; gy < 372; gy += 25) {
+    for (let gx = 118; gx < 662; gx += 23) {
+      if (aFull(gx, gy) && !enB(gx, gy)) candA.push([gx, gy]);
+      if (bFull(gx, gy) && !enA(gx, gy)) candB.push([gx, gy]);
+    }
+  }
+  const reparte = (cand: [number, number][], k: number): [number, number][] => {
+    if (cand.length <= k) return cand.slice(0, k);
+    const paso = cand.length / k;
+    return Array.from({ length: k }, (_, i) => cand[Math.floor(i * paso)]);
+  };
+  const posA = reparte(candA, SOLO_YIN.length);
+  const posB = reparte(candB, SOLO_YANG.length);
+  const posN: [number, number][] = NINGUNA.map((_, i) => {
+    const col = i % 12;
+    const fila = Math.floor(i / 12);
+    return [134 + col * 41, fila === 0 ? 420 : 460];
+  });
+
+  const glifos = (vals: number[], pos: [number, number][], color: string, w = 16) =>
+    vals.map((v, i) =>
+      pos[i] ? <Glifo key={v} s={hex(v).bits} x={pos[i][0] - w / 2} y={pos[i][1] - 8} w={w} bar={2} gap={1.6} color={color} /> : null,
+    );
+
+  return (
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      className="w-full"
+      role="img"
+      aria-label="Diagrama de Venn con los 64 hexagramas: 19 solo sin dos yin, 19 solo sin dos yang, 2 en la intersección (Ji Ji y Wei Ji) y 24 fuera de ambas reglas."
+    >
+      <circle cx={ax} cy={cy} r={r} fill={`${C.azul}12`} stroke={C.azul} strokeWidth={1.4} />
+      <circle cx={bx} cy={cy} r={r} fill={`${C.verde}12`} stroke={C.verde} strokeWidth={1.4} />
+      <text x={ax - r + 8} y={40} fontSize={12} fill={C.azul} fontFamily="ui-monospace, monospace">
+        sin dos yin · {SOLO_YIN.length + ALTERNANTES.length} = F(8)
+      </text>
+      <text x={bx + r - 8} y={40} fontSize={12} textAnchor="end" fill={C.verde} fontFamily="ui-monospace, monospace">
+        sin dos yang · {SOLO_YANG.length + ALTERNANTES.length} = F(8)
+      </text>
+      {glifos(SOLO_YIN, posA, C.azul)}
+      {glifos(SOLO_YANG, posB, C.verde)}
+      {ALTERNANTES.slice()
+        .sort((a, b) => hex(a).kw - hex(b).kw)
+        .map((v, i) => {
+          const cxv = (ax + bx) / 2;
+          const cyv = cy - 45 + i * 90;
+          return (
+            <g key={v}>
+              <circle cx={cxv} cy={cyv} r={30} fill="none" stroke={C.cinabrio} strokeWidth={1.4} />
+              <Glifo s={hex(v).bits} x={cxv - 12} y={cyv - 12} w={24} bar={3} gap={2} color={C.cinabrio} />
+              <text x={cxv} y={cyv + 46} fontSize={10} textAnchor="middle" fill={C.tinta} fontFamily="ui-monospace, monospace">
+                {hex(v).kw} · {hex(v).py}
+              </text>
+            </g>
+          );
+        })}
+      <text x={W / 2} y={402} fontSize={11} textAnchor="middle" fill={C.gris} fontFamily="ui-monospace, monospace">
+        fuera de ambas reglas · {NINGUNA.length}
+      </text>
+      {glifos(NINGUNA, posN, C.dim, 13)}
+    </svg>
+  );
+}
 
 export default function FibonacciHexagrama() {
-  const [regla, setRegla] = useState<Regla>("yin");
+  const [vista, setVista] = useState<"escalera" | "venn">("escalera");
   const [circular, setCircular] = useState(false);
 
-  const vivos = supervivientes(regla, circular);
-  const vivosSet = new Set(vivos);
-  const n = vivos.length;
-
-  // Etiqueta del conteo en vivo.
-  let etiqueta: string;
-  if (regla === "ambas") etiqueta = "Ji Ji y Wei Ji (alternancia perfecta)";
-  else if (circular) etiqueta = `= L(6), el número de Lucas`;
-  else etiqueta = `= F(8), un número de Fibonacci`;
-  const jiWei = regla === "ambas" && !circular;
+  const chip = (on: boolean, color: string) =>
+    on
+      ? { background: `${color}22`, borderColor: color, color: C.tinta }
+      : { borderColor: "#2E2820", color: C.gris };
 
   return (
     <div>
       <ExperimentHeader
         kicker="斐 · conjuntos independientes de Q6"
         titulo="Fibonacci en el hexagrama"
-        subtitulo="Contar sin dos yin seguidos dibuja la sucesión"
+        subtitulo="Dos leyes de crecimiento y una intersección"
         accent={ACCENT}
       />
 
-      {/* Descargos, arriba */}
-      <div
-        className="mb-6 rounded-xl border p-4"
-        style={{ borderColor: ACCENT + "66", background: "rgba(90,184,154,0.06)" }}
-      >
+      {/* Descargos */}
+      <div className="mb-6 rounded-xl border p-4" style={{ borderColor: `${ACCENT}66`, background: "rgba(90,184,154,0.06)" }}>
         <div className="mb-1 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest" style={{ color: ACCENT }}>
           <span className="text-cinnabar-bright">⚠</span> Dos descargos honestos
         </div>
         <p className="text-sm leading-relaxed text-sand-300">
           <b>Es un teorema de conteo, no un código oculto.</b> La numerología que circula
-          sobre Fibonacci y el I Ching (offsets elegidos a mano, la razón áurea escondida en
-          el orden del Rey Wen) queda fuera por indemostrable: aquí solo hay conjuntos que se
-          cuentan y resultan ser un número de Fibonacci.
+          sobre Fibonacci y el I Ching (offsets elegidos a mano, los niveles de retroceso del
+          trading, la razón áurea escondida en el orden del Rey Wen) queda fuera por
+          indemostrable: aquí solo hay conjuntos que se cuentan y resultan ser un número de
+          Fibonacci. El único φ que aparece es el límite real de esos conteos, no un patrón
+          impuesto.
         </p>
         <p className="mt-2 text-sm leading-relaxed text-sand-300">
           <b>Hasta donde sabemos</b>, esta formulación verificada sobre los hexagramas (los
@@ -94,152 +282,71 @@ export default function FibonacciHexagrama() {
         </p>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-5">
         <Prose>
           <p>
-            Lee cada hexagrama como 6 bits de abajo hacia arriba. ¿Cuántos no tienen{" "}
-            <b>dos líneas yin seguidas</b>? Marcar las posiciones yin sin que se toquen es
-            elegir un <b>conjunto independiente</b> del camino de 6 vértices, y esos
-            conjuntos se cuentan con Fibonacci. Cambia la regla y mira sobrevivir a unos y
-            caer a otros mientras la cuenta se queda clavada en un número de la sucesión.
+            Cada línea nueva duplica la población (2, 4, 8, 16, 32, 64), pero las figuras{" "}
+            <b>sin dos yin seguidos</b> solo crecen como Fibonacci (2, 3, 5, 8, 13, 21). El
+            color muestra el porqué:{" "}
+            <b style={{ color: C.azul }}>las que terminan en yang</b> vienen de la fila
+            anterior, y <b style={{ color: C.verde }}>las que terminan en yin</b> vienen de
+            dos filas atrás. Azules más verdes de una fila = las vivas de las dos filas de
+            arriba: <b>F(n+2) = F(n+1) + F(n)</b>, a la vista.
           </p>
         </Prose>
       </div>
 
-      {/* Conmutadores */}
-      <div className="mb-4 flex flex-wrap items-center justify-center gap-2">
-        {REGLAS.map((r) => (
-          <button
-            key={r.id}
-            onClick={() => setRegla(r.id)}
-            className="rounded-full border px-3 py-1.5 text-xs tracking-wide transition-colors"
-            style={
-              regla === r.id
-                ? { background: ACCENT, color: "#0b0a08", borderColor: "transparent" }
-                : { borderColor: "#3A362E", color: "#8a8271" }
-            }
-          >
-            {r.nombre}
-          </button>
-        ))}
-        <span className="mx-1 h-5 w-px" style={{ background: "#3A362E" }} />
-        <button
-          onClick={() => setCircular((c) => !c)}
-          aria-pressed={circular}
-          className="rounded-full border px-3 py-1.5 text-xs tracking-wide transition-colors"
-          style={
-            circular
-              ? { borderColor: ACCENT, color: ACCENT }
-              : { borderColor: "#3A362E", color: "#8a8271" }
-          }
-        >
-          versión circular (línea 6 junto a la 1)
+      {/* Conmutadores de vista */}
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <button type="button" aria-pressed={vista === "escalera"} onClick={() => setVista("escalera")} className="rounded-full border px-3.5 py-1.5 text-xs transition-colors" style={chip(vista === "escalera", C.oro)}>
+          La escalera
         </button>
-      </div>
-
-      {/* Conteo en vivo + rejilla */}
-      <Panel className="mb-6" accent={ACCENT}>
-        <div className="mb-3 flex items-baseline justify-center gap-3">
-          <span className="font-mono text-4xl leading-none" style={{ color: ACCENT }}>
-            {n}
-          </span>
-          <span className="text-sm text-sand-400">{etiqueta}</span>
-        </div>
-        <div className="mx-auto grid max-w-[420px] grid-cols-8 gap-1.5">
-          {Array.from({ length: 64 }, (_, v) => {
-            const vivo = vivosSet.has(v);
-            const marcado = jiWei && vivo;
-            return (
-              <div
-                key={v}
-                title={`${hex(v).kw}. ${hex(v).py}`}
-                className="flex items-center justify-center rounded p-0.5 transition-colors duration-300 motion-reduce:transition-none"
-                style={{
-                  border: marcado ? `1px solid ${ACCENT}` : "1px solid transparent",
-                  background: marcado ? "rgba(90,184,154,0.12)" : "transparent",
-                }}
-              >
-                <Glifo bits={hex(v).bits} color={vivo ? ACCENT : "#33302a"} />
-              </div>
-            );
-          })}
-        </div>
-
-        {jiWei && (
-          <p className="mt-4 text-center text-sm leading-relaxed text-sand-400">
-            Los dos únicos que alternan a la perfección son{" "}
-            {vivos
-              .slice()
-              .sort((a, b) => HEX_BY_VALUE[a].kw - HEX_BY_VALUE[b].kw)
-              .map((v, i) => (
-                <span key={v}>
-                  {i > 0 ? " y " : ""}
-                  <b style={{ color: ACCENT }}>
-                    {hex(v).glyph} {hex(v).py}
-                  </b>
-                </span>
-              ))}
-            : su{" "}
-            <Link href="/experimentos/bosque-nuclear" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
-              ciclo atractor nuclear
-            </Link>{" "}
-            y la{" "}
-            <Link href="/experimentos/rey-wen" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
-              pareja que cierra el Rey Wen
-            </Link>{" "}
-            (63 y 64).
-          </p>
+        <button type="button" aria-pressed={vista === "venn"} onClick={() => setVista("venn")} className="rounded-full border px-3.5 py-1.5 text-xs transition-colors" style={chip(vista === "venn", C.cinabrio)}>
+          La intersección (Venn)
+        </button>
+        {vista === "escalera" && (
+          <button type="button" aria-pressed={circular} onClick={() => setCircular((c) => !c)} className="rounded-full border px-3.5 py-1.5 text-xs transition-colors" style={chip(circular, C.naranja)}>
+            Cerrar el anillo (línea 6 junto a la 1)
+          </button>
         )}
-      </Panel>
-
-      {/* La escalera de Fibonacci */}
-      <div className="mb-2">
-        <SectionLabel accent={ACCENT}>La escalera: por qué sale Fibonacci</SectionLabel>
       </div>
-      <Panel className="mb-6">
-        <svg viewBox="0 0 400 190" className="mx-auto w-full max-w-[440px]" role="img" aria-label="figuras válidas por número de líneas: 2, 3, 5, 8, 13, 21, la sucesión de Fibonacci.">
-          {ESCALERA.map((v, i) => {
-            const max = Math.max(...ESCALERA);
-            const bh = (v / max) * 150 + 4;
-            const x = 24 + i * 62;
-            const bw = 44;
-            return (
-              <g key={i}>
-                <rect x={x} y={168 - bh} width={bw} height={bh} rx={2} fill={i === 5 ? ACCENT : "#4a4436"} />
-                <text x={x + bw / 2} y={168 - bh - 5} textAnchor="middle" fontSize={13} fontFamily="ui-monospace, monospace" fill={i === 5 ? ACCENT : "#cfc6b0"}>
-                  {v}
-                </text>
-                <text x={x + bw / 2} y={184} textAnchor="middle" fontSize={10} fontFamily="ui-monospace, monospace" fill="#7a715e">
-                  {i + 1} {i === 0 ? "línea" : "líneas"}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
-        <Prose>
-          <p className="mt-2">
-            Toda figura válida de <b>n</b> líneas termina de una de dos formas: en{" "}
-            <b>yang</b> (y delante lleva una figura válida de n menos 1), o en <b>yin</b>{" "}
-            precedido de yang (y delante, una válida de n menos 2). Por eso cada peldaño es
-            la suma de los dos anteriores: <b>F(n+2) = F(n+1) + F(n)</b>. Con 3 líneas son 5
-            de los 8 trigramas; con 6, los 21 = F(8). El desglose de esos 21 por número de
-            líneas yin es <b>{DESGLOSE_K.join(", ")}</b> = C(7-k, k), la misma identidad de
-            Fibonacci que asoma en las diagonales del{" "}
-            <Link href="/experimentos/grupo-sierpinski" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
-              triángulo de Pascal
+
+      <Panel accent={ACCENT}>{vista === "escalera" ? <Escalera circular={circular} /> : <Venn />}</Panel>
+
+      <p className="mt-4 font-mono text-[11px] leading-relaxed" style={{ color: C.gris }}>
+        {vista === "escalera" ? (
+          circular ? (
+            "Al cerrar el anillo, tres supervivientes mueren (naranja): los que empiezan y terminan en yin quedan con dos yin juntos. La cuenta baja de 21 a 18, el número de Lucas L(6)."
+          ) : (
+            "Gris: figuras con dos yin seguidos (eliminadas). La columna derecha compara supervivientes contra población total y su razón entre filas."
+          )
+        ) : (
+          <>
+            19 + 19 + 2 + 24 = 64. La intersección de las dos reglas son exactamente{" "}
+            <Link href="/experimentos/bosque-nuclear" className="underline decoration-dotted underline-offset-2" style={{ color: C.cinabrio }}>
+              el ciclo atractor del bosque nuclear
+            </Link>{" "}
+            y{" "}
+            <Link href="/experimentos/rey-wen" className="underline decoration-dotted underline-offset-2" style={{ color: C.cinabrio }}>
+              la pareja que cierra el Rey Wen
             </Link>
-            .
-          </p>
-        </Prose>
-      </Panel>
+            : Ji Ji y Wei Ji.
+          </>
+        )}
+      </p>
 
       {/* Cierre */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat valor={fib(8)} etiqueta="sin dos yin = F(8)" accent={ACCENT} />
         <Stat valor={lucas(6)} etiqueta="circular = L(6)" accent={ACCENT} />
-        <Stat valor={2} etiqueta="alternancia (Ji Ji, Wei Ji)" />
-        <Stat valor={ESCALERA.join(" ")} etiqueta="la escalera 1..6" />
+        <Stat valor={ALTERNANTES.length} etiqueta="alternancia (Ji Ji, Wei Ji)" />
+        <Stat valor={`${SOLO_YIN.length}+${SOLO_YANG.length}+${ALTERNANTES.length}+${NINGUNA.length}`} etiqueta="las regiones del Venn = 64" />
       </div>
+
+      <p className="mt-4 font-mono text-[11px] text-sand-600">
+        Los {SIN_DOS_YIN.length} supervivientes por regla son los conjuntos independientes de
+        P6; en versión circular, de C6. Todo se cuenta, nada se cablea.
+      </p>
     </div>
   );
 }
