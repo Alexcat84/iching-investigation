@@ -114,7 +114,10 @@ export default function MarkovConsultas() {
             </Link>
             ). La pregunta: ¿la asimetría de la milenrama <b>sesga</b> hacia dónde viaja
             la serie? La distribución <b>estacionaria</b> (a dónde tiende a largo plazo) lo
-            responde.
+            responde, y el <b>teorema de Perron-Frobenius</b> garantiza que es única: como
+            la matriz de transición es positiva, tiene un autovalor 1 simple y dominante (el
+            segundo módulo es exactamente 0,5, la misma velocidad de mezcla en ambos
+            métodos).
           </p>
         </Prose>
       </div>

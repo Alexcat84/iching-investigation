@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import EspectroWalsh from "./EspectroWalsh";
 
 export const metadata: Metadata = {
-  title: "El espectro de Walsh-Hadamard",
+  title: "Fourier sobre el cubo: la transformada de Walsh-Hadamard",
   description:
-    "La transformada de Walsh-Hadamard de la secuencia del Rey Wen: la mitad de su energía vive en interacciones de orden 2 (pares de líneas), casi nada en la estructura lineal. Con Parseval, delta e involución verificados.",
+    "La transformada de Walsh-Hadamard es el análisis de Fourier sobre el grupo (Z/2)⁶: la matriz es el producto tensorial de seis Hadamard (H⊗6). Aplicada al Rey Wen, la mitad de su energía vive en interacciones de orden 2. Con Parseval, delta e involución verificados.",
 };
 
 export default function Page() {

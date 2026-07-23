@@ -527,8 +527,8 @@ const BASE: Omit<Experimento, "n">[] = [
   },
   {
     slug: "espectro-walsh",
-    titulo: "El espectro de Walsh-Hadamard",
-    subtitulo: "¿En qué dimensiones del cubo vive el Rey Wen?",
+    titulo: "Fourier sobre el cubo: la transformada de Walsh-Hadamard",
+    subtitulo: "El análisis de Fourier sobre el grupo (Z/2)⁶",
     comoUsar:
       "Recorre la energía por orden y mira en qué interacciones de líneas vive la estructura.",
     descripcion:

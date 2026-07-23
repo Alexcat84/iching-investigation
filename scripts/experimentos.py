@@ -858,8 +858,24 @@ def verificar_walsh():
     assert abs(frac_pares - 0.7743) < 0.001, frac_pares
     assert abs(frac_pares_azar - 30 / 63) < 1e-9, frac_pares_azar
 
-    print('23. El espectro de Walsh-Hadamard (A4)')
+    # Fourier sobre (Z/2)^6: la transformada mariposa es el producto tensorial de seis
+    # matrices de Hadamard, H tensor 6, y coincide con la definicion directa.
+    H2 = [[1, 1], [1, -1]]
+
+    def kron(A, B):
+        return [[A[i // len(B)][j // len(B[0])] * B[i % len(B)][j % len(B[0])]
+                 for j in range(len(A[0]) * len(B[0]))]
+                for i in range(len(A) * len(B))]
+
+    H6 = [[1]]
+    for _ in range(6):
+        H6 = kron(H6, H2)
+    F_mariposa = [sum(H6[w][v] * senal[v] for v in range(64)) for w in range(64)]
+    assert F_mariposa == F, 'H tensor 6 no coincide con la transformada directa'
+
+    print('23. Fourier sobre el cubo: la transformada de Walsh-Hadamard (A4)')
     print('   Parseval, WHT(delta)=cte, WHT^2 = 64 f  OK')
+    print('   analisis de Fourier sobre (Z/2)^6: la mariposa == H tensor 6 (Hadamard)  OK')
     print(f'   energia sin DC: orden 2 = {en[2]/sin_dc*100:.1f}% (pares de lineas), orden 1 = {en[1]/sin_dc*100:.1f}%  OK')
     print(f'   ordenes pares 2 y 4 = {frac_pares*100:.1f}% vs {frac_pares_azar*100:.1f}% del azar: confirma B2 por otra via  OK')
     print('   la estructura del Rey Wen vive en interacciones de a dos, no en la lineal  OK')
@@ -1043,11 +1059,30 @@ def verificar_markov():
     assert abs(pi_mil[0] / pi_mil[63] - 729) < 1e-6  # Kun/Qian = 3^6
     assert abs(lam_mon - 0.5) < 1e-12 and abs(lam_mil - 0.5) < 1e-12
 
+    # Teorema de Perron-Frobenius: la matriz de transicion es estrictamente positiva, asi
+    # que 1 es un autovalor simple y estrictamente dominante. Con monedas la matriz es
+    # simetrica y los caracteres de Walsh son autovectores con autovalor 0.5^popcount(w):
+    # 1 aparece solo en w=0 (simple) y el segundo modulo es 0.5.
+    Pm = matriz('monedas')
+    assert all(Pm[i][j] > 0 for i in range(64) for j in range(64)), 'P no es estrictamente positiva'
+    chi = lambda w, v: -1 if bin(w & v).count('1') & 1 else 1
+    autovals = []
+    for w in range(64):
+        Pchi = [sum(Pm[i][v] * chi(w, v) for v in range(64)) for i in range(64)]
+        lam = 0.5 ** bin(w).count('1')
+        assert all(abs(Pchi[i] - lam * chi(w, i)) < 1e-12 for i in range(64)), f'chi_{w} no autovector'
+        autovals.append(lam)
+    mult1 = sum(1 for x in autovals if abs(x - 1) < 1e-12)
+    segundo = max(x for x in autovals if abs(x - 1) > 1e-12)
+    assert mult1 == 1, 'el autovalor 1 no es simple'
+    assert abs(segundo - 0.5) < 1e-12, segundo
+
     print('20. La cadena de Markov de las consultas (C1)')
     print('   piP=pi (forma cerrada), cada fila de P suma 1  OK')
     print(f'   monedas: estacionaria uniforme (corr {c_mon:.2f}, yang esperado {ey_mon:.1f})  OK')
     print(f'   milenrama: sesgo al yin (corr {c_mil:.2f}, yang esperado {ey_mil:.1f}, Kun/Qian = 729)  OK')
     print('   ambos mezclan igual (lambda2 = 0.5, relajacion 2 pasos), a destinos distintos  OK')
+    print(f'   Perron-Frobenius: P positiva -> autovalor 1 simple (mult {mult1}), segundo modulo {segundo}  OK')
 
 
 def verificar_rey_wen_aleatorio():

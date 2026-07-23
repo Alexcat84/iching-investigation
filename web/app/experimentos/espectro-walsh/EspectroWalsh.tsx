@@ -51,20 +51,22 @@ export default function EspectroWalsh() {
   return (
     <div>
       <ExperimentHeader
-        kicker="≋ · caracteres de Walsh"
-        titulo="El espectro de Walsh-Hadamard"
-        subtitulo="¿En qué dimensiones del cubo vive la estructura del Rey Wen?"
+        kicker="≋ · 易 · Fourier sobre grupos"
+        titulo="Fourier sobre el cubo: la transformada de Walsh-Hadamard"
+        subtitulo="El análisis de Fourier sobre el grupo (Z/2)⁶"
         accent={ACCENT}
       />
 
       <div className="mb-6">
         <Prose>
           <p>
-            Toda función sobre los 64 hexagramas se descompone en los 64 <b>caracteres de
-            Walsh</b> del cubo, cada uno un patrón de paridad sobre un subconjunto de las
-            6 líneas. Aplicamos la transformada a la secuencia del Rey Wen vista como
-            señal (a cada hexagrama le asignamos su número de capítulo) y miramos dónde se
-            concentra su energía. Complementa{" "}
+            Esto <b>es</b> el análisis de Fourier, pero sobre el grupo <b>(Z/2)⁶</b> en
+            lugar del círculo: los 64 <b>caracteres de Walsh</b> del cubo son sus
+            frecuencias, cada uno un patrón de paridad sobre un subconjunto de las 6 líneas.
+            La transformada rápida (la mariposa) es exactamente el <b>producto tensorial de
+            seis matrices de Hadamard</b>, H⊗6, y coincide bit a bit con la definición
+            directa. Aplicada a la secuencia del Rey Wen (a cada hexagrama su número de
+            capítulo), muestra dónde se concentra su energía. Complementa{" "}
             <Link href="/experimentos/rey-wen-aleatorio" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
               ¿es el Rey Wen aleatorio?
             </Link>
