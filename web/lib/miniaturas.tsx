@@ -12,6 +12,7 @@
 import type { ReactNode } from "react";
 import { bitsOf, gray, hex, lineBit, LINE_COLOR, type TrigramName } from "./iching";
 import { SOBERANOS, LINEAS_CAMBIO } from "./soberanos";
+import { ESCALERA } from "./fibonacci";
 import { SECUENCIA } from "./debruijn";
 import { sierpinski } from "./grupo";
 import { M } from "./matriz-nuclear";
@@ -456,6 +457,27 @@ export const GENERADORES: Record<string, Generador> = {
       </>
     );
   },
+  "fibonacci-hexagrama": (c) => {
+    const max = Math.max(...ESCALERA); // 21
+    const bw = 26;
+    return (
+      <>
+        {ESCALERA.map((v, i) => {
+          const h = (v / max) * 90 + 4;
+          const x = 20 + i * 31;
+          const ultimo = i === ESCALERA.length - 1;
+          return (
+            <g key={i}>
+              <rect x={x} y={H - 16 - h} width={bw} height={h} rx={2} fill={ultimo ? c : "#4a4436"} opacity={ultimo ? 1 : 0.85} />
+              <text x={x + bw / 2} y={H - 5} textAnchor="middle" fontSize={7} fontFamily="ui-monospace, monospace" fill={ultimo ? c : GRIS}>
+                {v}
+              </text>
+            </g>
+          );
+        })}
+      </>
+    );
+  },
 };
 
 export const MINIATURA_SLUGS = Object.keys(GENERADORES);
@@ -473,5 +495,5 @@ export function Miniatura({ slug, color }: { slug: string; color: string }) {
 // Aserción en desarrollo.
 if (process.env.NODE_ENV !== "production") {
   if (puros.length !== 8) console.error("[miniaturas] deberían ser 8 hexagramas puros");
-  if (MINIATURA_SLUGS.length !== 28) console.error("[miniaturas] se esperaban 28 generadores");
+  if (MINIATURA_SLUGS.length !== 29) console.error("[miniaturas] se esperaban 29 generadores");
 }
