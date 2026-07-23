@@ -6,6 +6,7 @@ import {
   CATEGORIAS,
   CATEGORIA_INFO,
   EXPERIMENTOS,
+  TIPO_INFO,
   type Categoria,
 } from "@/lib/experimentos";
 import { Miniatura } from "@/lib/miniaturas";
@@ -27,11 +28,9 @@ function norm(s: string): string {
 export default function Portada() {
   const [open, setOpen] = useState<Categoria | null>("geometria");
   const [query, setQuery] = useState("");
-  const [hoverable, setHoverable] = useState(true);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
-    setHoverable(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
 
@@ -45,16 +44,12 @@ export default function Portada() {
   });
   const totalCoincidencias = porCat.reduce((s, c) => s + c.coincidencias.length, 0);
 
-  // Escritorio (hover): pasar el cursor abre; la última abierta se mantiene.
-  const abrir = (k: Categoria) => {
-    if (buscando || !hoverable) return;
-    setOpen(k);
-  };
-  // Clic/toque: en escritorio fija la abierta; en táctil alterna (abre y cierra).
+  // El acordeón se abre y se cierra SOLO por decisión del usuario: clic, toque o
+  // Enter/Espacio sobre la fila (el botón nativo ya cubre el teclado). Pasar el cursor
+  // nunca despliega nada; solo realza. Una sola categoría abierta a la vez.
   const alternar = (k: Categoria) => {
     if (buscando) return;
-    if (hoverable) setOpen(k);
-    else setOpen((o) => (o === k ? null : k));
+    setOpen((o) => (o === k ? null : k));
   };
 
   return (
@@ -94,7 +89,6 @@ export default function Portada() {
           return (
             <section
               key={k}
-              onMouseEnter={() => abrir(k)}
               style={{ borderTop: "1px solid #262119", opacity: atenuado ? 0.4 : 1 }}
             >
               <button
@@ -103,7 +97,7 @@ export default function Portada() {
                 aria-expanded={isOpen}
                 aria-controls={`panel-${k}`}
                 aria-label={`${info.nombre}: ${info.desc}. ${exps.length} experimentos.`}
-                className="flex w-full items-baseline gap-4 py-5 text-left outline-none focus-visible:rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="flex w-full cursor-pointer items-baseline gap-4 py-5 text-left outline-none transition hover:brightness-125 focus-visible:rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 style={{ outlineColor: info.color }}
               >
                 <span
@@ -145,39 +139,58 @@ export default function Portada() {
                 }}
               >
                 <div className="grid grid-cols-2 gap-3 pb-7 sm:grid-cols-3 lg:grid-cols-4">
-                  {tarjetas.map((e, i) => (
-                    <Link
-                      key={e.slug}
-                      href={`/experimentos/${e.slug}`}
-                      aria-label={`${e.titulo}, nivel ${e.nivel}`}
-                      className="group block overflow-hidden rounded-lg transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                      style={{
-                        background: "#181512",
-                        border: "1px solid #262119",
-                        outlineColor: info.color,
-                        transitionDelay: reduced || !isOpen ? "0ms" : `${i * 40}ms`,
-                        transform: isOpen ? "translateY(0)" : "translateY(8px)",
-                        opacity: isOpen ? 1 : 0,
-                        transitionProperty: reduced ? "none" : "transform, opacity",
-                      }}
-                    >
-                      <div style={{ background: "#100E0C", padding: "6px 4px 0" }}>
-                        <Miniatura slug={e.slug} color={info.color} />
-                      </div>
-                      <div className="px-3 py-2.5">
-                        <div className="mb-0.5 flex justify-between font-mono text-[10px]" style={{ color: "#5A5346" }}>
-                          <span>N.º {String(e.n).padStart(2, "0")}</span>
-                          <span aria-hidden="true">{NIVEL_PUNTOS[e.nivel]}</span>
+                  {tarjetas.map((e, i) => {
+                    const esRef = e.tipo === "referencia";
+                    return (
+                      <Link
+                        key={e.slug}
+                        href={`/experimentos/${e.slug}`}
+                        aria-label={`${e.titulo}, ${TIPO_INFO[e.tipo].nombre}${esRef ? ", para leer" : ""}, nivel ${e.nivel}`}
+                        className="group block overflow-hidden rounded-lg transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                        style={{
+                          background: "#181512",
+                          border: "1px solid #262119",
+                          outlineColor: info.color,
+                          transitionDelay: reduced || !isOpen ? "0ms" : `${i * 40}ms`,
+                          transform: isOpen ? "translateY(0)" : "translateY(8px)",
+                          opacity: isOpen ? 1 : 0,
+                          transitionProperty: reduced ? "none" : "transform, opacity",
+                        }}
+                      >
+                        <div style={{ background: "#100E0C", padding: "6px 4px 0" }}>
+                          <Miniatura slug={e.slug} color={info.color} />
                         </div>
-                        <div
-                          className="text-[13px] leading-snug decoration-1 underline-offset-2 group-hover:underline"
-                          style={{ textDecorationColor: info.color, color: "#E8E1D0" }}
-                        >
-                          {e.titulo}
+                        <div className="px-3 py-2.5">
+                          <div
+                            className="mb-0.5 flex items-center justify-between gap-1 font-mono text-[10px]"
+                            style={{ color: "#5A5346" }}
+                          >
+                            <span className="shrink-0">N.º {String(e.n).padStart(2, "0")}</span>
+                            <span className="flex min-w-0 items-center gap-1.5">
+                              <span className="truncate">{TIPO_INFO[e.tipo].nombre}</span>
+                              {esRef && (
+                                <span
+                                  className="shrink-0 rounded-sm px-1"
+                                  style={{ background: "#221E18", color: "#8A8272" }}
+                                >
+                                  para leer
+                                </span>
+                              )}
+                              <span className="shrink-0" aria-hidden="true">
+                                {NIVEL_PUNTOS[e.nivel]}
+                              </span>
+                            </span>
+                          </div>
+                          <div
+                            className="text-[13px] leading-snug decoration-1 underline-offset-2 group-hover:underline"
+                            style={{ textDecorationColor: info.color, color: "#E8E1D0" }}
+                          >
+                            {e.titulo}
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                  ))}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </section>
@@ -193,11 +206,10 @@ export default function Portada() {
         )}
 
         <p className="mt-8 font-mono text-[11px]" style={{ color: "#5A5346" }}>
-          {hoverable
-            ? "Pasa el cursor por una categoría para desplegarla"
-            : "Toca una categoría para desplegarla"}{" "}
-          · ● introductorio · ●● intermedio · ●●● avanzado · cada vista previa está
-          dibujada con la matemática real de su experimento
+          Toca una categoría para desplegarla · el tipo dice qué esperar: visualización,
+          simulador, calculadora y test se usan, referencia es para leer · ● introductorio ·
+          ●● intermedio · ●●● avanzado · cada vista previa está dibujada con la matemática
+          real de su experimento
         </p>
       </main>
     </div>
