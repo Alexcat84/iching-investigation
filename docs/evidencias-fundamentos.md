@@ -44,6 +44,12 @@ Verificación: consultada en línea el 23 de julio de 2026 vía la API de OEIS; 
 **[oeis-a000032]** OEIS Foundation Inc. (s.f.). *Sequence A000032: Lucas numbers*. The On-Line Encyclopedia of Integer Sequences. https://oeis.org/A000032
 Verificación: consultada en línea el 23 de julio de 2026 vía la API de OEIS; nombre "Lucas numbers beginning at 2: L(n) = L(n-1) + L(n-2), L(0) = 2, L(1) = 1" y términos 2, 1, 3, 4, 7, 11, 18 confirmados. Fundamenta: experimento 29 (la versión circular da 18 = L(6)), como fuente complementaria (tipo 1 con fuente).
 
+**[shannon1948]** Shannon, C. E. (1948). A mathematical theory of communication. *Bell System Technical Journal, 27*(3), 379–423. https://doi.org/10.1002/j.1538-7305.1948.tb01338.x
+Verificación: Crossref el 23 de julio de 2026 (título "A Mathematical Theory of Communication", Bell System Technical Journal, vol. 27(3), páginas 379-423, 1948); la segunda parte es 27(4), 623-656. Evidencia de soporte: introduce la entropía H = menos la suma de p log p como medida de información y, en su primera página, la palabra "bit". Fundamenta: experimento 31 (la entropía del oráculo), tipo 1 con fuente.
+
+**[ising1925]** Ising, E. (1925). Beitrag zur Theorie des Ferromagnetismus. *Zeitschrift für Physik, 31*, 253–258. https://doi.org/10.1007/BF02980577
+Verificación: Crossref el 23 de julio de 2026 (título "Beitrag zur Theorie des Ferromagnetismus", Zeitschrift für Physik, vol. 31, páginas 253-258, 1925). Evidencia de soporte: el modelo, planteado por Lenz en 1920, lo resuelve Ising en 1925 en una dimensión y demuestra que en 1D no hay transición de fase. Fundamenta: experimento 30 (el hexagrama como cadena de espines), tipo 1 con fuente.
+
 **[wilhelm]** Wilhelm, R. (1924). *I Ging: Das Buch der Wandlungen*. Eugen Diederichs. [Versión castellana: Vogelmann, D. J. (Trad.). (1975). *I Ching: El libro de las mutaciones*. Sudamericana.]
 ⚠ PENDIENTE DE VERIFICACIÓN FINAL: la ficha alemana y la existencia de la versión de Vogelmann son sólidas, pero la edición y año exactos de la castellana deben confirmarse en línea antes de commitear la ficha. Fundamenta: los nombres en español de los hexagramas usados en todo el sitio (tipo 3).
 
@@ -88,9 +94,28 @@ Verificación: consultada en línea el 23 de julio de 2026 vía la API de OEIS; 
 **Bloque analogías** (exp. 27)
 - Correspondencia con codones → tipo 5 → código genético estándar (NCBI, ya citado en el experimento) + descargo de arbitrariedad de la codificación (las 24 asignaciones, ya implementado).
 
+**Bloque Ising** (exp. 30)
+- "Un hexagrama es una cadena de 6 espines; con la matriz de transferencia T (beta = 0,7, J = 1) la función de partición abierta es 1ᵀT⁵1 = 199,384322 y la periódica Tr(T⁶) = 262,456561; con beta a cero, Z tiende a 64 y la distribución es uniforme" → tipo 1 → suite (verificar_ising) + [ising1925].
+- "A temperatura baja con J positivo dominan Qian y Kun al 50/50, y con J negativo Ji Ji y Wei Ji; la restricción dura (sin yin-yin adyacente) reproduce F(8) en cadena y L(6) en anillo, con autovalor dominante phi" → tipo 1 → suite. Conecta con el exp. 29 (misma matriz de transferencia).
+- "En 1D no hay transición de fase (Ising 1925): la cadena se ordena gradualmente al enfriar, no de golpe" → tipo 3 → [ising1925]. La conexión con el I Ching es identidad de estructura, no una afirmación física sobre el oráculo.
+
+**Bloque entropía del oráculo** (exp. 31)
+- "Un hexagrama uniforme son exactamente 6 bits (el máximo para 64 estados); una línea de monedas tiene 1,8113 bits de entropía y una de milenrama 1,7490, una diferencia de 0,0623 que vive toda en el movimiento, porque el valor yin/yang puro es 1 bit en ambos métodos" → tipo 1 → suite (verificar_entropia) + [shannon1948].
+- "La estacionaria de la cadena de milenrama tiene 4,8677 = 6 por H(1/4) bits, contra los 6 de la uniforme de monedas" → tipo 1 → suite + [shannon1948].
+
+**Bloque matriz de transferencia** (exp. 32)
+- "Cada regla de adyacencia entre líneas es una matriz 2x2; sus potencias dan los conteos por número de líneas, su traza los conteos cíclicos y su autovalor dominante la razón de crecimiento (phi para las reglas de Fibonacci, 2 para la libre, 1 para la alternancia)" → tipo 1 → suite (verificar_transferencia).
+- "Los hexagramas balanceados (tres yang, tres yin) donde el yang nunca va por detrás del yin son exactamente C₃ = 5, los valores 42, 44, 50, 52 y 56" → tipo 1 → suite. Es la transformada z del conteo; la de Laplace no aplica (no hay tiempo continuo en el I Ching), y eso se dice.
+
+**Bloque espectro del hipercubo** (exp. 33)
+- "Los autovalores de la matriz de adyacencia de Q6 son 6 menos 2k con multiplicidad C(6,k): {6:1, 4:6, 2:15, 0:20, -2:15, -4:6, -6:1}; las multiplicidades son los niveles de yang del retículo B6 (exp. 13) y el espectro del paseo simple (exp. 25) es este dividido por 6" → tipo 1 → suite (verificar_espectro_q6).
+
 ## D. Huecos conocidos (no citar hasta resolver)
 
 1. Ficha exacta de la edición castellana de Wilhelm/Vogelmann.
 2. Autoría del método de las 16 fichas.
 3. Números de página de la Explication de Leibniz.
-4. Cualquier fuente nueva que un experimento futuro necesite: pasa por este documento primero.
+4. Ficha del teorema de Lucas (1878) sobre coeficientes binomiales módulo p: se nombra en el exp. 18 (grupo Sierpinski) como teorema con respaldo de suite, sin ficha aún.
+5. Ficha del teorema de Perron-Frobenius: se nombra en el exp. 20 (Markov) como teorema con respaldo de suite, sin ficha aún.
+6. Ficha del análisis de Fourier sobre grupos finitos abelianos: se nombra en el exp. 23 (Walsh-Hadamard) como teorema con respaldo de suite, sin ficha aún.
+7. Cualquier fuente nueva que un experimento futuro necesite: pasa por este documento primero.
