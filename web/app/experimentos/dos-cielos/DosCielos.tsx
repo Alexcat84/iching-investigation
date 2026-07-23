@@ -191,9 +191,6 @@ export default function DosCielos() {
             );
           })}
         </svg>
-        <p className="mt-2 text-center font-mono text-[10px] text-sand-500">
-          alterna entre cielos para ver a cada trigrama viajar a su nueva posición
-        </p>
       </Panel>
 
       {/* Métricas de la permutación */}

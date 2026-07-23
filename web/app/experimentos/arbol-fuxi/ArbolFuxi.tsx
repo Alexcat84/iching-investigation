@@ -311,8 +311,8 @@ export default function ArbolFuxi() {
       )}
       {sel == null && (
         <p className="mt-4 text-center text-sm text-sand-500">
-          Toca una hoja del último nivel (o elígela en el selector) para iluminar su
-          camino desde la raíz: ese camino es, bit a bit, el hexagrama.
+          Aún no hay hoja elegida. El camino desde la raíz hasta cualquier hoja es, bit a
+          bit, el hexagrama.
         </p>
       )}
     </div>

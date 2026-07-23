@@ -105,7 +105,7 @@ export default function Codones() {
         </div>
         <p className="mt-2 font-mono text-[10px] text-sand-500">
           los 64 hexagramas (orden Fu Xi) → codón → aminoácido, coloreado por clase. ■ =
-          codón de parada. Toca uno para el detalle.
+          codón de parada.
         </p>
       </Panel>
 

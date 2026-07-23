@@ -93,8 +93,7 @@ export default function Simetrias() {
           <p className="text-center font-mono text-[11px] text-sand-500">
             Órbita de {hex(sel).py}: {orb.length}{" "}
             {orb.length === 1 ? "hexagrama" : "hexagramas"} ·{" "}
-            {orb.map((v) => hex(v).kw).join(" · ")}. Clic en cualquiera para moverte por
-            ella.
+            {orb.map((v) => hex(v).kw).join(" · ")}.
           </p>
           <div className="mt-3 flex flex-wrap justify-center gap-1">
             {Array.from({ length: 64 }, (_, v) => v).map((v) => (

@@ -227,8 +227,7 @@ export default function MapaLectura() {
             })}
           </div>
           <p className="mt-3 font-mono text-[10px] leading-relaxed text-sand-600">
-            Clic en la línea para alternar yin/yang · clic en el círculo para marcarla
-            como mutante (móvil).
+            la línea alterna yin/yang · el círculo la marca como mutante (móvil)
           </p>
         </Panel>
 

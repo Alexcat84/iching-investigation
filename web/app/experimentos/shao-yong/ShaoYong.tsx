@@ -446,7 +446,6 @@ export default function ShaoYong() {
             (dui, sus seis líneas invertidas) es su <b className="text-sand-200">reflejo</b>{" "}
             exacto sobre el eje vertical Qian–Kun. Su <b className="text-sand-200">antípoda</b>{" "}
             (el punto diametralmente opuesto) es, en cambio, solo voltear la línea inferior.
-            Toca cualquier hexagrama para verlo.
           </p>
         </Panel>
       </div>

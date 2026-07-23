@@ -174,8 +174,8 @@ export default function Permutacion() {
               </div>
             )}
             <p className="mt-2 font-mono text-[10px] text-sand-500">
-              Cada fila es un ciclo (números del Rey Wen de los hexagramas). Toca uno
-              para resaltarlo en la matriz.
+              Cada fila es un ciclo (números del Rey Wen de los hexagramas); el ciclo
+              elegido se resalta en la matriz.
             </p>
           </Panel>
         </div>

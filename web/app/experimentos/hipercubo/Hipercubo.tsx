@@ -378,8 +378,7 @@ export default function Hipercubo() {
         </div>
       ) : (
         <p className="text-center text-sm text-sand-500">
-          Toca cualquier hexagrama del anillo para ver su valor binario y sus seis
-          vecinos, o lanza el recorrido Gray para ver los 64 estados conectados por
+          Aún no hay hexagrama elegido. El recorrido Gray enlaza los 64 estados con
           mutaciones de una sola línea.
         </p>
       )}

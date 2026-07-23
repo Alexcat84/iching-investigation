@@ -122,9 +122,9 @@ export default function Sombras() {
           <p>
             El hipercubo de 6 dimensiones no cabe en la pantalla: solo podemos ver sus{" "}
             <b>sombras</b>. Aquí hay tres, y las tres contienen los mismos 64 vértices y
-            los mismos 192 hilos coloreados por línea. Toca cualquier hexagrama (o
-            elígelo abajo) y se encenderá, con sus 6 vecinos, en las tres proyecciones a
-            la vez: tres siluetas de un solo objeto.
+            los mismos 192 hilos coloreados por línea. El hexagrama elegido se enciende,
+            con sus 6 vecinos, en las tres proyecciones a la vez: tres siluetas de un solo
+            objeto.
           </p>
         </Prose>
       </div>
