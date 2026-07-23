@@ -24,7 +24,9 @@ export type ClaveBiblio =
   | "debruijn1946"
   | "fkm1978"
   | "oeis-a003042"
-  | "knuth4a";
+  | "knuth4a"
+  | "oeis-a000045"
+  | "oeis-a000032";
 
 export type TipoFicha = "libro" | "articulo" | "actas" | "obra-referencia" | "recurso-web";
 
@@ -155,6 +157,30 @@ export const BIBLIOGRAFIA: Record<ClaveBiblio, Ficha> = {
     citaCorta: "Knuth, 2011",
     orden: "Knuth",
     apa: "Knuth, D. E. (2011). The art of computer programming: Vol. 4A. Combinatorial algorithms, Part 1. Addison-Wesley.",
+  },
+  "oeis-a000045": {
+    clave: "oeis-a000045",
+    tipo: "recurso-web",
+    autores: "OEIS Foundation Inc.",
+    anio: "s.f.",
+    titulo: "Sequence A000045: Fibonacci numbers",
+    contenedor: "The On-Line Encyclopedia of Integer Sequences",
+    url: "https://oeis.org/A000045",
+    citaCorta: "OEIS Foundation, s.f.",
+    orden: "OEIS Fibonacci",
+    apa: "OEIS Foundation Inc. (s.f.). Sequence A000045: Fibonacci numbers. The On-Line Encyclopedia of Integer Sequences. https://oeis.org/A000045",
+  },
+  "oeis-a000032": {
+    clave: "oeis-a000032",
+    tipo: "recurso-web",
+    autores: "OEIS Foundation Inc.",
+    anio: "s.f.",
+    titulo: "Sequence A000032: Lucas numbers",
+    contenedor: "The On-Line Encyclopedia of Integer Sequences",
+    url: "https://oeis.org/A000032",
+    citaCorta: "OEIS Foundation, s.f.",
+    orden: "OEIS Lucas",
+    apa: "OEIS Foundation Inc. (s.f.). Sequence A000032: Lucas numbers. The On-Line Encyclopedia of Integer Sequences. https://oeis.org/A000032",
   },
 };
 
@@ -318,6 +344,10 @@ export const AFIRMACIONES: Afirmacion[] = [
 
   a("calendario-soberanos", "teorema", "verificar_soberanos", [], "Los 12 bi gua cumplen cuatro propiedades: forman un ciclo Gray cerrado, la linea que cambia avanza 2, 3, 4, 5, 6, 1, los meses opuestos son complementos dui y son exactamente los 12 hexagramas monotonos de Q6."),
   a("calendario-soberanos", "tradicion", null, ["nielsen2003"], "Los 12 bi gua (xiaoxi gua) se asociaron a los 12 meses lunares en la tradicion Han, ligada a Meng Xi y al sistema gua qi."),
+
+  a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", ["oeis-a000045"], "Los hexagramas sin dos yin consecutivos (y, por simetria, sin dos yang) son exactamente 21 = F(8); contando por numero de lineas, la escalera es 2, 3, 5, 8, 13, 21 = F(n+2)."),
+  a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", ["oeis-a000032"], "En la version circular (la linea 6 vecina de la linea 1) los supervivientes son 18 = L(6), el numero de Lucas."),
+  a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", [], "La interseccion de ambas reglas (alternancia perfecta) son exactamente Ji Ji y Wei Ji, y el desglose de los 21 por numero de yin es 1, 6, 10, 4 = C(7-k, k), la identidad de Fibonacci en el triangulo de Pascal.", "Teorema de conteo, no un codigo oculto: la numerologia de Fibonacci y la razon aurea en el I Ching queda fuera por indemostrable."),
 ];
 
 // === Consultas ===
@@ -348,7 +378,7 @@ export function resumenFundamento(slug: string): string {
   if (doc) partes.push(`${doc} ${doc === 1 ? "fuente documentada" : "fuentes documentadas"}`);
   const ana = n("analogia");
   if (ana) partes.push(`${ana} ${ana === 1 ? "analogía con descargo" : "analogías con descargo"}`);
-  const cites = [...new Set(afs.flatMap((x) => x.claves))].map((k) => BIBLIOGRAFIA[k].citaCorta);
+  const cites = [...new Set(afs.flatMap((x) => x.claves).map((k) => BIBLIOGRAFIA[k].citaCorta))];
   const citeStr = cites.length ? ` (${cites.join("; ")})` : "";
   return `Fundamento: ${partes.join(" · ")}${citeStr}`;
 }

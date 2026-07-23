@@ -77,6 +77,7 @@ export type Etiqueta =
   | "estadistica"
   | "leibniz"
   | "interdisciplinar"
+  | "combinatoria"
   | "consulta-propia";
 
 export const ETIQUETAS: Etiqueta[] = [
@@ -96,6 +97,7 @@ export const ETIQUETAS: Etiqueta[] = [
   "estadistica",
   "leibniz",
   "interdisciplinar",
+  "combinatoria",
   "consulta-propia",
 ];
 
@@ -116,6 +118,7 @@ export const ETIQUETA_INFO: Record<Etiqueta, { nombre: string; def: string }> = 
   estadistica: { nombre: "estadística", def: "Tests de hipótesis, Monte Carlo, p-valores" },
   leibniz: { nombre: "leibniz", def: "La conexión histórica con el binario europeo" },
   interdisciplinar: { nombre: "interdisciplinar", def: "Correspondencias con sistemas externos (requiere descargo)" },
+  combinatoria: { nombre: "combinatoria", def: "Conteo puro: cuántos objetos cumplen una regla (Fibonacci, Lucas, Pascal)" },
   "consulta-propia": { nombre: "consulta propia", def: "Opera sobre lecturas reales del usuario" },
 };
 
@@ -372,7 +375,7 @@ const BASE: Omit<Experimento, "n">[] = [
       "Un hexagrama está por debajo de otro si toda línea yang suya también lo es en el otro. Ese orden de dominancia forma un retículo de 7 niveles con las mismas 192 aristas del hipercubo, ahora orientadas hacia arriba: de Kun a Qian hay 720 caminos de ascenso.",
     simbolo: "⊑",
     categoria: "geometria",
-    etiquetas: ["hipercubo", "binario", "recorridos"],
+    etiquetas: ["hipercubo", "binario", "recorridos", "combinatoria"],
     tipo: "visualizacion",
     nivel: "avanzado",
     accent: "#8f7fd6",
@@ -548,7 +551,7 @@ const BASE: Omit<Experimento, "n">[] = [
       "Página de referencia con las cifras del hipercubo de los hexagramas: 46080 automorfismos (2⁶·6!), 2²⁶ secuencias de De Bruijn, la distribución C(6,k) por distancia, 720 cadenas. Los computables se verifican; los enormes (códigos Gray cíclicos de Q6) se citan a OEIS. Ninguna cifra sin fuente.",
     simbolo: "∞",
     categoria: "geometria",
-    etiquetas: ["hipercubo", "recorridos"],
+    etiquetas: ["hipercubo", "recorridos", "combinatoria"],
     tipo: "referencia",
     nivel: "intermedio",
     accent: "#8a9bb0",
@@ -620,6 +623,22 @@ const BASE: Omit<Experimento, "n">[] = [
     tipo: "visualizacion",
     nivel: "introductorio",
     accent: "#d99a4e",
+    estado: "activo",
+  },
+  {
+    slug: "fibonacci-hexagrama",
+    titulo: "Fibonacci en el hexagrama",
+    subtitulo: "Contar sin dos yin seguidos dibuja la sucesión",
+    comoUsar:
+      "Activa una regla (sin dos yin seguidos, sin dos yang, o ambas) y mira qué hexagramas sobreviven y cómo la cuenta dibuja Fibonacci.",
+    descripcion:
+      "Los hexagramas cuyas líneas yin nunca son adyacentes son exactamente 21 = F(8), y la escalera por número de líneas es F(n+2). Son los conjuntos independientes del camino de 6 vértices; en la versión circular, del ciclo, y el conteo baja a 18 = L(6). La intersección con la regla del yang deja solo Ji Ji y Wei Ji.",
+    simbolo: "斐",
+    categoria: "algebra",
+    etiquetas: ["combinatoria", "binario", "simetrias"],
+    tipo: "visualizacion",
+    nivel: "introductorio",
+    accent: "#5ab89a",
     estado: "activo",
   },
 ];

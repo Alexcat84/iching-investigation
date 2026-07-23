@@ -613,7 +613,7 @@ ETIQUETAS_VOCAB = {
     'hipercubo', 'binario', 'permutaciones', 'secuencias-historicas', 'trigramas',
     'hu-gua', 'simetrias', 'particiones', 'probabilidad', 'adivinacion', 'recorridos',
     'algebra-lineal', 'teoria-de-grupos', 'estadistica', 'leibniz', 'interdisciplinar',
-    'consulta-propia',
+    'combinatoria', 'consulta-propia',
 }
 TIPOS_VOCAB = {'visualizacion', 'simulador', 'calculadora', 'test', 'referencia'}
 NIVELES_VOCAB = {'introductorio', 'intermedio', 'avanzado'}
@@ -636,7 +636,7 @@ ETIQUETADO = {
     'ritual-milenrama': ('azar', ['adivinacion', 'probabilidad'], 'simulador', 'introductorio'),
     'dos-cielos':       ('historia', ['trigramas', 'permutaciones', 'simetrias'], 'visualizacion', 'intermedio'),
     'sombras-6-cubo':   ('geometria', ['hipercubo', 'simetrias'], 'visualizacion', 'intermedio'),
-    'reticulo-b6':      ('geometria', ['hipercubo', 'binario', 'recorridos'], 'visualizacion', 'avanzado'),
+    'reticulo-b6':      ('geometria', ['hipercubo', 'binario', 'recorridos', 'combinatoria'], 'visualizacion', 'avanzado'),
     'arbol-fuxi':       ('geometria', ['binario', 'secuencias-historicas', 'recorridos'], 'visualizacion', 'introductorio'),
     'bosque-nuclear':   ('algebra', ['hu-gua', 'particiones', 'hipercubo'], 'visualizacion', 'intermedio'),
     'matriz-nuclear':   ('algebra', ['hu-gua', 'algebra-lineal', 'binario'], 'visualizacion', 'avanzado'),
@@ -647,11 +647,12 @@ ETIQUETADO = {
     'comparador-sorteo': ('azar', ['adivinacion', 'probabilidad', 'estadistica'], 'simulador', 'introductorio'),
     'comparador-particiones': ('algebra', ['particiones', 'estadistica'], 'calculadora', 'avanzado'),
     'espectro-walsh': ('algebra', ['algebra-lineal', 'secuencias-historicas', 'estadistica'], 'test', 'avanzado'),
-    'conteos-astronomicos': ('geometria', ['hipercubo', 'recorridos'], 'referencia', 'intermedio'),
+    'conteos-astronomicos': ('geometria', ['hipercubo', 'recorridos', 'combinatoria'], 'referencia', 'intermedio'),
     'paseo-aleatorio': ('azar', ['probabilidad', 'recorridos', 'hipercubo'], 'simulador', 'intermedio'),
     'leibniz-documentos': ('historia', ['leibniz', 'binario'], 'referencia', 'introductorio'),
     'codones': ('algebra', ['interdisciplinar', 'binario'], 'visualizacion', 'intermedio'),
     'calendario-soberanos': ('historia', ['secuencias-historicas', 'recorridos', 'hipercubo'], 'visualizacion', 'introductorio'),
+    'fibonacci-hexagrama': ('algebra', ['combinatoria', 'binario', 'simetrias'], 'visualizacion', 'introductorio'),
 }
 
 
@@ -1246,7 +1247,7 @@ def verificar_miniaturas():
     mini = open(os.path.join(raiz, 'web', 'lib', 'miniaturas.tsx'), encoding='utf-8').read()
     slugs_registro = set(re.findall(r'slug:\s*"([a-z0-9-]+)"', reg))
     slugs_gen = set(re.findall(r'"([a-z0-9-]+)":\s*\(c\)\s*=>', mini))
-    assert len(slugs_registro) == 28, f'slugs en registro: {len(slugs_registro)}'
+    assert len(slugs_registro) == 29, f'slugs en registro: {len(slugs_registro)}'
     faltan = slugs_registro - slugs_gen
     huerfanos = slugs_gen - slugs_registro
     assert not faltan, f'slugs sin generador de miniatura: {sorted(faltan)}'
@@ -1271,9 +1272,9 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 6, 'historia': 8, 'algebra': 7, 'azar': 5, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 6, 'historia': 8, 'algebra': 8, 'azar': 5, 'practica': 2}, por_cat
 
-    # Con el catalogo completo (28 experimentos), el vocabulario de 17 debe estar
+    # Con el catalogo completo (29 experimentos), el vocabulario de 18 debe estar
     # totalmente cubierto: ninguna etiqueta muerta.
     sin_uso = ETIQUETAS_VOCAB - usadas
     assert sin_uso == set(), f'etiquetas del vocabulario sin uso: {sorted(sin_uso)}'
@@ -1326,7 +1327,8 @@ def verificar_fundamentos():
 
     claves_bib = set(re.findall(r'clave:\s*"([a-z0-9-]+)"', fund))
     esperadas = {'shaughnessy1996', 'nielsen2003', 'ryan1996', 'leibniz1703',
-                 'debruijn1946', 'fkm1978', 'oeis-a003042', 'knuth4a'}
+                 'debruijn1946', 'fkm1978', 'oeis-a003042', 'knuth4a',
+                 'oeis-a000045', 'oeis-a000032'}
     assert claves_bib == esperadas, claves_bib
 
     # (e) El render APA congelado esta, verbatim, en el documento (sin markdown).
@@ -1458,7 +1460,7 @@ def verificar_como_usar():
     bloques = re.findall(
         r'slug:\s*"([a-z0-9-]+)",.*?comoUsar:\s*\n?\s*"([^"]+)",.*?tipo:\s*"([a-z]+)",',
         reg, re.S)
-    assert len(bloques) == 28, f'entradas parseadas: {len(bloques)}'
+    assert len(bloques) == 29, f'entradas parseadas: {len(bloques)}'
 
     refs = [s for s, _, t in bloques if t == 'referencia']
     assert len(refs) == 2, f'experimentos de tipo referencia: {refs}'
