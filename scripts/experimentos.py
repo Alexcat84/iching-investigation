@@ -1374,6 +1374,72 @@ def verificar_fundamentos():
     print('   teorema/calculo enlazan seccion de suite; tradicion/reconstruccion/analogia con fuente  OK')
 
 
+# === 34. Fibonacci en el hexagrama ===
+def verificar_fibonacci():
+    """Los hexagramas sin lineas yin (o yang) adyacentes: conjuntos independientes del
+    camino P6 (y del ciclo C6 en la version circular). Espejo de web/lib/fibonacci.ts."""
+    from itertools import product
+
+    def bits(v):
+        return BY_VALUE[v]['bits']  # linea 1 (abajo, MSB) -> linea 6
+
+    def sin_dos(s, bit, circular=False):
+        if (bit + bit) in s:
+            return False
+        return not (circular and s[-1] == bit and s[0] == bit)
+
+    def fib(n):
+        a, b = 0, 1
+        for _ in range(n):
+            a, b = b, a + b
+        return a
+
+    def lucas(n):
+        a, b = 2, 1
+        for _ in range(n):
+            a, b = b, a + b
+        return a
+
+    # 1. Sin dos yin -> 21 = F(8); por simetria, sin dos yang -> 21.
+    sin_yin = [v for v in range(64) if sin_dos(bits(v), '0')]
+    sin_yang = [v for v in range(64) if sin_dos(bits(v), '1')]
+    assert len(sin_yin) == 21 == fib(8), len(sin_yin)
+    assert len(sin_yang) == 21, len(sin_yang)
+
+    # 2. Escalera n = 1..6: figuras de n lineas sin '00' -> F(n+2) = 2,3,5,8,13,21.
+    escalera = [sum(1 for t in product('01', repeat=n) if '00' not in ''.join(t)) for n in range(1, 7)]
+    assert escalera == [2, 3, 5, 8, 13, 21], escalera
+    assert escalera == [fib(n + 2) for n in range(1, 7)], escalera
+    assert escalera[2] == 5, 'con 3 lineas deben ser 5 trigramas'
+
+    # 3. Desglose de los 21 por k lineas yin -> 1,6,10,4 = C(7-k, k) (diagonales de Pascal).
+    desg = [0, 0, 0, 0]
+    for v in sin_yin:
+        desg[bits(v).count('0')] += 1
+    assert desg == [1, 6, 10, 4], desg
+    assert desg == [comb(7 - k, k) for k in range(4)], desg
+
+    # 4. Version circular (linea 6 vecina de la 1) -> 18 = L(6).
+    circ = [v for v in range(64) if sin_dos(bits(v), '0', circular=True)]
+    assert len(circ) == 18 == lucas(6), len(circ)
+
+    # 5. Interseccion (alternancia perfecta) = valores 42 y 21 = Ji Ji (63) y Wei Ji (64).
+    inter = sorted(set(sin_yin) & set(sin_yang))
+    assert inter == [21, 42], inter
+    assert sorted(BY_VALUE[v]['kw'] for v in inter) == [63, 64], inter
+
+    # 6. Marco formal: conjuntos independientes de P6 (lineal) y C6 (circular).
+    #    F(n+2) cuenta los independientes de P_n; L(n) los de C_n.
+    assert fib(8) == 21 and lucas(6) == 18
+
+    print('34. Fibonacci en el hexagrama')
+    print('   sin dos yin: 21 = F(8) | sin dos yang: 21 (simetria)  OK')
+    print(f'   escalera n=1..6: {escalera} = F(n+2); con 3 lineas, 5 trigramas  OK')
+    print('   desglose por yin 1,6,10,4 = C(7-k,k) (diagonales de Pascal, exp. 18)  OK')
+    print('   circular (C6): 18 = L(6)  OK')
+    print('   interseccion (alternancia): Ji Ji (63) y Wei Ji (64)  OK')
+
+
 # === 33. Pistas de uso (comoUsar) ===
 def verificar_como_usar():
     """Todo experimento no-referencia lleva una pista de uso concreta: no vacia, de 20 a
@@ -1512,6 +1578,8 @@ if __name__ == '__main__':
     verificar_fundamentos()
     print()
     verificar_como_usar()
+    print()
+    verificar_fibonacci()
     print()
     verificar_guiones()
     print()
