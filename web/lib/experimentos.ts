@@ -78,6 +78,7 @@ export type Etiqueta =
   | "leibniz"
   | "interdisciplinar"
   | "combinatoria"
+  | "fisica"
   | "consulta-propia";
 
 export const ETIQUETAS: Etiqueta[] = [
@@ -98,6 +99,7 @@ export const ETIQUETAS: Etiqueta[] = [
   "leibniz",
   "interdisciplinar",
   "combinatoria",
+  "fisica",
   "consulta-propia",
 ];
 
@@ -119,6 +121,7 @@ export const ETIQUETA_INFO: Record<Etiqueta, { nombre: string; def: string }> = 
   leibniz: { nombre: "leibniz", def: "La conexión histórica con el binario europeo" },
   interdisciplinar: { nombre: "interdisciplinar", def: "Correspondencias con sistemas externos (requiere descargo)" },
   combinatoria: { nombre: "combinatoria", def: "Conteo puro: cuántos objetos cumplen una regla (Fibonacci, Lucas, Pascal)" },
+  fisica: { nombre: "física", def: "Modelos de la física estadística sobre los hexagramas (Ising, energía, temperatura)" },
   "consulta-propia": { nombre: "consulta propia", def: "Opera sobre lecturas reales del usuario" },
 };
 
@@ -639,6 +642,72 @@ const BASE: Omit<Experimento, "n">[] = [
     tipo: "visualizacion",
     nivel: "introductorio",
     accent: "#5ab89a",
+    estado: "activo",
+  },
+  {
+    slug: "ising-hexagrama",
+    titulo: "El hexagrama como cadena de espines",
+    subtitulo: "El modelo de Ising sobre las seis líneas",
+    comoUsar:
+      "Mueve la temperatura y el signo de J y mira la probabilidad de Boltzmann pasar de uniforme a concentrarse en unos pocos hexagramas.",
+    descripcion:
+      "Un hexagrama es una cadena de 6 espines (yang = +1, yin = -1). Con energía E = -J por la suma de productos de líneas vecinas, las probabilidades de Boltzmann y la matriz de transferencia dan Z abierta = 199,384322 y Z de anillo = 262,456561 a beta = 0,7. Al enfriar se ordena gradualmente: en 1D no hay transición de fase (Ising, 1925).",
+    simbolo: "⇅",
+    categoria: "azar",
+    etiquetas: ["probabilidad", "hipercubo", "fisica"],
+    tipo: "simulador",
+    nivel: "intermedio",
+    accent: "#e2704b",
+    estado: "activo",
+    descargo:
+      "La conexión con el I Ching es identidad matemática de estructura (los mismos 64 estados, la misma matriz de transferencia que el experimento 29), no una afirmación física sobre el oráculo.",
+  },
+  {
+    slug: "entropia-oraculo",
+    titulo: "La entropía del oráculo",
+    subtitulo: "Cuánta información da cada método, en bits",
+    comoUsar:
+      "Compara la entropía de cada método barra a barra y separa cuánta información está en el valor yin/yang y cuánta en el movimiento.",
+    descripcion:
+      "Un hexagrama uniforme son 6 bits, el máximo para 64 estados. Una línea de monedas tiene 1,8113 bits y una de milenrama 1,7490: el método antiguo da 0,0623 bits menos por línea, y la diferencia vive toda en el movimiento, porque el valor yin/yang puro es 1 bit en ambos. La entropía de Shannon (1948), aplicada al oráculo.",
+    simbolo: "熵",
+    categoria: "azar",
+    etiquetas: ["probabilidad", "adivinacion", "estadistica"],
+    tipo: "visualizacion",
+    nivel: "introductorio",
+    accent: "#d98f6b",
+    estado: "activo",
+  },
+  {
+    slug: "matriz-transferencia",
+    titulo: "La matriz de transferencia: diseña tu regla",
+    subtitulo: "Elige qué líneas pueden ir juntas y cuenta",
+    comoUsar:
+      "Elige qué adyacencias de líneas permites y mira la matriz, sus potencias, la sucesión de conteos y su autovalor dominante.",
+    descripcion:
+      "Generaliza el experimento 29: cada regla de adyacencia entre líneas es una matriz 2x2 cuyas potencias dan los conteos por número de líneas, cuya traza da los cíclicos y cuyo autovalor dominante es la razón de crecimiento (φ para Fibonacci, 2 para libre). Con la sección de Catalan y por qué la transformada z sí aplica al I Ching y la de Laplace no.",
+    simbolo: "T",
+    categoria: "algebra",
+    etiquetas: ["combinatoria", "algebra-lineal", "binario"],
+    tipo: "calculadora",
+    nivel: "avanzado",
+    accent: "#8f7fd6",
+    estado: "activo",
+  },
+  {
+    slug: "espectro-q6",
+    titulo: "El espectro del hipercubo",
+    subtitulo: "Los autovalores de Q6 son los niveles de yang",
+    comoUsar:
+      "Recorre los siete autovalores del hipercubo con su multiplicidad y compáralos con los niveles del retículo y con el paseo aleatorio.",
+    descripcion:
+      "Los autovalores de la matriz de adyacencia de Q6 son 6-2k con multiplicidad C(6,k): {6:1, 4:6, 2:15, 0:20, -2:15, -4:6, -6:1}. Las multiplicidades son los niveles de yang del retículo B6, y el espectro del paseo aleatorio simple es este dividido por 6, lo que explica su velocidad de mezcla desde el teorema.",
+    simbolo: "λ",
+    categoria: "algebra",
+    etiquetas: ["algebra-lineal", "hipercubo"],
+    tipo: "visualizacion",
+    nivel: "avanzado",
+    accent: "#7f8fd0",
     estado: "activo",
   },
 ];

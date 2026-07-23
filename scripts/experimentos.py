@@ -613,7 +613,7 @@ ETIQUETAS_VOCAB = {
     'hipercubo', 'binario', 'permutaciones', 'secuencias-historicas', 'trigramas',
     'hu-gua', 'simetrias', 'particiones', 'probabilidad', 'adivinacion', 'recorridos',
     'algebra-lineal', 'teoria-de-grupos', 'estadistica', 'leibniz', 'interdisciplinar',
-    'combinatoria', 'consulta-propia',
+    'combinatoria', 'fisica', 'consulta-propia',
 }
 TIPOS_VOCAB = {'visualizacion', 'simulador', 'calculadora', 'test', 'referencia'}
 NIVELES_VOCAB = {'introductorio', 'intermedio', 'avanzado'}
@@ -653,6 +653,10 @@ ETIQUETADO = {
     'codones': ('algebra', ['interdisciplinar', 'binario'], 'visualizacion', 'intermedio'),
     'calendario-soberanos': ('historia', ['secuencias-historicas', 'recorridos', 'hipercubo'], 'visualizacion', 'introductorio'),
     'fibonacci-hexagrama': ('algebra', ['combinatoria', 'binario', 'simetrias'], 'visualizacion', 'introductorio'),
+    'ising-hexagrama': ('azar', ['probabilidad', 'hipercubo', 'fisica'], 'simulador', 'intermedio'),
+    'entropia-oraculo': ('azar', ['probabilidad', 'adivinacion', 'estadistica'], 'visualizacion', 'introductorio'),
+    'matriz-transferencia': ('algebra', ['combinatoria', 'algebra-lineal', 'binario'], 'calculadora', 'avanzado'),
+    'espectro-q6': ('algebra', ['algebra-lineal', 'hipercubo'], 'visualizacion', 'avanzado'),
 }
 
 
@@ -1282,7 +1286,7 @@ def verificar_miniaturas():
     mini = open(os.path.join(raiz, 'web', 'lib', 'miniaturas.tsx'), encoding='utf-8').read()
     slugs_registro = set(re.findall(r'slug:\s*"([a-z0-9-]+)"', reg))
     slugs_gen = set(re.findall(r'"([a-z0-9-]+)":\s*\(c\)\s*=>', mini))
-    assert len(slugs_registro) == 29, f'slugs en registro: {len(slugs_registro)}'
+    assert len(slugs_registro) == 33, f'slugs en registro: {len(slugs_registro)}'
     faltan = slugs_registro - slugs_gen
     huerfanos = slugs_gen - slugs_registro
     assert not faltan, f'slugs sin generador de miniatura: {sorted(faltan)}'
@@ -1307,9 +1311,9 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 6, 'historia': 8, 'algebra': 8, 'azar': 5, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 6, 'historia': 8, 'algebra': 10, 'azar': 7, 'practica': 2}, por_cat
 
-    # Con el catalogo completo (29 experimentos), el vocabulario de 18 debe estar
+    # Con el catalogo completo (33 experimentos), el vocabulario de 19 debe estar
     # totalmente cubierto: ninguna etiqueta muerta.
     sin_uso = ETIQUETAS_VOCAB - usadas
     assert sin_uso == set(), f'etiquetas del vocabulario sin uso: {sorted(sin_uso)}'
@@ -1363,7 +1367,7 @@ def verificar_fundamentos():
     claves_bib = set(re.findall(r'clave:\s*"([a-z0-9-]+)"', fund))
     esperadas = {'shaughnessy1996', 'nielsen2003', 'ryan1996', 'leibniz1703',
                  'debruijn1946', 'fkm1978', 'oeis-a003042', 'knuth4a',
-                 'oeis-a000045', 'oeis-a000032'}
+                 'oeis-a000045', 'oeis-a000032', 'shannon1948', 'ising1925'}
     assert claves_bib == esperadas, claves_bib
 
     # (e) El render APA congelado esta, verbatim, en el documento (sin markdown).
@@ -1498,6 +1502,157 @@ def verificar_fibonacci():
     print(f'   razones {[round(r, 3) for r in razones]} = F(n+3)/F(n+2) -> phi  OK')
 
 
+# === 35. El hexagrama como cadena de espines (Ising) ===
+def verificar_ising():
+    """Exp 30: 6 espines (yang +1, yin -1), matriz de transferencia (Ising 1D)."""
+    import math
+
+    def bits(v):
+        return format(v, '06b')
+
+    def spins(v):
+        return [1 if c == '1' else -1 for c in bits(v)]
+
+    def matmul(A, B):
+        return [[sum(A[i][k] * B[k][j] for k in range(2)) for j in range(2)] for i in range(2)]
+
+    def matpow(A, p):
+        R = [[1, 0], [0, 1]]
+        for _ in range(p):
+            R = matmul(R, A)
+        return R
+
+    b, J = 0.7, 1.0
+    T = [[math.exp(b * J), math.exp(-b * J)], [math.exp(-b * J), math.exp(b * J)]]
+    T5 = matpow(T, 5)
+    Zab = sum(T5[i][j] for i in range(2) for j in range(2))
+    T6 = matpow(T, 6)
+    Zpe = T6[0][0] + T6[1][1]
+    assert abs(Zab - 199.384322) < 1e-4, Zab
+    assert abs(Zpe - 262.456561) < 1e-4, Zpe
+    Zab_e = sum(math.exp(b * J * sum(spins(v)[i] * spins(v)[i + 1] for i in range(5))) for v in range(64))
+    assert abs(Zab - Zab_e) < 1e-6
+    T05 = matpow([[1, 1], [1, 1]], 5)
+    assert sum(T05[i][j] for i in range(2) for j in range(2)) == 64
+    for signo, esperado in [(1, {0, 63}), (-1, {21, 42})]:
+        w = [math.exp(8.0 * signo * J * sum(spins(v)[i] * spins(v)[i + 1] for i in range(5))) for v in range(64)]
+        top2 = sorted(range(64), key=lambda v: -w[v])[:2]
+        assert set(top2) == esperado, (signo, top2)
+        Z = sum(w)
+        assert all(abs(w[t] / Z - 0.5) < 1e-3 for t in top2)
+    dura = [v for v in range(64) if '00' not in bits(v)]
+    anillo = [v for v in range(64) if '00' not in bits(v) and not (bits(v)[0] == '0' and bits(v)[5] == '0')]
+    assert len(dura) == 21 and len(anillo) == 18
+    tr, det = 1, -1
+    phi = (tr + math.sqrt(tr * tr - 4 * det)) / 2
+    assert abs(phi - 1.618034) < 1e-5, phi
+
+    print('35. El hexagrama como cadena de espines (Ising)')
+    print(f'   Z abierta 1T^5 1 = {Zab:.6f} | Z periodica Tr(T^6) = {Zpe:.6f}  OK')
+    print('   beta a cero: Z = 64 (uniforme); baja T: J>0 Qian/Kun 50/50, J<0 Ji Ji/Wei Ji 50/50  OK')
+    print(f'   restriccion dura: 21 (F8) cadena, 18 (L6) anillo, autovalor phi = {phi:.6f}  OK')
+
+
+# === 36. La entropia del oraculo (Shannon) ===
+def verificar_entropia():
+    """Exp 31: entropia de Shannon (bits) de los metodos del oraculo."""
+    import math
+
+    def Hb(ps):
+        return -sum(p * math.log2(p) for p in ps if p > 0)
+
+    ses = {'monedas': {9: 2, 8: 6, 7: 6, 6: 2}, 'milenrama': {9: 3, 8: 7, 7: 5, 6: 1}}
+    linea = lambda m: Hb([ses[m][e] / 16 for e in (6, 7, 8, 9)])
+    valor = lambda m: Hb([(ses[m][7] + ses[m][9]) / 16, (ses[m][6] + ses[m][8]) / 16])
+    assert abs(math.log2(64) - 6) < 1e-12
+    hl_mon, hl_mil = linea('monedas'), linea('milenrama')
+    assert abs(hl_mon - 1.8113) < 1e-3, hl_mon
+    assert abs(hl_mil - 1.7490) < 1e-3, hl_mil
+    assert abs((hl_mon - hl_mil) - 0.0623) < 1e-3
+    assert abs(valor('monedas') - 1) < 1e-9 and abs(valor('milenrama') - 1) < 1e-9
+    est_mil, est_mon = 6 * Hb([1 / 4, 3 / 4]), 6 * Hb([1 / 2, 1 / 2])
+    assert abs(est_mil - 4.8677) < 1e-3, est_mil
+    assert abs(est_mon - 6) < 1e-9
+
+    print('36. La entropia del oraculo (Shannon)')
+    print('   hexagrama uniforme = 6 bits (maximo para 64 estados)  OK')
+    print(f'   linea: monedas {hl_mon:.4f} vs milenrama {hl_mil:.4f} bits (dif {hl_mon - hl_mil:.4f}); valor = 1 bit en ambos  OK')
+    print(f'   estacionaria: milenrama {est_mil:.4f} = 6 H(1/4) vs monedas {est_mon:.1f}  OK')
+
+
+# === 37. La matriz de transferencia ===
+def verificar_transferencia():
+    """Exp 32: reglas de adyacencia como matrices 2x2; conteos y Catalan."""
+    import math
+
+    def matmul(A, B):
+        return [[sum(A[i][k] * B[k][j] for k in range(2)) for j in range(2)] for i in range(2)]
+
+    def matpow(M, p):
+        R = [[1, 0], [0, 1]]
+        for _ in range(p):
+            R = matmul(R, M)
+        return R
+
+    conteo = lambda M, n: sum(matpow(M, n - 1)[i][j] for i in range(2) for j in range(2))
+    cicl = lambda M, n: matpow(M, n)[0][0] + matpow(M, n)[1][1]
+
+    def eig(M):
+        tr = M[0][0] + M[1][1]
+        det = M[0][0] * M[1][1] - M[0][1] * M[1][0]
+        return (tr + math.sqrt(max(0, tr * tr - 4 * det))) / 2
+
+    presets = {'sin dos yin': [[0, 1], [1, 1]], 'sin dos yang': [[1, 1], [1, 0]],
+               'todo permitido': [[1, 1], [1, 1]], 'solo alternancia': [[0, 1], [1, 0]]}
+    assert [conteo(presets['sin dos yin'], n) for n in range(1, 7)] == [2, 3, 5, 8, 13, 21]
+    assert [conteo(presets['sin dos yang'], n) for n in range(1, 7)] == [2, 3, 5, 8, 13, 21]
+    assert [conteo(presets['todo permitido'], n) for n in range(1, 7)] == [2, 4, 8, 16, 32, 64]
+    assert [conteo(presets['solo alternancia'], n) for n in range(1, 7)] == [2, 2, 2, 2, 2, 2]
+    assert abs(eig(presets['sin dos yin']) - 1.618034) < 1e-5
+    assert abs(eig(presets['todo permitido']) - 2) < 1e-9
+    assert abs(eig(presets['solo alternancia']) - 1) < 1e-9
+    assert cicl(presets['sin dos yin'], 6) == 18  # Lucas
+
+    def dyck(v):
+        s = format(v, '06b')
+        if s.count('1') != 3:
+            return False
+        bal = 0
+        for c in s:
+            bal += 1 if c == '1' else -1
+            if bal < 0:
+                return False
+        return True
+
+    cat = sorted(v for v in range(64) if dyck(v))
+    assert cat == [42, 44, 50, 52, 56], cat
+
+    print('37. La matriz de transferencia: disena tu regla')
+    print('   presets: sin yin/sin yang [2,3,5,8,13,21] phi; libre 2^n autovalor 2; alternancia autovalor 1  OK')
+    print('   version ciclica de sin dos yin: Tr = 18 = L(6)  OK')
+    print(f'   Catalan C3 = 5: {cat} (yang nunca detras de yin, balance 3-3)  OK')
+
+
+# === 38. El espectro del hipercubo Q6 ===
+def verificar_espectro_q6():
+    """Exp 33: autovalores de la adyacencia de Q6 = 6-2k con multiplicidad C(6,k)."""
+    from collections import Counter
+    pc = lambda x: bin(x).count('1')
+    espectro = Counter(6 - 2 * pc(w) for w in range(64))
+    esperado = {6 - 2 * k: comb(6, k) for k in range(7)}
+    assert dict(espectro) == esperado, dict(espectro)
+    chi = lambda w, v: -1 if bin(w & v).count('1') & 1 else 1
+    for w in (0, 1, 3, 7, 21, 63):
+        for v in range(64):
+            img = sum(chi(w, v ^ (1 << k)) for k in range(6))
+            assert img == (6 - 2 * pc(w)) * chi(w, v)
+    assert [comb(6, k) for k in range(7)] == [1, 6, 15, 20, 15, 6, 1]
+
+    print('38. El espectro del hipercubo Q6')
+    print(f'   autovalores 6-2k con multiplicidad C(6,k): {dict(sorted(espectro.items(), reverse=True))}  OK')
+    print('   multiplicidades = niveles de yang del reticulo B6; paseo simple = espectro / 6  OK')
+
+
 # === 33. Pistas de uso (comoUsar) ===
 def verificar_como_usar():
     """Todo experimento no-referencia lleva una pista de uso concreta: no vacia, de 20 a
@@ -1516,7 +1671,7 @@ def verificar_como_usar():
     bloques = re.findall(
         r'slug:\s*"([a-z0-9-]+)",.*?comoUsar:\s*\n?\s*"([^"]+)",.*?tipo:\s*"([a-z]+)",',
         reg, re.S)
-    assert len(bloques) == 29, f'entradas parseadas: {len(bloques)}'
+    assert len(bloques) == 33, f'entradas parseadas: {len(bloques)}'
 
     refs = [s for s, _, t in bloques if t == 'referencia']
     assert len(refs) == 2, f'experimentos de tipo referencia: {refs}'
@@ -1638,6 +1793,14 @@ if __name__ == '__main__':
     verificar_como_usar()
     print()
     verificar_fibonacci()
+    print()
+    verificar_ising()
+    print()
+    verificar_entropia()
+    print()
+    verificar_transferencia()
+    print()
+    verificar_espectro_q6()
     print()
     verificar_guiones()
     print()

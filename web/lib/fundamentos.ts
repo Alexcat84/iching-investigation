@@ -26,7 +26,9 @@ export type ClaveBiblio =
   | "oeis-a003042"
   | "knuth4a"
   | "oeis-a000045"
-  | "oeis-a000032";
+  | "oeis-a000032"
+  | "shannon1948"
+  | "ising1925";
 
 export type TipoFicha = "libro" | "articulo" | "actas" | "obra-referencia" | "recurso-web";
 
@@ -182,6 +184,35 @@ export const BIBLIOGRAFIA: Record<ClaveBiblio, Ficha> = {
     orden: "OEIS Lucas",
     apa: "OEIS Foundation Inc. (s.f.). Sequence A000032: Lucas numbers. The On-Line Encyclopedia of Integer Sequences. https://oeis.org/A000032",
   },
+  shannon1948: {
+    clave: "shannon1948",
+    tipo: "articulo",
+    autores: "Shannon, C. E.",
+    anio: "1948",
+    titulo: "A mathematical theory of communication",
+    contenedor: "Bell System Technical Journal",
+    volumen: "27",
+    numero: "3",
+    paginas: "379–423",
+    doi: "https://doi.org/10.1002/j.1538-7305.1948.tb01338.x",
+    citaCorta: "Shannon, 1948",
+    orden: "Shannon",
+    apa: "Shannon, C. E. (1948). A mathematical theory of communication. Bell System Technical Journal, 27(3), 379–423. https://doi.org/10.1002/j.1538-7305.1948.tb01338.x",
+  },
+  ising1925: {
+    clave: "ising1925",
+    tipo: "articulo",
+    autores: "Ising, E.",
+    anio: "1925",
+    titulo: "Beitrag zur Theorie des Ferromagnetismus",
+    contenedor: "Zeitschrift für Physik",
+    volumen: "31",
+    paginas: "253–258",
+    doi: "https://doi.org/10.1007/BF02980577",
+    citaCorta: "Ising, 1925",
+    orden: "Ising",
+    apa: "Ising, E. (1925). Beitrag zur Theorie des Ferromagnetismus. Zeitschrift für Physik, 31, 253–258. https://doi.org/10.1007/BF02980577",
+  },
 };
 
 /** Render APA unico, aplicado en todas partes (nunca formatos a mano por pagina). */
@@ -191,7 +222,7 @@ export function renderAPA(f: Ficha): string {
     case "libro":
       return `${cab}${f.titulo}. ${f.editorial}.${f.isbn ? ` ISBN ${f.isbn}.` : ""}`;
     case "articulo":
-      return `${cab}${f.titulo}. ${f.contenedor}, ${f.volumen}(${f.numero}), ${f.paginas}.${f.doi ? ` ${f.doi}` : ""}`;
+      return `${cab}${f.titulo}. ${f.contenedor}, ${f.volumen}${f.numero ? `(${f.numero})` : ""}, ${f.paginas}.${f.doi ? ` ${f.doi}` : ""}`;
     case "actas":
       return `${cab}${f.titulo}. ${f.contenedor}, ${f.volumen}, ${f.paginas}.`;
     case "obra-referencia":
@@ -350,6 +381,19 @@ export const AFIRMACIONES: Afirmacion[] = [
   a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", ["oeis-a000045"], "Los hexagramas sin dos yin consecutivos (y, por simetria, sin dos yang) son exactamente 21 = F(8); contando por numero de lineas, la escalera es 2, 3, 5, 8, 13, 21 = F(n+2)."),
   a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", ["oeis-a000032"], "En la version circular (la linea 6 vecina de la linea 1) los supervivientes son 18 = L(6), el numero de Lucas."),
   a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", [], "La interseccion de ambas reglas (alternancia perfecta) son exactamente Ji Ji y Wei Ji, y el desglose de los 21 por numero de yin es 1, 6, 10, 4 = C(7-k, k), la identidad de Fibonacci en el triangulo de Pascal.", { nota: "Teorema de conteo, no un codigo oculto: la numerologia de Fibonacci y la razon aurea en el I Ching queda fuera por indemostrable." }),
+  a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", [], "La misma cuenta se generaliza con una matriz de transferencia 2x2 (experimento 32): la regla sin dos yin es un caso y su autovalor dominante es phi."),
+
+  a("ising-hexagrama", "calculo", "verificar_ising", ["ising1925"], "Con la matriz de transferencia T (beta = 0,7, J = 1), la funcion de particion de cadena abierta es 1ᵀT⁵1 = 199,384322 y la de anillo Tr(T⁶) = 262,456561; con beta a cero, Z = 64 y la distribucion es uniforme.", { nombreTeorema: "Modelo de Ising (1925)" }),
+  a("ising-hexagrama", "teorema", "verificar_ising", [], "A temperatura baja con J positivo dominan Qian y Kun al 50/50, y con J negativo Ji Ji y Wei Ji; la restriccion dura (sin yin-yin adyacente) reproduce F(8) en cadena y L(6) en anillo, con autovalor dominante phi, la misma matriz de transferencia del experimento 29."),
+  a("ising-hexagrama", "tradicion", null, ["ising1925"], "El modelo, planteado por Lenz en 1920, lo resolvio Ising en 1925 en una dimension y demostro que en 1D no hay transicion de fase: la cadena se ordena gradualmente al enfriar.", { nota: "La conexion con el I Ching es identidad matematica de estructura, no una afirmacion fisica sobre el oraculo." }),
+
+  a("entropia-oraculo", "calculo", "verificar_entropia", ["shannon1948"], "Un hexagrama uniforme son exactamente 6 bits (el maximo para 64 estados); una linea de monedas tiene 1,8113 bits y una de milenrama 1,7490, y la diferencia de 0,0623 vive toda en el movimiento porque el valor yin/yang es 1 bit en ambos.", { nombreTeorema: "Entropía de Shannon (1948)" }),
+  a("entropia-oraculo", "calculo", "verificar_entropia", ["shannon1948"], "La estacionaria de la cadena de milenrama tiene 4,8677 = 6 H(1/4) bits, contra los 6 de la uniforme de monedas."),
+
+  a("matriz-transferencia", "teorema", "verificar_transferencia", [], "Cada regla de adyacencia entre lineas es una matriz 2x2; sus potencias dan los conteos por numero de lineas, su traza los ciclicos y su autovalor dominante la razon de crecimiento (phi para las reglas de Fibonacci, 2 para la libre, 1 para la alternancia)."),
+  a("matriz-transferencia", "teorema", "verificar_transferencia", [], "Los hexagramas balanceados donde el yang nunca va por detras del yin son exactamente C₃ = 5, los valores 42, 44, 50, 52 y 56 (numeros de Catalan): es la transformada z del conteo, no la de Laplace, porque no hay tiempo continuo."),
+
+  a("espectro-q6", "teorema", "verificar_espectro_q6", [], "Los autovalores de la adyacencia de Q6 son 6-2k con multiplicidad C(6,k): las multiplicidades son los niveles de yang del reticulo B6 (exp. 13) y el espectro del paseo simple (exp. 25) es este dividido por 6, lo que fija su velocidad de mezcla.", { nombreTeorema: "Teoría espectral de grafos" }),
 ];
 
 // === Consultas ===

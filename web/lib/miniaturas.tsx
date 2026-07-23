@@ -13,6 +13,10 @@ import type { ReactNode } from "react";
 import { bitsOf, gray, hex, lineBit, LINE_COLOR, type TrigramName } from "./iching";
 import { SOBERANOS, LINEAS_CAMBIO } from "./soberanos";
 import { ESCALERA } from "./fibonacci";
+import { probsBoltzmann } from "./ising";
+import { entropiaLinea } from "./entropia";
+import { PRESETS } from "./transferencia";
+import { ESPECTRO } from "./espectro-q6";
 import { SECUENCIA } from "./debruijn";
 import { sierpinski } from "./grupo";
 import { M } from "./matriz-nuclear";
@@ -478,6 +482,50 @@ export const GENERADORES: Record<string, Generador> = {
       </>
     );
   },
+  "ising-hexagrama": (c) => {
+    const p = probsBoltzmann(1, 1, false);
+    const max = Math.max(...p);
+    return (
+      <>
+        {Array.from({ length: 64 }, (_, v) => {
+          const [x, y] = anilloPos(v);
+          const r = 0.8 + (p[v] / max) * 3.4;
+          return <circle key={v} cx={x} cy={y} r={r} fill={r > 2.6 ? c : TENUE} />;
+        })}
+      </>
+    );
+  },
+  "entropia-oraculo": (c) => {
+    const hs = [entropiaLinea("monedas"), entropiaLinea("milenrama")];
+    const max = 2;
+    return (
+      <>
+        <line x1={44} y1={H - 16 - (1 / max) * 88} x2={176} y2={H - 16 - (1 / max) * 88} stroke={DIM} strokeWidth={0.8} strokeDasharray="3 2" />
+        {hs.map((h, i) => (
+          <rect key={i} x={72 + i * 46} y={H - 16 - (h / max) * 88} width={30} height={(h / max) * 88} rx={2} fill={i === 0 ? GRIS : c} />
+        ))}
+      </>
+    );
+  },
+  "matriz-transferencia": (c) =>
+    PRESETS[0].M.flatMap((row, i) =>
+      row.map((val, j) => (
+        <rect key={`${i}-${j}`} x={CX - 30 + j * 30} y={CY - 30 + i * 30} width={26} height={26} rx={3}
+          fill={val ? c : "none"} stroke={val ? c : DIM} strokeWidth={1.2} opacity={val ? 0.9 : 1} />
+      )),
+    ),
+  "espectro-q6": (c) =>
+    ESPECTRO.map((n, i) => {
+      const y = 12 + i * 15;
+      const dot = n.autovalor === 0 ? c : GRIS;
+      return (
+        <g key={i}>
+          {Array.from({ length: n.mult }, (_, m) => (
+            <circle key={m} cx={34 + m * 7.6} cy={y} r={1.7} fill={dot} />
+          ))}
+        </g>
+      );
+    }),
 };
 
 export const MINIATURA_SLUGS = Object.keys(GENERADORES);
@@ -495,5 +543,5 @@ export function Miniatura({ slug, color }: { slug: string; color: string }) {
 // Aserción en desarrollo.
 if (process.env.NODE_ENV !== "production") {
   if (puros.length !== 8) console.error("[miniaturas] deberían ser 8 hexagramas puros");
-  if (MINIATURA_SLUGS.length !== 29) console.error("[miniaturas] se esperaban 29 generadores");
+  if (MINIATURA_SLUGS.length !== 33) console.error("[miniaturas] se esperaban 33 generadores");
 }
