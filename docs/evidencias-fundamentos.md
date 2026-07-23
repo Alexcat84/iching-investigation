@@ -1,6 +1,6 @@
 # Evidencias de soporte y bibliografía verificada
 
-Documento de respaldo para el sistema de fundamentos del laboratorio. Cada ficha bibliográfica de la sección B fue verificada en línea el 22 de julio de 2026 contra catálogos, editoriales o bases académicas (se indica cómo). Regla de oro heredada del sitio: ninguna afirmación sin respaldo; y regla nueva de este documento: **ninguna referencia citada de memoria**. Lo que no está aquí verificado, se verifica antes de commitear o no se cita.
+Documento de respaldo para el sistema de fundamentos del laboratorio. Cada ficha bibliográfica de la sección B fue verificada en línea el 22 y el 23 de julio de 2026 contra catálogos, editoriales o bases académicas (se indica cómo). Regla de oro heredada del sitio: ninguna afirmación sin respaldo; y regla nueva de este documento: **ninguna referencia citada de memoria**. Lo que no está aquí verificado, se verifica antes de commitear o no se cita.
 
 ## A. Los cinco tipos de afirmación y su respaldo
 
@@ -38,6 +38,12 @@ Ya citada en el experimento 24 y verificada en esa entrega. Fundamenta: los cont
 **[knuth4a]** Knuth, D. E. (2011). *The art of computer programming: Vol. 4A. Combinatorial algorithms, Part 1*. Addison-Wesley.
 Verificación: citada de forma consistente en la literatura revisada de secuencias De Bruijn. Fundamenta: referencia general para códigos Gray y secuencias De Bruijn (opcional, tipo 3).
 
+**[oeis-a000045]** OEIS Foundation Inc. (s.f.). *Sequence A000045: Fibonacci numbers*. The On-Line Encyclopedia of Integer Sequences. https://oeis.org/A000045
+Verificación: consultada en línea el 23 de julio de 2026 vía la API de OEIS; nombre "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1" y términos 0, 1, 1, 2, 3, 5, 8, 13, 21 confirmados. Fundamenta: experimento 29 (los supervivientes por regla son 21 = F(8) y la escalera es F(n+2)), como fuente complementaria de la sucesión (tipo 1 con fuente).
+
+**[oeis-a000032]** OEIS Foundation Inc. (s.f.). *Sequence A000032: Lucas numbers*. The On-Line Encyclopedia of Integer Sequences. https://oeis.org/A000032
+Verificación: consultada en línea el 23 de julio de 2026 vía la API de OEIS; nombre "Lucas numbers beginning at 2: L(n) = L(n-1) + L(n-2), L(0) = 2, L(1) = 1" y términos 2, 1, 3, 4, 7, 11, 18 confirmados. Fundamenta: experimento 29 (la versión circular da 18 = L(6)), como fuente complementaria (tipo 1 con fuente).
+
 **[wilhelm]** Wilhelm, R. (1924). *I Ging: Das Buch der Wandlungen*. Eugen Diederichs. [Versión castellana: Vogelmann, D. J. (Trad.). (1975). *I Ching: El libro de las mutaciones*. Sudamericana.]
 ⚠ PENDIENTE DE VERIFICACIÓN FINAL: la ficha alemana y la existencia de la versión de Vogelmann son sólidas, pero la edición y año exactos de la castellana deben confirmarse en línea antes de commitear la ficha. Fundamenta: los nombres en español de los hexagramas usados en todo el sitio (tipo 3).
 
@@ -65,6 +71,11 @@ Verificación: citada de forma consistente en la literatura revisada de secuenci
 - "Existe un anillo de 64 bits que contiene los 64 hexagramas exactamente una vez" → tipo 1 → suite + [debruijn1946].
 - "La construcción canónica usada es la FKM (mínima lexicográfica)" → tipo 1 con fuente → [fkm1978].
 - Conteo 2^26 → tipo 1 → suite (fórmula) + [debruijn1946].
+
+**Bloque Fibonacci en el hexagrama** (exp. 29)
+- "Los hexagramas sin dos yin consecutivos (y, por simetría, sin dos yang) son exactamente 21 = F(8); contando por número de líneas, la escalera es 2, 3, 5, 8, 13, 21 = F(n+2)" → tipo 1 → suite (verificar_fibonacci) + [oeis-a000045] para la sucesión.
+- "La versión circular (la línea 6 vecina de la 1) da 18 = L(6)" → tipo 1 → suite + [oeis-a000032].
+- "La intersección de ambas reglas (alternancia perfecta) son exactamente Ji Ji y Wei Ji, y el desglose de los 21 por número de líneas yin es 1, 6, 10, 4 = C(7-k, k), la identidad de Fibonacci como suma de diagonales del triángulo de Pascal (conecta con el experimento 18)" → tipo 1 → suite. Descargo: es un teorema de conteo, no un código oculto; la numerología de Fibonacci y la razón áurea en el I Ching queda fuera por indemostrable.
 
 **Bloque probabilidades del oráculo** (exps. 04, 10, 20, 21)
 - "Las probabilidades de la milenrama son 1/16, 5/16, 7/16, 3/16 bajo el supuesto de restos uniformes" → tipo 2 → derivación propia del procedimiento del Gran Comentario (Xici), asertada en la suite; el procedimiento mismo → tipo 3 → [wilhelm] (una vez verificada la ficha).
