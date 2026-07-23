@@ -11,6 +11,8 @@ import {
   BIBLIOGRAFIA,
 } from "@/lib/fundamentos";
 import { InsigniaTeorema } from "@/components/Fundamento";
+import { SelloHallazgo } from "@/components/SelloHallazgo";
+import { HALLAZGOS_PROPIOS, CATEGORIA_INFO } from "@/lib/experimentos";
 
 export const metadata: Metadata = {
   title: "Fundamentos y fuentes",
@@ -138,6 +140,36 @@ export default function FundamentosPage() {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* Hallazgos propios */}
+      <section id="hallazgos" className="mb-10 scroll-mt-24">
+        <div className="mb-3 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em]" style={{ color: "#C24C33" }}>
+          <SelloHallazgo tamano={16} /> Hallazgos propios
+        </div>
+        <p className="mb-3 max-w-2xl text-[14px] leading-relaxed text-sand-400">
+          Resultados originales del laboratorio que, tras una búsqueda documentada, no hemos
+          encontrado publicados en otra parte. Es un marcador ortogonal: el experimento
+          conserva su categoría temática. Un experimento recibe el sello 印 solo si cumple
+          las tres reglas: (a) sus afirmaciones centrales son tipo teorema o cálculo,
+          asertadas en la suite; (b) hay una búsqueda de originalidad con fecha y nota; (c)
+          el copy lo dice con la humildad exacta del descargo del experimento 29: «hasta
+          donde sabemos», «no hemos encontrado la fuente, no que no exista».
+        </p>
+        <div className="space-y-3">
+          {HALLAZGOS_PROPIOS.map((e) => (
+            <div key={e.slug} className="rounded-lg border p-3" style={{ borderColor: "#C24C3355", background: "rgba(194,76,51,0.05)" }}>
+              <div className="mb-1 flex flex-wrap items-baseline gap-2">
+                <SelloHallazgo tamano={14} />
+                <Link href={`/experimentos/${e.slug}`} className="text-sand-100 decoration-1 underline-offset-2 hover:underline" style={{ textDecorationColor: "#C24C33" }}>
+                  {e.titulo}
+                </Link>
+                <span className="font-mono text-[10px] text-sand-600">también en {CATEGORIA_INFO[e.categoria].nombre} · búsqueda del {e.hallazgoPropio?.busquedaFecha}</span>
+              </div>
+              <p className="text-[13px] leading-relaxed text-sand-400">{e.hallazgoPropio?.busquedaNota}</p>
+            </div>
+          ))}
         </div>
       </section>
 

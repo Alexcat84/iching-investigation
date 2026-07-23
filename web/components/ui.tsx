@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { PistaDeUso } from "./PistaDeUso";
+import { SelloCabecera } from "./SelloCabecera";
 
 /** Encabezado estándar de cada página de experimento. */
 export function ExperimentHeader({
@@ -35,6 +36,7 @@ export function ExperimentHeader({
         <p className="mt-2 font-mono text-sm text-sand-400">{subtitulo}</p>
       )}
       <PistaDeUso />
+      <SelloCabecera />
     </header>
   );
 }

@@ -10,6 +10,8 @@ import {
   TIPO_AFIRMACION_INFO,
   type Afirmacion,
 } from "@/lib/fundamentos";
+import { getExperimento } from "@/lib/experimentos";
+import { SelloHallazgo } from "./SelloHallazgo";
 
 /** Insignia de teorema nombrado (cinabrio, destacada). */
 export function InsigniaTeorema({ nombre }: { nombre: string }) {
@@ -97,6 +99,7 @@ export function Fundamento({ slug }: { slug: string }) {
   const [open, setOpen] = useState(false);
   if (afs.length === 0) return null;
   const panelId = `fundamento-${slug}`;
+  const hallazgo = getExperimento(slug)?.hallazgoPropio;
   return (
     <section className="mt-12 border-t border-ink-700/70 pt-6">
       <button
@@ -127,6 +130,17 @@ export function Fundamento({ slug }: { slug: string }) {
         {afs.map((af, i) => (
           <TarjetaAfirmacion key={i} af={af} />
         ))}
+        {hallazgo && (
+          <div className="rounded-lg border p-3" style={{ borderColor: "#C24C3355", background: "rgba(194,76,51,0.06)" }}>
+            <div className="mb-1 flex items-center gap-2">
+              <SelloHallazgo tamano={16} conEnlace />
+              <span className="font-mono text-[10px] uppercase tracking-widest" style={{ color: "#C24C33" }}>
+                Hallazgo propio · búsqueda del {hallazgo.busquedaFecha}
+              </span>
+            </div>
+            <p className="text-[12px] leading-relaxed text-sand-400">{hallazgo.busquedaNota}</p>
+          </div>
+        )}
         <p className="pt-1 font-mono text-[11px] text-sand-500">
           Los tipos de afirmación y la bibliografía completa (APA) están en{" "}
           <Link

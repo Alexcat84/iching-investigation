@@ -169,7 +169,22 @@ export interface Experimento {
   destacado?: boolean;
   /** Descargo honesto para correspondencias externas (etiqueta interdisciplinar). */
   descargo?: string;
+  /**
+   * Sello de hallazgo propio: resultado original del laboratorio que, tras una busqueda
+   * de originalidad documentada, no hemos encontrado publicado en otra parte. Marcador
+   * ortogonal (el experimento conserva su categoria); en el menu se ve como una seccion
+   * mas. Solo se concede cumpliendo las tres reglas (ver /fundamentos): afirmaciones
+   * centrales tipo teorema o calculo, busqueda con fecha y nota, y copy con la humildad
+   * exacta del descargo del exp. 29.
+   */
+  hallazgoPropio?: { busquedaFecha: string; busquedaNota: string };
 }
+
+// Candidatos a hallazgo propio (cada uno exige su propia busqueda de originalidad
+// documentada ANTES del sello; se haran uno por uno en turnos futuros, sin efecto visible
+// por ahora): rey-wen-aleatorio (el test del empate), espectro-walsh (77,4% de ordenes
+// pares en Walsh), comparador-particiones (ARI palacios contra cosets), permutacion (el
+// empate 1013/1008/1008 y los costos en lineas).
 
 /** Entradas sin número: el orden de este arreglo ES la numeración. */
 const BASE: Omit<Experimento, "n">[] = [
@@ -643,6 +658,11 @@ const BASE: Omit<Experimento, "n">[] = [
     nivel: "introductorio",
     accent: "#5ab89a",
     estado: "activo",
+    hallazgoPropio: {
+      busquedaFecha: "2026-07-23",
+      busquedaNota:
+        "búsqueda web de la formulación (21 = F(8) sin dos yin consecutivos, escalera F(n+2), Lucas en la versión circular, intersección Ji Ji / Wei Ji); solo se encontró numerología (offsets de Fibonacci sobre el bagua, razón áurea en el Rey Wen); ninguna formulación verificada equivalente.",
+    },
   },
   {
     slug: "ising-hexagrama",
@@ -719,6 +739,11 @@ export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
 
 export const EXPERIMENTOS_ACTIVOS = EXPERIMENTOS.filter(
   (e) => e.estado === "activo",
+);
+
+/** Experimentos con sello de hallazgo propio (vista ortogonal, no una categoría). */
+export const HALLAZGOS_PROPIOS: Experimento[] = EXPERIMENTOS.filter(
+  (e) => e.hallazgoPropio,
 );
 
 export function getExperimento(slug: string): Experimento | undefined {

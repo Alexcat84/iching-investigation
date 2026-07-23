@@ -1653,6 +1653,41 @@ def verificar_espectro_q6():
     print('   multiplicidades = niveles de yang del reticulo B6; paseo simple = espectro / 6  OK')
 
 
+# === 39. Hallazgos propios (sello de originalidad) ===
+def verificar_hallazgos():
+    """Anexo: (a) cada hallazgo con afirmacion tipo teorema o calculo; (b) fecha valida y
+    nota no vacia; (c) el conteo de sellos esta congelado en 1 (se actualiza a mano)."""
+    import re
+    import datetime
+    raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    reg = open(os.path.join(raiz, 'web', 'lib', 'experimentos.ts'), encoding='utf-8').read()
+    fund = open(os.path.join(raiz, 'web', 'lib', 'fundamentos.ts'), encoding='utf-8').read()
+
+    base = reg[reg.index('const BASE'):]  # solo el arreglo, no la interfaz ni el comentario
+    slugs = [(m.start(), m.group(1)) for m in re.finditer(r'slug:\s*"([a-z0-9-]+)"', base)]
+    sellos = []
+    for hm in re.finditer(r'hallazgoPropio:\s*\{', base):
+        slug = max((s for s in slugs if s[0] < hm.start()), key=lambda s: s[0])[1]
+        sellos.append(slug)
+
+    # (c) conteo congelado en 1
+    assert len(sellos) == 1, f'sellos: {sellos} (el conteo esta congelado en 1)'
+    # (b) fecha valida + nota no vacia
+    fechas = re.findall(r'busquedaFecha:\s*"(\d{4}-\d{2}-\d{2})"', base)
+    notas = re.findall(r'busquedaNota:\s*"([^"]+)"', base)
+    assert len(fechas) == 1 and len(notas) == 1, (len(fechas), len(notas))
+    datetime.date.fromisoformat(fechas[0])
+    assert len(notas[0].strip()) >= 20, 'busquedaNota vacia o demasiado corta'
+    # (a) cada sello con afirmacion tipo teorema o calculo
+    for slug in sellos:
+        tipos = re.findall(r'\n  a\("' + re.escape(slug) + r'",\s*"([a-z]+)"', fund)
+        assert any(t in ('teorema', 'calculo') for t in tipos), f'{slug}: sin teorema/calculo'
+
+    print('39. Hallazgos propios (sello de originalidad)')
+    print(f'   {len(sellos)} sello (conteo congelado): {sellos[0]}, con afirmacion teorema/calculo  OK')
+    print(f'   busqueda con fecha {fechas[0]} y nota documentada  OK')
+
+
 # === 33. Pistas de uso (comoUsar) ===
 def verificar_como_usar():
     """Todo experimento no-referencia lleva una pista de uso concreta: no vacia, de 20 a
@@ -1801,6 +1836,8 @@ if __name__ == '__main__':
     verificar_transferencia()
     print()
     verificar_espectro_q6()
+    print()
+    verificar_hallazgos()
     print()
     verificar_guiones()
     print()
