@@ -10,6 +10,7 @@ import {
   type TipoAfirmacion,
   BIBLIOGRAFIA,
 } from "@/lib/fundamentos";
+import { InsigniaTeorema } from "@/components/Fundamento";
 
 export const metadata: Metadata = {
   title: "Fundamentos y fuentes",
@@ -46,13 +47,14 @@ function Tarjeta({ af }: { af: Afirmacion }) {
   const verificable = af.tipo === "teorema" || af.tipo === "calculo";
   return (
     <div className="rounded-lg border border-ink-700 bg-ink-850/40 p-3">
-      <div className="mb-1 flex items-center gap-2">
+      <div className="mb-1 flex flex-wrap items-center gap-2">
         <span aria-hidden="true" style={{ color }}>
           {info.marca}
         </span>
         <span className="font-mono text-[10px] uppercase tracking-wider" style={{ color }}>
           {info.nombre}
         </span>
+        {af.nombreTeorema && <InsigniaTeorema nombre={af.nombreTeorema} />}
       </div>
       <p className="text-[13px] leading-relaxed text-sand-300">{af.texto}</p>
       <div className="mt-1.5 font-mono text-[11px] text-sand-500">

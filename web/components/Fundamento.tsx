@@ -5,10 +5,23 @@ import Link from "next/link";
 import {
   afirmacionesDe,
   resumenFundamento,
+  teoremasDe,
   BIBLIOGRAFIA,
   TIPO_AFIRMACION_INFO,
   type Afirmacion,
 } from "@/lib/fundamentos";
+
+/** Insignia de teorema nombrado (cinabrio, destacada). */
+export function InsigniaTeorema({ nombre }: { nombre: string }) {
+  return (
+    <span
+      className="inline-flex items-center gap-1 rounded-sm border px-1.5 py-0.5 font-mono text-[10px] leading-none"
+      style={{ borderColor: "#C24C3355", background: "rgba(194,76,51,0.10)", color: "#d98a6a" }}
+    >
+      <span aria-hidden="true">✦</span> Teorema: {nombre}
+    </span>
+  );
+}
 
 /** Color por tipo de afirmacion (reutiliza la paleta del sitio). */
 const COLOR: Record<string, string> = {
@@ -45,7 +58,7 @@ function TarjetaAfirmacion({ af }: { af: Afirmacion }) {
   const verificable = af.tipo === "teorema" || af.tipo === "calculo";
   return (
     <div className="rounded-lg border border-ink-700 bg-ink-850/40 p-3">
-      <div className="mb-1 flex items-center gap-2">
+      <div className="mb-1 flex flex-wrap items-center gap-2">
         <span aria-hidden="true" style={{ color }}>
           {info.marca}
         </span>
@@ -55,6 +68,7 @@ function TarjetaAfirmacion({ af }: { af: Afirmacion }) {
         >
           {info.nombre}
         </span>
+        {af.nombreTeorema && <InsigniaTeorema nombre={af.nombreTeorema} />}
       </div>
       <p className="text-[13px] leading-relaxed text-sand-300">{af.texto}</p>
       <div className="mt-1.5 font-mono text-[11px] text-sand-500">
@@ -99,8 +113,13 @@ export function Fundamento({ slug }: { slug: string }) {
         >
           ▸
         </span>
-        <span className="font-mono text-[12px] leading-relaxed text-sand-400">
-          {resumenFundamento(slug)}
+        <span className="flex flex-wrap items-center gap-2">
+          {teoremasDe(slug).map((t) => (
+            <InsigniaTeorema key={t} nombre={t} />
+          ))}
+          <span className="font-mono text-[12px] leading-relaxed text-sand-400">
+            {resumenFundamento(slug)}
+          </span>
         </span>
       </button>
 

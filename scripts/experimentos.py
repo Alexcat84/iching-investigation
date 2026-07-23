@@ -1341,11 +1341,12 @@ def verificar_fundamentos():
 
     secciones = set(re.findall(r'def (verificar_[a-z0-9_]+)\(', suite))
 
-    afs = re.findall(r'\n  a\("([^"]+)",\s*"([^"]+)",\s*(null|"[^"]*"),\s*\[([^\]]*)\]', fund)
+    afs = re.findall(r'\n  a\("([^"]+)",\s*"([^"]+)",\s*(null|"[^"]*"),\s*\[([^\]]*)\]([^\n]*)', fund)
     assert afs, 'no se parsearon afirmaciones de fundamentos.ts'
     por_slug = {}
     claves_usadas = set()
-    for slug, tipo, respaldo, claves_raw in afs:
+    con_teorema = 0
+    for slug, tipo, respaldo, claves_raw, resto in afs:
         por_slug.setdefault(slug, []).append(tipo)
         cs = re.findall(r'"([a-z0-9-]+)"', claves_raw)
         claves_usadas.update(cs)
@@ -1358,6 +1359,10 @@ def verificar_fundamentos():
             assert cs, f'{slug}: {tipo} sin clave'
         if tipo == 'analogia':
             assert (resp in secciones) or cs, f'{slug}: analogia sin respaldo ni clave'
+        # Insignia de teorema: solo sobre afirmaciones tipo teorema o calculo.
+        if 'nombreTeorema:' in resto:
+            con_teorema += 1
+            assert tipo in ('teorema', 'calculo'), f'{slug}: nombreTeorema sobre tipo {tipo}'
 
     slugs_reg = re.findall(r'slug:\s*"([a-z0-9-]+)"', reg)
     faltan = [s for s in slugs_reg if s not in por_slug]
@@ -1374,6 +1379,7 @@ def verificar_fundamentos():
     print(f'   por tipo: {dict(dist)}  OK')
     print(f'   {len(claves_bib)} fichas APA, todas en uso y verbatim en el documento de evidencias  OK')
     print('   teorema/calculo enlazan seccion de suite; tradicion/reconstruccion/analogia con fuente  OK')
+    print(f'   {con_teorema} afirmaciones con insignia de teorema, todas tipo teorema o calculo  OK')
 
 
 # === 34. Fibonacci en el hexagrama ===

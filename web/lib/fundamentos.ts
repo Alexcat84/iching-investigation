@@ -233,6 +233,8 @@ export interface Afirmacion {
   claves: ClaveBiblio[];
   texto: string;
   nota?: string;
+  /** Nombre del teorema clásico que encarna, si lo hay (insignia destacada). */
+  nombreTeorema?: string;
 }
 
 export const TIPO_AFIRMACION_INFO: Record<
@@ -272,9 +274,9 @@ function a(
   respaldo: string | null,
   claves: ClaveBiblio[],
   texto: string,
-  nota?: string,
+  opts: { nota?: string; nombreTeorema?: string } = {},
 ): Afirmacion {
-  return { slug, tipo, respaldo, claves, texto, nota };
+  return { slug, tipo, respaldo, claves, texto, nota: opts.nota, nombreTeorema: opts.nombreTeorema };
 }
 
 export const AFIRMACIONES: Afirmacion[] = [
@@ -312,48 +314,59 @@ export const AFIRMACIONES: Afirmacion[] = [
   a("arbol-fuxi", "teorema", "verificar_arbol", [], "Las hojas del arbol de bifurcacion yin y yang, de izquierda a derecha, son el orden binario 0 a 63; el camino de la raiz a la hoja coincide bit a bit con las lineas del hexagrama."),
   a("arbol-fuxi", "tradicion", null, ["ryan1996"], "El arbol reconstruye la genesis de la secuencia del Cielo Anterior atribuida a Shao Yong."),
 
-  a("bosque-nuclear", "teorema", "verificar_bosque", [], "El mapa del hu gua colapsa las imagenes 64, 16 y 4 hasta 3 atractores: dos puntos fijos y un ciclo de 2, con cuencas 16, 16 y 32."),
+  a("bosque-nuclear", "teorema", "verificar_bosque", [], "El mapa del hu gua colapsa las imagenes 64, 16 y 4 hasta 3 atractores: dos puntos fijos y un ciclo de 2, con cuencas 16, 16 y 32.", { nombreTeorema: "Teoría espectral de operadores lineales" }),
 
-  a("matriz-nuclear", "teorema", "verificar_matriz_nuclear", [], "El hu gua es lineal sobre F2: hay una matriz de 6x6 con rangos 6, 4 y 2, y M^4 = M^2, lo que explica el unico ciclo (Ji Ji con Wei Ji)."),
+  a("matriz-nuclear", "teorema", "verificar_matriz_nuclear", [], "El hu gua es lineal sobre F2: hay una matriz de 6x6 con rangos 6, 4 y 2, y M^4 = M^2, lo que explica el unico ciclo (Ji Ji con Wei Ji).", { nombreTeorema: "Teoría espectral de operadores lineales" }),
 
   a("serpiente-debruijn", "teorema", "verificar_debruijn", ["debruijn1946"], "Existe un anillo de 64 bits cuyas 64 ventanas de 6 consecutivas son los 64 hexagramas, cada uno una sola vez; hay 2^26 anillos asi."),
   a("serpiente-debruijn", "teorema", "verificar_debruijn", ["fkm1978"], "La construccion canonica usada es la de Fredricksen y Maiorana: concatenar las palabras de Lyndon en orden lexicografico da la secuencia de De Bruijn minima."),
 
-  a("grupo-sierpinski", "teorema", "verificar_grupo_sierpinski", [], "Con XOR los 64 forman el grupo (Z/2)^6; los 8 puros son un subgrupo cuyos 8 cosets particionan el conjunto, y la matriz de dominancia es Pascal mod 2 (Lucas), el triangulo de Sierpinski."),
+  a("grupo-sierpinski", "teorema", "verificar_grupo_sierpinski", [], "Con XOR los 64 forman el grupo (Z/2)^6; los 8 puros son un subgrupo cuyos 8 cosets particionan el conjunto, y la matriz de dominancia es Pascal mod 2 (Lucas), el triangulo de Sierpinski.", { nombreTeorema: "Teorema de Lucas (1878)" }),
 
   a("rey-wen-aleatorio", "calculo", "verificar_rey_wen_aleatorio", [], "Bajo su propia regla de pares, el Rey Wen tiene 1013 inversiones, indistinguible de un barajado aleatorio (z = 0.05, p = 0.97), y tambien en el costo en lineas."),
   a("rey-wen-aleatorio", "calculo", "verificar_walsh", [], "El espectro de Walsh lo confirma por otra via: los ordenes pares 2 y 4 concentran el 77.4% de la energia, frente al 47.6% que repartiria el azar."),
 
-  a("markov-consultas", "calculo", "verificar_markov", [], "La cadena de Markov de las consultas tiene estacionaria uniforme con monedas y sesgada al yin con milenrama (Kun es 729 = 3^6 veces mas probable que Qian); ambas mezclan a la misma velocidad."),
+  a("markov-consultas", "calculo", "verificar_markov", [], "La cadena de Markov de las consultas tiene estacionaria uniforme con monedas y sesgada al yin con milenrama (Kun es 729 = 3^6 veces mas probable que Qian); ambas mezclan a la misma velocidad, con autovalor 1 simple y segundo modulo 0,5.", { nombreTeorema: "Teorema de Perron-Frobenius" }),
 
-  a("comparador-sorteo", "calculo", "verificar_sorteo", [], "Tres metodos de sorteo con sus distribuciones exactas: P(muta) = 1/4 en los tres; el metodo moderno equivalente de 16 fichas (3, 7, 5, 1) reproduce la milenrama por construccion, mientras que las monedas son distintas.", "El metodo de 16 fichas se nombra como metodo moderno equivalente; su autoria queda pendiente de verificar (seccion D del documento de evidencias)."),
+  a("comparador-sorteo", "calculo", "verificar_sorteo", [], "Tres metodos de sorteo con sus distribuciones exactas: P(muta) = 1/4 en los tres; el metodo moderno equivalente de 16 fichas (3, 7, 5, 1) reproduce la milenrama por construccion, mientras que las monedas son distintas.", { nota: "El metodo de 16 fichas se nombra como metodo moderno equivalente; su autoria queda pendiente de verificar (seccion D del documento de evidencias)." }),
 
   a("comparador-particiones", "calculo", "verificar_particiones", [], "El indice de Rand ajustado mide la similitud entre dos particiones de los 64; palacios y cosets dan ARI = -0.125, mas distintos que el azar, porque las 8 mascaras de generacion no forman subgrupo."),
 
-  a("espectro-walsh", "calculo", "verificar_walsh", [], "La transformada de Walsh del Rey Wen concentra su energia en el orden 2 (50.3%) y en los ordenes pares 2 y 4 (77.4%), frente al 47.6% del azar: su unica estructura son correlaciones entre lineas."),
+  a("espectro-walsh", "calculo", "verificar_walsh", [], "La transformada de Walsh del Rey Wen concentra su energia en el orden 2 (50.3%) y en los ordenes pares 2 y 4 (77.4%), frente al 47.6% del azar: su unica estructura son correlaciones entre lineas. La transformada es el analisis de Fourier sobre el grupo (Z/2)^6: la matriz es el producto tensorial de seis Hadamard (H tensor 6).", { nombreTeorema: "Análisis de Fourier sobre grupos finitos" }),
 
   a("conteos-astronomicos", "calculo", "verificar_conteos", [], "Los conteos del cubo: 46080 automorfismos (2^6 por 6!), 2^26 secuencias de De Bruijn, las distancias C(6,k) = 1, 6, 15, 20, 15, 6, 1 y 720 cadenas de Kun a Qian."),
-  a("conteos-astronomicos", "calculo", "verificar_conteos", ["oeis-a003042", "knuth4a"], "El numero de codigos Gray ciclicos de Q6 se cita a OEIS sin reproducir sus digitos; Knuth es la referencia general de codigos Gray y secuencias de De Bruijn.", "Cifra citada, no reproducida."),
+  a("conteos-astronomicos", "calculo", "verificar_conteos", ["oeis-a003042", "knuth4a"], "El numero de codigos Gray ciclicos de Q6 se cita a OEIS sin reproducir sus digitos; Knuth es la referencia general de codigos Gray y secuencias de De Bruijn.", { nota: "Cifra citada, no reproducida." }),
 
   a("paseo-aleatorio", "calculo", "verificar_paseo", [], "El paseo aleatorio sobre Q6 tiene estacionaria uniforme; el tiempo esperado de retorno al origen es exactamente 64 y la cobertura de los 64 estados ronda los 360 pasos."),
 
   a("leibniz-documentos", "tradicion", null, ["ryan1996"], "Los chinos no practicaban aritmetica binaria: Shao Yong buscaba cosmologia y fue Leibniz, con su binario ya inventado, quien reconocio la identidad estructural."),
   a("leibniz-documentos", "tradicion", null, ["leibniz1703", "ryan1996"], "Cronologia documentada: Bouvet comunico la analogia en carta del 4 de noviembre de 1701, recibida por Leibniz el 1 de abril de 1703; la Explication de l'arithmetique binaire aparecio en 1703."),
 
-  a("codones", "analogia", "verificar_codones", [], "El codigo genetico tiene 64 = 4^3 = 2^6 codones, como los hexagramas, pero la correspondencia es un isomorfismo combinatorio, no un hecho biologico: depende de una de las 24 codificaciones base a bits, ninguna canonica.", "Analogia con descargo: la coincidencia de numero es real como forma y arbitraria en los detalles; el codigo estandar se cita en el propio experimento (NCBI), que no forma parte de esta bibliografia."),
+  a("codones", "analogia", "verificar_codones", [], "El codigo genetico tiene 64 = 4^3 = 2^6 codones, como los hexagramas, pero la correspondencia es un isomorfismo combinatorio, no un hecho biologico: depende de una de las 24 codificaciones base a bits, ninguna canonica.", { nota: "Analogia con descargo: la coincidencia de numero es real como forma y arbitraria en los detalles; el codigo estandar se cita en el propio experimento (NCBI), que no forma parte de esta bibliografia." }),
 
   a("calendario-soberanos", "teorema", "verificar_soberanos", [], "Los 12 bi gua cumplen cuatro propiedades: forman un ciclo Gray cerrado, la linea que cambia avanza 2, 3, 4, 5, 6, 1, los meses opuestos son complementos dui y son exactamente los 12 hexagramas monotonos de Q6."),
   a("calendario-soberanos", "tradicion", null, ["nielsen2003"], "Los 12 bi gua (xiaoxi gua) se asociaron a los 12 meses lunares en la tradicion Han, ligada a Meng Xi y al sistema gua qi."),
 
   a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", ["oeis-a000045"], "Los hexagramas sin dos yin consecutivos (y, por simetria, sin dos yang) son exactamente 21 = F(8); contando por numero de lineas, la escalera es 2, 3, 5, 8, 13, 21 = F(n+2)."),
   a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", ["oeis-a000032"], "En la version circular (la linea 6 vecina de la linea 1) los supervivientes son 18 = L(6), el numero de Lucas."),
-  a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", [], "La interseccion de ambas reglas (alternancia perfecta) son exactamente Ji Ji y Wei Ji, y el desglose de los 21 por numero de yin es 1, 6, 10, 4 = C(7-k, k), la identidad de Fibonacci en el triangulo de Pascal.", "Teorema de conteo, no un codigo oculto: la numerologia de Fibonacci y la razon aurea en el I Ching queda fuera por indemostrable."),
+  a("fibonacci-hexagrama", "teorema", "verificar_fibonacci", [], "La interseccion de ambas reglas (alternancia perfecta) son exactamente Ji Ji y Wei Ji, y el desglose de los 21 por numero de yin es 1, 6, 10, 4 = C(7-k, k), la identidad de Fibonacci en el triangulo de Pascal.", { nota: "Teorema de conteo, no un codigo oculto: la numerologia de Fibonacci y la razon aurea en el I Ching queda fuera por indemostrable." }),
 ];
 
 // === Consultas ===
 
 export function afirmacionesDe(slug: string): Afirmacion[] {
   return AFIRMACIONES.filter((x) => x.slug === slug);
+}
+
+/** Nombres de teorema que encarna un experimento (para la insignia). */
+export function teoremasDe(slug: string): string[] {
+  return [
+    ...new Set(
+      afirmacionesDe(slug)
+        .map((x) => x.nombreTeorema)
+        .filter((x): x is string => !!x),
+    ),
+  ];
 }
 
 export const SLUGS_CON_FUNDAMENTO: string[] = [...new Set(AFIRMACIONES.map((x) => x.slug))];
