@@ -1374,6 +1374,50 @@ def verificar_fundamentos():
     print('   teorema/calculo enlazan seccion de suite; tradicion/reconstruccion/analogia con fuente  OK')
 
 
+# === 33. Pistas de uso (comoUsar) ===
+def verificar_como_usar():
+    """Todo experimento no-referencia lleva una pista de uso concreta: no vacia, de 20 a
+    140 caracteres y sin formulas genericas. Los de tipo referencia llevan el texto fijo."""
+    import re
+    raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    reg = open(os.path.join(raiz, 'web', 'lib', 'experimentos.ts'), encoding='utf-8').read()
+
+    REF = 'Página de referencia, para leer'
+    GENERICAS = ('interactua', 'interactúa', 'explora la visualizacion',
+                 'explora la visualización', 'juega con', 'usa la herramienta',
+                 'haz clic aqui', 'haz clic aquí', 'mira la visualizacion',
+                 'mira la visualización', 'prueba la herramienta')
+
+    # Cada entrada del registro: slug, comoUsar y tipo (el orden de campos es fijo).
+    bloques = re.findall(
+        r'slug:\s*"([a-z0-9-]+)",.*?comoUsar:\s*\n?\s*"([^"]+)",.*?tipo:\s*"([a-z]+)",',
+        reg, re.S)
+    assert len(bloques) == 28, f'entradas parseadas: {len(bloques)}'
+
+    refs = [s for s, _, t in bloques if t == 'referencia']
+    assert len(refs) == 2, f'experimentos de tipo referencia: {refs}'
+
+    for slug, texto, tipo in bloques:
+        if tipo == 'referencia':
+            assert texto == REF, f'{slug}: referencia debe llevar el texto fijo, lleva: {texto}'
+            continue
+        assert texto.strip(), f'{slug}: comoUsar vacio'
+        assert 20 <= len(texto) <= 140, f'{slug}: comoUsar mide {len(texto)} (debe ser 20 a 140)'
+        bajo = texto.lower()
+        for g in GENERICAS:
+            assert g not in bajo, f'{slug}: comoUsar generico ({g})'
+        # Una sola linea, con verbo de accion al principio (empieza en mayuscula).
+        assert '\n' not in texto, f'{slug}: comoUsar debe ser una sola linea'
+        assert texto[0].isupper(), f'{slug}: comoUsar debe empezar con verbo en mayuscula'
+
+    largos = [len(t) for s, t, tp in bloques if tp != 'referencia']
+    print('33. Pistas de uso (comoUsar)')
+    print(f'   {len(bloques) - len(refs)} experimentos no-referencia con pista concreta '
+          f'({min(largos)} a {max(largos)} caracteres)  OK')
+    print(f'   {len(refs)} de tipo referencia con el texto fijo de lectura  OK')
+    print(f'   ninguna pista generica ({len(GENERICAS)} formulas prohibidas)  OK')
+
+
 # === 32. Chequeo de guiones (arbitro de estilo) ===
 def verificar_guiones():
     """Em dash prohibido siempre (prosa, comentarios, copy). En dash permitido solo en
@@ -1466,6 +1510,8 @@ if __name__ == '__main__':
     verificar_hipercubo()
     print()
     verificar_fundamentos()
+    print()
+    verificar_como_usar()
     print()
     verificar_guiones()
     print()

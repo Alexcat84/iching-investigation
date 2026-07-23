@@ -147,6 +147,9 @@ export interface Experimento {
   n: number;
   titulo: string;
   subtitulo: string;
+  /** Pista de uso: una línea con verbo de acción y qué obtiene el lector.
+   *  Las páginas de tipo referencia llevan el texto fijo de referencia. */
+  comoUsar: string;
   descripcion: string;
   /** Símbolo o hexagrama representativo. */
   simbolo: string;
@@ -168,6 +171,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "hipercubo",
     titulo: "El hipercubo del I Ching",
     subtitulo: "64 hexagramas · 192 mutaciones · un recorrido Gray",
+    comoUsar:
+      "Toca cualquier hexagrama del anillo para ver sus seis mutaciones y su valor binario.",
     descripcion:
       "El anillo de los 64 hexagramas y las 192 aristas que forman el hipercubo de 6 dimensiones. Compara el orden Fu Xi (binario) con el del Rey Wen y recorre los 64 estados cambiando una sola línea por paso.",
     simbolo: "䷀",
@@ -183,6 +188,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "palacios",
     titulo: "Los ocho palacios de Jing Fang",
     subtitulo: "Caminos sobre el hipercubo, descritos en el siglo II a.C.",
+    comoUsar:
+      "Toca una casa de la tabla para ver qué líneas la separan del hexagrama puro de su palacio.",
     descripcion:
       "Jing Fang agrupó los 64 hexagramas en 8 casas generadas por cambios sucesivos de líneas desde los 8 hexagramas puros. Reconstruimos las casas como recorridos sobre Q6 y verificamos que particionan los 64 sin repetir ninguno.",
     simbolo: "☰",
@@ -198,6 +205,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "mapa-lectura",
     titulo: "El mapa de la lectura",
     subtitulo: "Toda consulta es un salto en el hipercubo",
+    comoUsar:
+      "Clic en cada línea para ponerla yin o yang, marca las mutantes y mira el salto resultante.",
     descripcion:
       "Arma un hexagrama, marca las líneas mutantes y observa el salto: hexagrama original → resultante, con la distancia exacta y la lectura simbólica de qué líneas cambiaron. También puedes echar las monedas.",
     simbolo: "䷗",
@@ -213,6 +222,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "probabilidades",
     titulo: "Monedas contra milenrama",
     subtitulo: "Las probabilidades ocultas del oráculo",
+    comoUsar:
+      "Elige cuántas lecturas simular y compara barra a barra las monedas contra la milenrama.",
     descripcion:
       "Las varillas de milenrama no son simétricas como las monedas. Simulamos miles de consultas con las probabilidades históricas de cada método y descubrimos qué distribuciones cambian… y cuáles resultan ser idénticas.",
     simbolo: "䷚",
@@ -227,6 +238,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "simetrias",
     titulo: "Las simetrías del hipercubo",
     subtitulo: "Órbitas, palíndromos y el mapa nuclear",
+    comoUsar:
+      "Toca un hexagrama para recorrer su órbita bajo volteo (fan) y opuesto (dui).",
     descripcion:
       "El grupo de Klein generado por el volteo (fan) y el opuesto (dui) parte los 64 hexagramas en 20 órbitas. Los 8 palíndromos resultan ser exactamente los pares especiales del Rey Wen. Y el hexagrama nuclear, iterado, cae en 3 atractores: dos puntos fijos y un ciclo de 2 (4 hexagramas atractores).",
     simbolo: "䷾",
@@ -241,6 +254,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "trayectoria",
     titulo: "Trayectoria personal",
     subtitulo: "Tu historial como ruta por los 64 estados",
+    comoUsar:
+      "Registra tus consultas o genera un ejemplo para ver tu historial como ruta por los 64.",
     descripcion:
       "El historial de consultas de una persona es un camino por el espacio de 64 estados: regiones recurrentes, distancia media entre lecturas, en qué palacio vive cada período. Tus datos quedan solo en tu navegador.",
     simbolo: "䷆",
@@ -255,6 +270,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "rey-wen",
     titulo: "La secuencia del Rey Wen",
     subtitulo: "La regla de pares y la búsqueda de una fórmula",
+    comoUsar:
+      "Toca un par para ver si se forma por volteo (fan) o por opuesto (dui).",
     descripcion:
       "El orden tradicional agrupa los 64 en 32 pares: cada par es el volteo del anterior, salvo en 4 casos donde se usa el opuesto. Fuera de esa regla no se conoce ninguna fórmula binaria. La visualizamos y buscamos la estructura que sí hay.",
     simbolo: "序",
@@ -269,6 +286,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "shao-yong",
     titulo: "El cuadrado y el círculo",
     subtitulo: "El diagrama de Shao Yong que vio Leibniz",
+    comoUsar:
+      "Toca un hexagrama del cuadrado o el círculo, y aplica las ocho simetrías para seguirlo.",
     descripcion:
       "Los 64 hexagramas dispuestos a la vez en un cuadrado 8×8 y en un círculo, en orden binario. Es el diagrama que Bouvet envió a Leibniz hacia 1701: leerlo en orden es, literalmente, contar de 0 a 63. Con las 8 simetrías del cuadrado traducidas a operaciones de trigramas.",
     simbolo: "圓",
@@ -283,6 +302,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "permutacion",
     titulo: "Rey Wen como permutación",
     subtitulo: "Cuánto desordena el libro la geometría",
+    comoUsar:
+      "Toca un ciclo para ver por dónde pasa, y compara los cuatro órdenes históricos.",
     descripcion:
       "Si Fu Xi es la identidad, el Rey Wen es una permutación de los 64 números. La descomponemos en ciclos y medimos su desorden: puntos fijos, orden, paridad e inversiones. Y la hacemos competir con los órdenes de Mawangdui y de los palacios de Jing Fang.",
     simbolo: "σ",
@@ -297,6 +318,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "ritual-milenrama",
     titulo: "El ritual de las 49 varillas",
     subtitulo: "De dónde salen 1, 3, 5 y 7 dieciseisavos",
+    comoUsar:
+      "Echa las 49 varillas línea a línea, o simula miles y mira converger las fracciones.",
     descripcion:
       "El método antiguo de la milenrama, paso a paso: dividir el manojo, contar de 4 en 4, tres operaciones por línea. Derivamos con fracciones exactas las probabilidades que el experimento de monedas contra milenrama usa como dato, y verificamos que coinciden.",
     simbolo: "蓍",
@@ -311,6 +334,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "dos-cielos",
     titulo: "Los dos cielos",
     subtitulo: "El bagua Anterior y el Posterior como permutaciones",
+    comoUsar:
+      "Alterna entre Cielo Anterior y Posterior y mira viajar cada trigrama a su nueva posición.",
     descripcion:
       "Los 8 trigramas tienen dos disposiciones clásicas en círculo: el Cielo Anterior de Fu Xi y el Cielo Posterior del Rey Wen. En la primera, cada trigrama mira a su complemento binario exacto; en la segunda esa simetría se rompe salvo en el eje Li y Kan. La permutación entre ambas: dos ciclos de 4.",
     simbolo: "先",
@@ -325,6 +350,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "sombras-6-cubo",
     titulo: "Las sombras del 6-cubo",
     subtitulo: "Tres proyecciones del hexeracto",
+    comoUsar:
+      "Cambia de proyección y toca un hexagrama para seguirlo en las tres sombras del cubo.",
     descripcion:
       "El hipercubo de 6 dimensiones no cabe en la pantalla, pero sus sombras sí: el polígono de Petrie de 12 vértices, el cubo de cubos (Q3 por Q3) y los 7 niveles de líneas yang. El mismo objeto, tres siluetas, y los 192 hilos presentes en todas.",
     simbolo: "⬡",
@@ -339,6 +366,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "reticulo-b6",
     titulo: "El retículo booleano B6",
     subtitulo: "El orden parcial de encender líneas",
+    comoUsar:
+      "Elige un hexagrama y mira su cono: cuántos quedan por encima y cuántos por debajo.",
     descripcion:
       "Un hexagrama está por debajo de otro si toda línea yang suya también lo es en el otro. Ese orden de dominancia forma un retículo de 7 niveles con las mismas 192 aristas del hipercubo, ahora orientadas hacia arriba: de Kun a Qian hay 720 caminos de ascenso.",
     simbolo: "⊑",
@@ -353,6 +382,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "arbol-fuxi",
     titulo: "El árbol de Fu Xi",
     subtitulo: "Cómo se genera el orden binario",
+    comoUsar:
+      "Toca una hoja del árbol y mira cómo cada bifurcación yin o yang escribe uno de sus bits.",
     descripcion:
       "Del taiji a los dos, los cuatro, los ocho... hasta 64: el árbol de bifurcación yin y yang que construye la secuencia de Shao Yong. Cada hoja es un hexagrama y el camino desde la raíz es, literalmente, su lectura en bits.",
     simbolo: "木",
@@ -367,6 +398,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "bosque-nuclear",
     titulo: "El bosque nuclear",
     subtitulo: "La dinámica completa del hu gua",
+    comoUsar:
+      "Elige un hexagrama y sigue sus flechas nucleares hasta el atractor donde acaba cayendo.",
     descripcion:
       "Cada hexagrama apunta a su nuclear: un mapa de 64 flechas que colapsa rápido. La imagen cae de 64 a 16 (los nucleares clásicos) y de 16 a 4, hasta 3 atractores: dos puntos fijos y un ciclo de 2 (4 hexagramas atractores).",
     simbolo: "互",
@@ -381,6 +414,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "matriz-nuclear",
     titulo: "El operador nuclear como matriz",
     subtitulo: "El hu gua es un mapa lineal sobre F2",
+    comoUsar:
+      "Elige un hexagrama y comprueba que multiplicarlo por la matriz M da su nuclear.",
     descripcion:
       "Como cada línea del hexagrama nuclear copia una línea del original, hu gua es lineal: hay una matriz M de 6×6 con M·x = hu gua(x). Su cadena de rangos 6→4→2 explica las imágenes 64→16→4 del bosque, y M⁴=M² produce el único ciclo, Ji Ji con Wei Ji.",
     simbolo: "M",
@@ -395,6 +430,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "serpiente-debruijn",
     titulo: "La serpiente de De Bruijn",
     subtitulo: "Los 64 hexagramas en un anillo de 64 bits",
+    comoUsar:
+      "Desliza la ventana de seis por el anillo y comprueba que nunca se repite un hexagrama.",
     descripcion:
       "Un anillo de 64 líneas yin/yang donde cada ventana de 6 consecutivas es un hexagrama distinto: los 64 aparecen superpuestos, una vez cada uno. La compresión máxima del libro, en la secuencia de De Bruijn canónica; y hay 2²⁶ anillos así.",
     simbolo: "⟳",
@@ -409,6 +446,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "grupo-sierpinski",
     titulo: "El grupo (Z/2)⁶ y el Sierpinski",
     subtitulo: "XOR, ocho cosets y un fractal que sale de Pascal",
+    comoUsar:
+      "Toca un hexagrama para ver su coset (upper XOR lower) y los siete que lo acompañan.",
     descripcion:
       "Con XOR, los 64 hexagramas forman el grupo (Z/2)⁶; los 8 puros son un subgrupo cuyos 8 cosets particionan el conjunto. Y la matriz de dominancia (j submáscara de i) coincide con Pascal mod 2 por el teorema de Lucas: dibujada, es el triángulo de Sierpinski, la sombra del retículo B6.",
     simbolo: "⊕",
@@ -423,6 +462,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "rey-wen-aleatorio",
     titulo: "¿Es el Rey Wen aleatorio?",
     subtitulo: "El empate 1013 puesto a prueba",
+    comoUsar:
+      "Mira dónde cae el 1013 real dentro de la campana de la nula y lee su p-valor.",
     descripcion:
       "Convertimos el hallazgo del empate en un test de hipótesis. Bajo la nula (un barajado que respeta su regla de pares), las 1013 inversiones del Rey Wen caen en el centro exacto de la campana: es indistinguible de aleatorio, y también en el costo en líneas. Un hallazgo legítimo, no un fracaso.",
     simbolo: "≟",
@@ -437,6 +478,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "markov-consultas",
     titulo: "La cadena de Markov de las consultas",
     subtitulo: "¿Hacia dónde deriva una serie de lecturas?",
+    comoUsar:
+      "Pulsa Simular para encadenar consultas y ver a qué estacionaria tiende cada método.",
     descripcion:
       "Encadenar consultas define una cadena de Markov sobre los 64 estados. Con monedas la estacionaria es uniforme; con milenrama se sesga al yin (Kun es 729 veces más probable que Qian), porque el yang viejo muta más que el yin viejo. Ambos mezclan a la misma velocidad, pero a destinos distintos.",
     simbolo: "π",
@@ -451,6 +494,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "comparador-sorteo",
     titulo: "Comparador de métodos de sorteo",
     subtitulo: "Monedas, milenrama y 16 fichas",
+    comoUsar:
+      "Pulsa Tirar para simular 50.000 líneas y comparar los tres métodos con su distribución exacta.",
     descripcion:
       "Tres formas de echar una línea, lado a lado, con sus distribuciones exactas y un simulador que converge a ellas. Monedas y milenrama no son intercambiables; las 16 fichas reproducen la milenrama por construcción. Útil para quien consulta de verdad.",
     simbolo: "⚄",
@@ -465,6 +510,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "comparador-particiones",
     titulo: "Comparador de particiones",
     subtitulo: "¿Cuánto se parecen dos formas de agrupar los 64?",
+    comoUsar:
+      "Elige dos particiones de los 64 y compara cuánto coinciden con el índice de Rand ajustado.",
     descripcion:
       "Toma dos particiones cualesquiera de los 64 (palacios, cuencas nucleares, cosets, trigramas) y mide su similitud con el índice de Rand ajustado, más la matriz de cruce. Hallazgo: los palacios no son los cosets (ARI −0,125), porque las 8 máscaras de generación no forman subgrupo.",
     simbolo: "≈",
@@ -479,6 +526,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "espectro-walsh",
     titulo: "El espectro de Walsh-Hadamard",
     subtitulo: "¿En qué dimensiones del cubo vive el Rey Wen?",
+    comoUsar:
+      "Recorre la energía por orden y mira en qué interacciones de líneas vive la estructura.",
     descripcion:
       "La transformada de Walsh descompone la secuencia del Rey Wen en los 64 caracteres del cubo. La mitad de su energía (sin la media) vive en interacciones de orden 2, entre pares de líneas; casi nada en la estructura lineal. Complementa el test de aleatoriedad diciendo en qué frecuencias se aparta.",
     simbolo: "≋",
@@ -493,6 +542,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "conteos-astronomicos",
     titulo: "Conteos astronómicos del cubo",
     subtitulo: "Los números grandes de Q6, con fuente",
+    comoUsar:
+      "Página de referencia, para leer",
     descripcion:
       "Página de referencia con las cifras del hipercubo de los hexagramas: 46080 automorfismos (2⁶·6!), 2²⁶ secuencias de De Bruijn, la distribución C(6,k) por distancia, 720 cadenas. Los computables se verifican; los enormes (códigos Gray cíclicos de Q6) se citan a OEIS. Ninguna cifra sin fuente.",
     simbolo: "∞",
@@ -507,6 +558,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "paseo-aleatorio",
     titulo: "Paseo aleatorio y cobertura",
     subtitulo: "Cuánto tarda un caminante en ver los 64",
+    comoUsar:
+      "Lanza el caminante y mira cuántos pasos tarda en visitar los 64 hexagramas.",
     descripcion:
       "Un caminante que muta una línea al azar por paso sobre el hipercubo. El tiempo esperado de retorno al origen es exactamente 64 (por la estacionaria uniforme); la cobertura de los 64 estados ronda los 360 pasos. Con animación del recorrido y simulación.",
     simbolo: "↝",
@@ -521,6 +574,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "leibniz-documentos",
     titulo: "Leibniz: los documentos",
     subtitulo: "Bouvet, Shao Yong y la aritmética binaria de 1703",
+    comoUsar:
+      "Página de referencia, para leer",
     descripcion:
       "La cronología documentada del encuentro entre el I Ching y el binario europeo: Shao Yong, la carta de Bouvet (1701) y la Explication de l'Arithmétique Binaire de Leibniz (1703). Cada afirmación con su fuente.",
     simbolo: "✉",
@@ -537,6 +592,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "codones",
     titulo: "Los 64 codones",
     subtitulo: "El código genético también tiene 64 = 2⁶",
+    comoUsar:
+      "Cambia la codificación de bases a bits y mira cómo se reordena el mapa; toca un codón para el detalle.",
     descripcion:
       "El código genético tiene 64 = 4³ = 2⁶ elementos, como los hexagramas. La correspondencia es un isomorfismo combinatorio, no un hecho biológico: depende de una de las 4! = 24 codificaciones base a bits, ninguna canónica. El experimento lo demuestra dejando cambiar la codificación.",
     simbolo: "遺",
@@ -553,6 +610,8 @@ const BASE: Omit<Experimento, "n">[] = [
     slug: "calendario-soberanos",
     titulo: "El calendario de los soberanos",
     subtitulo: "Los 12 hexagramas del flujo y reflujo del año",
+    comoUsar:
+      "Pulsa play para recorrer el año mes a mes y mira qué línea cambia en cada paso.",
     descripcion:
       "La tradición Han apartó 12 hexagramas soberanos (bi gua) y los asignó a los meses lunares. Leídos en orden, el yang sube una línea por mes y el yin lo vacía después: un ciclo Gray cerrado de 12 aristas sobre el hipercubo. Verificamos sus cuatro propiedades; la asignación a los meses es tradición documentada, no un teorema.",
     simbolo: "辟",
