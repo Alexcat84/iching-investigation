@@ -1,6 +1,6 @@
 # Registro de aplicabilidad: teoremas y dominios frente al I Ching
 
-**Documento vivo.** Registra todo lo evaluado para el laboratorio: lo construido, lo aprobado, lo en exploración y lo rechazado, con su porqué. Crece con cada candidato nuevo; ninguna entrada se borra (un rechazo documentado también enseña). Última actualización: 24 de julio de 2026.
+**Documento vivo.** Registra todo lo evaluado para el laboratorio: lo construido, lo aprobado, lo en exploración y lo rechazado, con su porqué. Crece con cada candidato nuevo; ninguna entrada se borra (un rechazo documentado también enseña). Última actualización: 25 de julio de 2026.
 
 ## Estados y gobernanza
 
@@ -18,7 +18,7 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 |---|---|---|---|
 | Fourier sobre grupos finitos (Walsh-Hadamard) | 🟢 espectro-walsh | Sí | Es literalmente el análisis de Fourier del grupo (Z/2)⁶; la matriz es H⊗6 (verificado matricialmente); ficha terras1999 |
 | Fourier del círculo (DFT sobre Z/64) | 🟢 fourier-anillo | Sí | El anillo de Shao Yong es Z/64; la DFT descompone secuencias en armónicos cíclicos; Parseval asertable; ficha terras1999 |
-| Transformada de Haar (wavelets) | 🔵 | Sí | Base clásica de 64 puntos; localiza dónde cambia una señal; complementa a Walsh |
+| Transformada de Haar (wavelets) | 🟢 transformada-haar | Sí | Base ortogonal de 64 puntos hermana de Walsh; filas ortogonales (Gram diagonal) de normas distintas, reconstrucción exacta, Parseval con las normas; localiza dónde cambia el libro; coeficientes mayores congelados |
 | Transformada de Laplace | 🔴 | No | Exige tiempo continuo, inexistente en el I Ching; su pariente discreto legítimo es la matriz de transferencia (ver 4) |
 
 ## 2. Álgebra y espectros
@@ -38,7 +38,7 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 | Cadenas de Markov | 🟢 markov-consultas | Sí | Forma cerrada asertada; Kun 729x Qian bajo milenrama |
 | Entropía de Shannon | 🟢 entropia-oraculo (tanda 1) | Sí | Monedas 1,8113 bits/línea vs milenrama 1,7490; hexagrama = 6 bits exactos; ficha shannon1948 verificada |
 | Codificación de Huffman | 🟢 entropia-oraculo (sección Huffman) | Sí | Código óptimo computable por método; verifica el teorema de codificación en vivo (milenrama 29/16 = 1,8125 bits esperados; monedas 30/16 = 1,875) |
-| Teorema central del límite | 🟡 | Probable | Campana emergiendo de tiradas; ilustración más que hallazgo; baja prioridad |
+| Teorema central del límite (ley de los grandes números) | 🟢 paseo-aleatorio (ampliación) | Sí | La estacionaria del número de yang es exactamente la binomial C(6,k)/64; la campana emerge de 200000 pasos con desviación bajo 0,003 (0,0008 con semilla 99); insignia LGN |
 | Martingalas | 🟡 | Débil | Sin enunciado natural fuerte sobre consultas |
 
 ## 4. Combinatoria y teoría de números
@@ -58,7 +58,7 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 |---|---|---|---|
 | Modelo de Ising 1D | 🟢 ising-hexagrama (tanda 1) | Sí | Identidad de estructura: 6 espines, Boltzmann, misma matriz de transferencia; antiferro enfriado da Ji Ji/Wei Ji (verificado); ficha ising1925 verificada |
 | Entropía termodinámica | 🟢 dentro del 30/31 | Sí | Curva de entropía frente a temperatura, gratis dentro de Ising |
-| Seis qubits (Hadamard tensorial) | 🔵 con descargo blindado | Sí, como identidad formal | H⊗6 verificado; el descargo debe excluir toda afirmación cuántica sobre el oráculo |
+| Seis qubits (Hadamard tensorial) | 🟢 seis-qubits | Sí, como identidad formal | H⊗6 = la transformada de Walsh; aplicada a Kun (000000) da la superposición uniforme (amplitud 1/8, prob 1/64) y es unitaria; descargo blindado activo (nada cuántico sobre el oráculo) |
 | "Quantum I Ching", caos como explicación del oráculo, relatividad | 🔴 | No | Sin conexión demostrable con la estructura; metáfora pura |
 
 ## 6. Geometría y grafos
@@ -68,7 +68,7 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 | Hipercubo Q6, retículo B6, proyecciones | 🟢 base del sitio | Sí | Estructura madre de todo el laboratorio |
 | Bipartición por paridad | 🟢 cubo-dice-no | Sí | 32/32 por paridad de yang; toda arista cruza mitades (verificado); Q6 es bipartito |
 | Códigos correctores y teoremas de imposibilidad | 🟢 cubo-dice-no | Sí | Cota de Hamming: a lo sumo 9 palabras; máximo exacto = 8, computado por búsqueda exhaustiva propia; primer teorema de imposibilidad del sitio |
-| Característica de Euler y f-vector del hexeracto | 🔵 | Sí | Conteo de caras del 6-cubo; extensión del exp. 24 |
+| Característica de Euler y f-vector del hexeracto | 🟢 caras-hexeracto | Sí | f-vector 64, 192, 240, 160, 60, 12, 1 por fórmula y por enumeración de {0,1,*}⁶; suma 3⁶ = 729; Euler 0 (frontera, 5-esfera) y 1 (sólido contráctil) |
 | Teorema de Ramsey | 🟡 | Tenue | R(3,3) = 6 permite un mini-enunciado, pero aún no habla de hexagramas de verdad |
 
 ## 7. Computación y criptografía
