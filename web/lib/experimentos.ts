@@ -878,6 +878,38 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#5f93d8",
     estado: "activo",
   },
+  {
+    slug: "hermandad-ordenes",
+    titulo: "El árbol genealógico de los órdenes",
+    subtitulo: "Quién se parece a quién, medido en inversiones",
+    comoUsar:
+      "Recorre las aristas del árbol y compara las inversiones entre cada par de órdenes con la distancia esperada del azar (1008).",
+    descripcion:
+      "Entre dos órdenes aleatorios de 64 hexagramas se esperan 1008 inversiones (desviación 86,3): los tres órdenes históricos están justo a esa distancia del binario, no correlacionados con él. Pero entre sí no son equidistantes: Rey Wen y Mawangdui, los dos más antiguos, se parecen más de lo que el azar permite (759 inversiones, la única significativa), mientras Jing Fang queda solo.",
+    simbolo: "系",
+    categoria: "historia",
+    etiquetas: ["secuencias-historicas", "combinatoria", "estadistica"],
+    tipo: "visualizacion",
+    nivel: "intermedio",
+    accent: "#d0a24e",
+    estado: "activo",
+  },
+  {
+    slug: "pregunta-del-par",
+    titulo: "La pregunta del par",
+    subtitulo: "¿Qué decide cuál hexagrama va primero?",
+    comoUsar:
+      "Elige un criterio y mira quién gana en cada uno de los 28 pares del Rey Wen, con su conteo y su p binomial en vivo.",
+    descripcion:
+      "¿Qué decide cuál hexagrama va primero dentro de cada par del Rey Wen? La literatura lo declara abierto. El volteo conserva el yang, así que 'más yang primero' es indecidible por construcción. Y ningún criterio binario probado (valor, líneas, suavizado de la transición) se aparta de una moneda al aire: si hay una regla, no vive en la estructura binaria, quizá en el texto, y eso queda fuera del laboratorio.",
+    simbolo: "問",
+    categoria: "historia",
+    etiquetas: ["secuencias-historicas", "probabilidad", "simetrias"],
+    tipo: "test",
+    nivel: "introductorio",
+    accent: "#b9884a",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

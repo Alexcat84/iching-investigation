@@ -665,6 +665,8 @@ ETIQUETADO = {
     'transformada-haar': ('algebra', ['algebra-lineal', 'secuencias-historicas'], 'visualizacion', 'avanzado'),
     'seis-qubits': ('algebra', ['fisica', 'algebra-lineal', 'interdisciplinar'], 'visualizacion', 'intermedio'),
     'caras-hexeracto': ('geometria', ['hipercubo', 'combinatoria'], 'visualizacion', 'intermedio'),
+    'hermandad-ordenes': ('historia', ['secuencias-historicas', 'combinatoria', 'estadistica'], 'visualizacion', 'intermedio'),
+    'pregunta-del-par': ('historia', ['secuencias-historicas', 'probabilidad', 'simetrias'], 'test', 'introductorio'),
 }
 
 
@@ -1403,7 +1405,7 @@ def verificar_miniaturas():
     mini = open(os.path.join(raiz, 'web', 'lib', 'miniaturas.tsx'), encoding='utf-8').read()
     slugs_registro = set(re.findall(r'slug:\s*"([a-z0-9-]+)"', reg))
     slugs_gen = set(re.findall(r'"([a-z0-9-]+)":\s*\(c\)\s*=>', mini))
-    assert len(slugs_registro) == 41, f'slugs en registro: {len(slugs_registro)}'
+    assert len(slugs_registro) == 43, f'slugs en registro: {len(slugs_registro)}'
     faltan = slugs_registro - slugs_gen
     huerfanos = slugs_gen - slugs_registro
     assert not faltan, f'slugs sin generador de miniatura: {sorted(faltan)}'
@@ -1428,9 +1430,9 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 8, 'historia': 10, 'algebra': 14, 'azar': 7, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 8, 'historia': 12, 'algebra': 14, 'azar': 7, 'practica': 2}, por_cat
 
-    # Con el catalogo completo (41 experimentos), el vocabulario de 19 debe estar
+    # Con el catalogo completo (43 experimentos), el vocabulario de 19 debe estar
     # totalmente cubierto: ninguna etiqueta muerta.
     sin_uso = ETIQUETAS_VOCAB - usadas
     assert sin_uso == set(), f'etiquetas del vocabulario sin uso: {sorted(sin_uso)}'
@@ -2066,6 +2068,148 @@ def verificar_hexeracto():
     print(f'   Euler: frontera {chi_frontera} (5-esfera), total {chi_total} (bola contractil)  OK')
 
 
+# === 49. El arbol genealogico de los ordenes (exp 42) ===
+def verificar_hermandad():
+    """Exp 42: inversiones de Kendall entre ordenes historicos. Esperanza n(n-1)/4 = 1008 y
+    desviacion sqrt(n(n-1)(2n+5)/72) = 86,3 (contra Monte Carlo); las tres inversiones entre
+    Rey Wen, Mawangdui y Jing Fang; solo KW-Mawangdui se aparta del azar (p MC < 0,01)."""
+    import random
+    from math import sqrt
+    KW = [BY_KW[k + 1]['valor'] for k in range(64)]
+    UP = ['Qian', 'Gen', 'Kan', 'Zhen', 'Kun', 'Dui', 'Li', 'Xun']
+    LO = ['Qian', 'Kun', 'Gen', 'Dui', 'Kan', 'Li', 'Zhen', 'Xun']
+    MWD = []
+    for U in UP:
+        MWD.append(value_of(bits_of(U, U)))
+        for L in LO:
+            if L != U:
+                MWD.append(value_of(bits_of(L, U)))
+    JF = [v for c in CABEZAS for v in palacio(c)]
+    FUXI = list(range(64))
+    for o in (KW, MWD, JF):
+        assert len(set(o)) == 64
+
+    def inv_count(seq):
+        """Inversiones de una secuencia de valores 0..63 (Fenwick, O(n log n))."""
+        bit = [0] * 65
+        c = 0
+        for x in reversed(seq):
+            i = x
+            while i > 0:
+                c += bit[i]
+                i -= i & -i
+            i = x + 1
+            while i <= 64:
+                bit[i] += 1
+                i += i & -i
+        return c
+
+    def inv_between(X, Y):
+        posY = {v: i for i, v in enumerate(Y)}
+        return inv_count([posY[v] for v in X])
+
+    E = 64 * 63 / 4
+    SD = sqrt(64 * 63 * (2 * 64 + 5) / 72)
+    assert E == 1008 and abs(SD - 86.3018) < 1e-3, (E, SD)
+    assert inv_between(KW, FUXI) == 1013
+    assert inv_between(MWD, FUXI) == 1008
+    assert inv_between(JF, FUXI) == 1008
+    kwmwd = inv_between(KW, MWD)
+    kwjf = inv_between(KW, JF)
+    mwdjf = inv_between(MWD, JF)
+    assert (kwmwd, kwjf, mwdjf) == (759, 909, 872), (kwmwd, kwjf, mwdjf)
+    z = lambda iv: (iv - E) / SD
+
+    rng = random.Random(424242)
+    N = 20000
+    vals = []
+    for _ in range(N):
+        p = list(range(64))
+        rng.shuffle(p)
+        vals.append(inv_count(p))
+    m = sum(vals) / N
+    sd = (sum((x - m) ** 2 for x in vals) / N) ** 0.5
+    assert abs(m - E) < 3, m
+    assert abs(sd - SD) < 2, sd
+    p_mc = sum(1 for x in vals if abs(x - E) >= abs(kwmwd - E)) / N
+    assert p_mc < 0.01, p_mc
+
+    print('49. El arbol genealogico de los ordenes (exp 42)')
+    print(f'   esperanza n(n-1)/4 = {E:.0f}, desviacion {SD:.1f} (Monte Carlo media {m:.1f}, sd {sd:.1f})  OK')
+    print('   vs Fu Xi: Rey Wen 1013, Mawangdui 1008, Jing Fang 1008 (a la distancia del azar)  OK')
+    print(f'   hermandad: KW-MWD {kwmwd} (z={z(kwmwd):.2f}), KW-JF {kwjf} (z={z(kwjf):.2f}), MWD-JF {mwdjf} (z={z(mwdjf):.2f})  OK')
+    print(f'   solo Rey Wen-Mawangdui se aparta del azar: p Monte Carlo {p_mc:.4f} < 0,01 (sobrevive Bonferroni x3)  OK')
+
+
+# === 50. La pregunta del par (exp 43) ===
+def verificar_pregunta_par():
+    """Exp 43: que va primero dentro de cada par del Rey Wen. Micro-teorema (mas yang
+    indecidible, 28/28), bateria de criterios estructurales con su conteo y p binomial de una
+    cola, y los dos canones (yang total y autovolteados)."""
+    from math import comb
+    pc = lambda x: bin(x).count('1')
+    ham = lambda a, b: bin(a ^ b).count('1')
+    KW = [BY_KW[k + 1]['valor'] for k in range(64)]
+    pares = [(KW[2 * i], KW[2 * i + 1], i) for i in range(32)]
+    fan_pares = [(a, b, i) for a, b, i in pares if fan(a) == b]
+    dui_pares = [(a, b, i) for a, b, i in pares if fan(a) != b]
+    assert len(fan_pares) == 28 and len(dui_pares) == 4
+
+    # (a) micro-teorema: fan conserva el yang -> "mas yang primero" empata 28/28
+    assert all(pc(a) == pc(b) for a, b, i in fan_pares), 'fan deberia conservar el yang'
+
+    l1 = lambda v: (v & LINE_BIT(1)) != 0
+    l6 = lambda v: (v & LINE_BIT(6)) != 0
+    c_val = sum(1 for a, b, i in fan_pares if a > b)
+    c_l1 = sum(1 for a, b, i in fan_pares if l1(a))
+    c_l6 = sum(1 for a, b, i in fan_pares if l6(a))
+    assert (c_val, c_l1, c_l6) == (14, 16, 12), (c_val, c_l1, c_l6)
+
+    def suaviza(salida):
+        gana = empata = 0
+        for a, b, i in fan_pares:
+            pos = 2 * i
+            if not salida:
+                if pos == 0:
+                    continue
+                ext = KW[pos - 1]; dk = ham(ext, a); da = ham(ext, b)
+            else:
+                if pos + 2 > 63:
+                    continue
+                ext = KW[pos + 2]; dk = ham(b, ext); da = ham(a, ext)
+            if dk == da:
+                empata += 1
+            elif dk < da:
+                gana += 1
+        return gana, empata
+    g_e, emp_e = suaviza(False)
+    g_s, emp_s = suaviza(True)
+    assert (g_e, emp_e) == (7, 13) and (g_s, emp_s) == (7, 12), (g_e, emp_e, g_s, emp_s)
+
+    def p1(k, m):
+        t = 2 ** m
+        if 2 * k >= m:
+            return sum(comb(m, j) for j in range(k, m + 1)) / t
+        return sum(comb(m, j) for j in range(0, k + 1)) / t
+
+    # (c) los dos canones
+    yang_sup = sum(pc(KW[k]) for k in range(30))
+    yang_inf = sum(pc(KW[k]) for k in range(30, 64))
+    assert yang_sup == 86 and yang_inf == 106, (yang_sup, yang_inf)
+    palis = [v for v in range(64) if fan(v) == v]
+    pos = {BY_KW[kw]['valor']: kw for kw in range(1, 65)}
+    autov = sorted(pos[v] for v in palis)
+    assert autov == [1, 2, 27, 28, 29, 30, 61, 62], autov
+
+    dec_e = 28 - emp_e  # decidibles de entrada (28 pares fan menos empates)
+    dec_s = 27 - emp_s  # decidibles de salida (27 pares con siguiente menos empates)
+    print('50. La pregunta del par (exp 43)')
+    print('   micro-teorema: fan conserva el yang -> "mas yang primero" empata 28/28  OK')
+    print(f'   criterios: valor {c_val}/28 (p={p1(c_val, 28):.3f}), linea1 {c_l1}/28 (p={p1(c_l1, 28):.3f}), linea6 {c_l6}/28 (p={p1(c_l6, 28):.3f})  OK')
+    print(f'   suaviza entrada {g_e}/{dec_e} (p={p1(g_e, dec_e):.3f}), salida {g_s}/{dec_s} (p={p1(g_s, dec_s):.3f}); todos compatibles con una moneda  OK')
+    print(f'   canones: yang superior {yang_sup}/180, inferior {yang_inf}/204; autovolteados en {autov}  OK')
+
+
 # === 39. Hallazgos propios (sello de originalidad) ===
 def verificar_hallazgos():
     """Anexo: (a) cada hallazgo con afirmacion tipo teorema o calculo; (b) fecha valida y
@@ -2123,7 +2267,7 @@ def verificar_como_usar():
     bloques = re.findall(
         r'slug:\s*"([a-z0-9-]+)",.*?comoUsar:\s*\n?\s*"([^"]+)",.*?tipo:\s*"([a-z]+)",',
         reg, re.S)
-    assert len(bloques) == 41, f'entradas parseadas: {len(bloques)}'
+    assert len(bloques) == 43, f'entradas parseadas: {len(bloques)}'
 
     refs = [s for s, _, t in bloques if t == 'referencia']
     assert len(refs) == 2, f'experimentos de tipo referencia: {refs}'
@@ -2271,6 +2415,10 @@ if __name__ == '__main__':
     verificar_qubits()
     print()
     verificar_hexeracto()
+    print()
+    verificar_hermandad()
+    print()
+    verificar_pregunta_par()
     print()
     verificar_hallazgos()
     print()

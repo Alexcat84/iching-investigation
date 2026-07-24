@@ -25,6 +25,8 @@ import { CARTA } from "./cage";
 import { TOP as HAAR_TOP } from "./haar";
 import { SUPERPOSICION_KUN } from "./qubits";
 import { F_VECTOR } from "./hexeracto";
+import { HERMANDAD } from "./hermandad";
+import { FAN, CRITERIOS } from "./pregunta-par";
 import { SECUENCIA } from "./debruijn";
 import { sierpinski } from "./grupo";
 import { M } from "./matriz-nuclear";
@@ -651,6 +653,39 @@ export const GENERADORES: Record<string, Generador> = {
       </>
     );
   },
+  "hermandad-ordenes": (c) => {
+    const nodos: Record<string, [number, number]> = {
+      reywen: [CX - 44, CY - 24],
+      mawangdui: [CX + 44, CY - 24],
+      jingfang: [CX, CY + 34],
+    };
+    return (
+      <>
+        {HERMANDAD.map((e, i) => {
+          const [x1, y1] = nodos[e.a];
+          const [x2, y2] = nodos[e.b];
+          return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={e.significativa ? c : DIM} strokeWidth={e.significativa ? 2.4 : 1} />;
+        })}
+        {Object.entries(nodos).map(([k, [x, y]]) => (
+          <circle key={k} cx={x} cy={y} r={4.5} fill={k === "reywen" || k === "mawangdui" ? c : GRIS} />
+        ))}
+      </>
+    );
+  },
+  "pregunta-del-par": (c) => {
+    const crit = CRITERIOS[0]; // mayor valor binario
+    const cols = 7;
+    return (
+      <>
+        {FAN.map((p, i) => {
+          const gana = crit.evalua(p, 2 * p.i) > 0;
+          const x = 20 + (i % cols) * 26;
+          const y = 20 + Math.floor(i / cols) * 22;
+          return <rect key={i} x={x} y={y} width={20} height={17} rx={2} fill={gana ? c : "#4a4436"} opacity={gana ? 0.9 : 0.55} />;
+        })}
+      </>
+    );
+  },
 };
 
 export const MINIATURA_SLUGS = Object.keys(GENERADORES);
@@ -668,5 +703,5 @@ export function Miniatura({ slug, color }: { slug: string; color: string }) {
 // Aserción en desarrollo.
 if (process.env.NODE_ENV !== "production") {
   if (puros.length !== 8) console.error("[miniaturas] deberían ser 8 hexagramas puros");
-  if (MINIATURA_SLUGS.length !== 41) console.error("[miniaturas] se esperaban 41 generadores");
+  if (MINIATURA_SLUGS.length !== 43) console.error("[miniaturas] se esperaban 43 generadores");
 }

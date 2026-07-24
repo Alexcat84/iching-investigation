@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { hex } from "@/lib/iching";
 import { INVERSIONES_MAX } from "@/lib/permutacion";
 import { COSTO_MINIMO, ORDENES, type OrdenHistorico } from "@/lib/ordenes";
@@ -255,6 +256,17 @@ export default function Permutacion() {
           ciento), el mismo desorden que el Rey Wen (1013) muestra frente a Fu Xi. Tres
           arquitecturas muy distintas que, medidas contra el conteo binario, quedan casi
           a la misma distancia.
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-sand-300">
+          Y ese 1008 no es una coincidencia: es <b className="text-sand-200">exactamente la
+          esperanza</b> del número de inversiones entre dos órdenes al azar, n(n−1)/4, con
+          desviación 86,3. Los tres órdenes históricos caen justo ahí, así que respecto del
+          binario están <b>a la distancia del azar</b>: no correlacionados con él. El{" "}
+          <Link href="/experimentos/hermandad-ordenes" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
+            árbol genealógico de los órdenes
+          </Link>{" "}
+          mide entonces la otra pregunta, cuánto se parecen <b>entre sí</b>: y ahí Rey Wen y
+          Mawangdui resultan hermanos (759 inversiones), con Jing Fang de solitario.
         </p>
         <p className="mt-2 text-sm leading-relaxed text-sand-300">
           Pero el <b className="text-sand-200">costo en líneas</b> (la distancia de
