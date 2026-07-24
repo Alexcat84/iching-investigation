@@ -28,7 +28,11 @@ export type ClaveBiblio =
   | "oeis-a000045"
   | "oeis-a000032"
   | "shannon1948"
-  | "ising1925";
+  | "ising1925"
+  | "singh1985"
+  | "lucas1878"
+  | "terras1999"
+  | "pritchett1993";
 
 export type TipoFicha = "libro" | "articulo" | "actas" | "obra-referencia" | "recurso-web";
 
@@ -44,6 +48,8 @@ export interface Ficha {
   paginas?: string;
   detalle?: string;
   editorial?: string;
+  /** Serie o colección (roman, entre paréntesis tras el título). */
+  serie?: string;
   isbn?: string;
   doi?: string;
   url?: string;
@@ -213,6 +219,61 @@ export const BIBLIOGRAFIA: Record<ClaveBiblio, Ficha> = {
     orden: "Ising",
     apa: "Ising, E. (1925). Beitrag zur Theorie des Ferromagnetismus. Zeitschrift für Physik, 31, 253–258. https://doi.org/10.1007/BF02980577",
   },
+  singh1985: {
+    clave: "singh1985",
+    tipo: "articulo",
+    autores: "Singh, P.",
+    anio: "1985",
+    titulo: "The so-called Fibonacci numbers in ancient and medieval India",
+    contenedor: "Historia Mathematica",
+    volumen: "12",
+    numero: "3",
+    paginas: "229–244",
+    doi: "https://doi.org/10.1016/0315-0860(85)90021-7",
+    citaCorta: "Singh, 1985",
+    orden: "Singh",
+    apa: "Singh, P. (1985). The so-called Fibonacci numbers in ancient and medieval India. Historia Mathematica, 12(3), 229–244. https://doi.org/10.1016/0315-0860(85)90021-7",
+  },
+  lucas1878: {
+    clave: "lucas1878",
+    tipo: "articulo",
+    autores: "Lucas, É.",
+    anio: "1878",
+    titulo: "Théorie des fonctions numériques simplement périodiques",
+    contenedor: "American Journal of Mathematics",
+    volumen: "1",
+    paginas: "184–240, 289–321",
+    doi: "https://doi.org/10.2307/2369373",
+    citaCorta: "Lucas, 1878",
+    orden: "Lucas",
+    apa: "Lucas, É. (1878). Théorie des fonctions numériques simplement périodiques. American Journal of Mathematics, 1, 184–240, 289–321. https://doi.org/10.2307/2369373",
+  },
+  terras1999: {
+    clave: "terras1999",
+    tipo: "libro",
+    autores: "Terras, A.",
+    anio: "1999",
+    titulo: "Fourier analysis on finite groups and applications",
+    serie: "London Mathematical Society Student Texts 43",
+    editorial: "Cambridge University Press",
+    isbn: "978-0-521-45718-7",
+    citaCorta: "Terras, 1999",
+    orden: "Terras",
+    apa: "Terras, A. (1999). Fourier analysis on finite groups and applications (London Mathematical Society Student Texts 43). Cambridge University Press. ISBN 978-0-521-45718-7.",
+  },
+  pritchett1993: {
+    clave: "pritchett1993",
+    tipo: "libro",
+    autores: "Pritchett, J.",
+    anio: "1993",
+    titulo: "The music of John Cage",
+    serie: "Music in the Twentieth Century 5",
+    editorial: "Cambridge University Press",
+    isbn: "978-0-521-56544-8",
+    citaCorta: "Pritchett, 1993",
+    orden: "Pritchett",
+    apa: "Pritchett, J. (1993). The music of John Cage (Music in the Twentieth Century 5). Cambridge University Press. ISBN 978-0-521-56544-8.",
+  },
 };
 
 /** Render APA unico, aplicado en todas partes (nunca formatos a mano por pagina). */
@@ -220,7 +281,7 @@ export function renderAPA(f: Ficha): string {
   const cab = `${f.autores} (${f.anio}). `;
   switch (f.tipo) {
     case "libro":
-      return `${cab}${f.titulo}. ${f.editorial}.${f.isbn ? ` ISBN ${f.isbn}.` : ""}`;
+      return `${cab}${f.titulo}${f.serie ? ` (${f.serie})` : ""}. ${f.editorial}.${f.isbn ? ` ISBN ${f.isbn}.` : ""}`;
     case "articulo":
       return `${cab}${f.titulo}. ${f.contenedor}, ${f.volumen}${f.numero ? `(${f.numero})` : ""}, ${f.paginas}.${f.doi ? ` ${f.doi}` : ""}`;
     case "actas":
@@ -352,7 +413,7 @@ export const AFIRMACIONES: Afirmacion[] = [
   a("serpiente-debruijn", "teorema", "verificar_debruijn", ["debruijn1946"], "Existe un anillo de 64 bits cuyas 64 ventanas de 6 consecutivas son los 64 hexagramas, cada uno una sola vez; hay 2^26 anillos asi."),
   a("serpiente-debruijn", "teorema", "verificar_debruijn", ["fkm1978"], "La construccion canonica usada es la de Fredricksen y Maiorana: concatenar las palabras de Lyndon en orden lexicografico da la secuencia de De Bruijn minima."),
 
-  a("grupo-sierpinski", "teorema", "verificar_grupo_sierpinski", [], "Con XOR los 64 forman el grupo (Z/2)^6; los 8 puros son un subgrupo cuyos 8 cosets particionan el conjunto, y la matriz de dominancia es Pascal mod 2 (Lucas), el triangulo de Sierpinski.", { nombreTeorema: "Teorema de Lucas (1878)" }),
+  a("grupo-sierpinski", "teorema", "verificar_grupo_sierpinski", ["lucas1878"], "Con XOR los 64 forman el grupo (Z/2)^6; los 8 puros son un subgrupo cuyos 8 cosets particionan el conjunto, y la matriz de dominancia es Pascal mod 2 (Lucas), el triangulo de Sierpinski.", { nombreTeorema: "Teorema de Lucas (1878)" }),
 
   a("rey-wen-aleatorio", "calculo", "verificar_rey_wen_aleatorio", [], "Bajo su propia regla de pares, el Rey Wen tiene 1013 inversiones, indistinguible de un barajado aleatorio (z = 0.05, p = 0.97), y tambien en el costo en lineas."),
   a("rey-wen-aleatorio", "calculo", "verificar_walsh", [], "El espectro de Walsh lo confirma por otra via: los ordenes pares 2 y 4 concentran el 77.4% de la energia, frente al 47.6% que repartiria el azar."),
@@ -363,7 +424,7 @@ export const AFIRMACIONES: Afirmacion[] = [
 
   a("comparador-particiones", "calculo", "verificar_particiones", [], "El indice de Rand ajustado mide la similitud entre dos particiones de los 64; palacios y cosets dan ARI = -0.125, mas distintos que el azar, porque las 8 mascaras de generacion no forman subgrupo."),
 
-  a("espectro-walsh", "calculo", "verificar_walsh", [], "La transformada de Walsh del Rey Wen concentra su energia en el orden 2 (50.3%) y en los ordenes pares 2 y 4 (77.4%), frente al 47.6% del azar: su unica estructura son correlaciones entre lineas. La transformada es el analisis de Fourier sobre el grupo (Z/2)^6: la matriz es el producto tensorial de seis Hadamard (H tensor 6).", { nombreTeorema: "Análisis de Fourier sobre grupos finitos" }),
+  a("espectro-walsh", "calculo", "verificar_walsh", ["terras1999"], "La transformada de Walsh del Rey Wen concentra su energia en el orden 2 (50.3%) y en los ordenes pares 2 y 4 (77.4%), frente al 47.6% del azar: su unica estructura son correlaciones entre lineas. La transformada es el analisis de Fourier sobre el grupo (Z/2)^6: la matriz es el producto tensorial de seis Hadamard (H tensor 6).", { nombreTeorema: "Análisis de Fourier sobre grupos finitos" }),
 
   a("conteos-astronomicos", "calculo", "verificar_conteos", [], "Los conteos del cubo: 46080 automorfismos (2^6 por 6!), 2^26 secuencias de De Bruijn, las distancias C(6,k) = 1, 6, 15, 20, 15, 6, 1 y 720 cadenas de Kun a Qian."),
   a("conteos-astronomicos", "calculo", "verificar_conteos", ["oeis-a003042", "knuth4a"], "El numero de codigos Gray ciclicos de Q6 se cita a OEIS sin reproducir sus digitos; Knuth es la referencia general de codigos Gray y secuencias de De Bruijn.", { nota: "Cifra citada, no reproducida." }),
@@ -397,7 +458,7 @@ export const AFIRMACIONES: Afirmacion[] = [
 
   a("entropia-oraculo", "calculo", "verificar_entropia", ["shannon1948"], "El codigo optimo de Huffman de una linea da longitud esperada 30/16 = 1,875 bits con monedas y 29/16 = 1,8125 con milenrama: el metodo antiguo tiene menos entropia y ademas se comprime mejor, cumpliendo H <= L < H+1.", { nombreTeorema: "Teorema de codificación de fuente (Shannon)" }),
 
-  a("fourier-anillo", "calculo", "verificar_fourier", [], "La DFT sobre Z/64 (el circulo de Shao Yong) descompone la secuencia del Rey Wen en armonicos ciclicos y cumple Parseval; la DFT de una constante es una delta y la ida y vuelta recupera la senal.", { nombreTeorema: "Transformada discreta de Fourier" }),
+  a("fourier-anillo", "calculo", "verificar_fourier", ["terras1999"], "La DFT sobre Z/64 (el circulo de Shao Yong) descompone la secuencia del Rey Wen en armonicos ciclicos y cumple Parseval; la DFT de una constante es una delta y la ida y vuelta recupera la senal.", { nombreTeorema: "Transformada discreta de Fourier" }),
   a("fourier-anillo", "calculo", "verificar_fourier", [], "El armonico dominante es k = 8, el periodo de los ocho trigramas; es la misma senal del experimento 23 en otra geometria: el circulo Z/64 en vez del cubo (Z/2)^6."),
 
   a("influencias-lineas", "teorema", "verificar_influencias", [], "Para la regla sin dos yin, las influencias por linea son 10, 22, 18, 18, 22, 10 de 64 (maximas en las lineas 2 y 5); para la paridad de yang, la influencia de toda linea es exactamente 1."),
@@ -406,6 +467,12 @@ export const AFIRMACIONES: Afirmacion[] = [
   a("cubo-dice-no", "teorema", "verificar_cubo_no", [], "La cota de empaquetado de esferas da a lo sumo 9 palabras a distancia 3 en Q6 (7 no divide 64: no hay codigo perfecto); el maximo real es 8, probado por busqueda exhaustiva, y un codigo de 8 corrige cualquier error de una linea.", { nombreTeorema: "Cota de Hamming (empaquetado de esferas)" }),
   a("cubo-dice-no", "teorema", "verificar_cubo_no", [], "Los 32 hexagramas de yang par y los 32 de impar forman una biparticion: las 192 aristas cruzan de mitad, asi que Q6 es bipartito y no hay ciclos impares de mutaciones."),
   a("cubo-dice-no", "teorema", "verificar_cubo_no", [], "Bajo rotacion de las 6 lineas hay exactamente 14 collares (formula de Polya = enumeracion directa) y 13 pulseras anadiendo el reflejo.", { nombreTeorema: "Enumeración de Pólya" }),
+
+  a("prosodia-sanscrita", "tradicion", null, ["singh1985"], "La prosodia sanscrita contaba los metros de silabas cortas (1) y largas (2), y la cuenta cumple C(n) = C(n-1) + C(n-2): 1, 2, 3, 5, 8, 13, 21, los numeros de Fibonacci, formulados por Virahanka, Gopala y Hemachandra siglos antes de Fibonacci."),
+  a("prosodia-sanscrita", "teorema", "verificar_prosodia", [], "Las 21 figuras de 6 lineas sin dos yin seguidos estan en biyeccion con los 21 metros de duracion 7: se anade un yang centinela y se empareja cada yin con el yang superior como silaba larga. Dos civilizaciones contaron lo mismo con simbolos distintos."),
+
+  a("cage-musica-azar", "tradicion", null, ["pritchett1993"], "A fines de 1950 Cage recibio el I Ching, construyo cartas de 64 valores indexadas por los hexagramas y las selecciono con tiradas de monedas; Music of Changes (1951) es la obra fundacional de la composicion por azar.", { nota: "Se documenta el metodo, no la obra: la demo usa una carta propia y el motor de monedas del experimento 21, sin reproducir partituras ni fragmentos de Cage." }),
+  a("cage-musica-azar", "calculo", "verificar_cage", [], "El metodo de seleccion (seis tiradas de monedas, P(yang) = 1/2 por linea) elige uniformemente uno de los 64 hexagramas, cada uno con probabilidad 1/64; nuestra carta demostrativa asigna un valor a cada hexagrama, como hacia Cage con sus cartas."),
 ];
 
 // === Consultas ===

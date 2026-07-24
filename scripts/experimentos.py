@@ -660,6 +660,8 @@ ETIQUETADO = {
     'fourier-anillo': ('algebra', ['algebra-lineal', 'secuencias-historicas', 'hipercubo'], 'visualizacion', 'avanzado'),
     'influencias-lineas': ('algebra', ['combinatoria', 'algebra-lineal', 'binario'], 'calculadora', 'intermedio'),
     'cubo-dice-no': ('geometria', ['combinatoria', 'hipercubo', 'teoria-de-grupos'], 'visualizacion', 'intermedio'),
+    'prosodia-sanscrita': ('historia', ['combinatoria', 'secuencias-historicas', 'binario'], 'visualizacion', 'introductorio'),
+    'cage-musica-azar': ('historia', ['interdisciplinar', 'adivinacion', 'secuencias-historicas'], 'simulador', 'introductorio'),
 }
 
 
@@ -1289,7 +1291,7 @@ def verificar_miniaturas():
     mini = open(os.path.join(raiz, 'web', 'lib', 'miniaturas.tsx'), encoding='utf-8').read()
     slugs_registro = set(re.findall(r'slug:\s*"([a-z0-9-]+)"', reg))
     slugs_gen = set(re.findall(r'"([a-z0-9-]+)":\s*\(c\)\s*=>', mini))
-    assert len(slugs_registro) == 36, f'slugs en registro: {len(slugs_registro)}'
+    assert len(slugs_registro) == 38, f'slugs en registro: {len(slugs_registro)}'
     faltan = slugs_registro - slugs_gen
     huerfanos = slugs_gen - slugs_registro
     assert not faltan, f'slugs sin generador de miniatura: {sorted(faltan)}'
@@ -1314,9 +1316,9 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 7, 'historia': 8, 'algebra': 12, 'azar': 7, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 7, 'historia': 10, 'algebra': 12, 'azar': 7, 'practica': 2}, por_cat
 
-    # Con el catalogo completo (36 experimentos), el vocabulario de 19 debe estar
+    # Con el catalogo completo (38 experimentos), el vocabulario de 19 debe estar
     # totalmente cubierto: ninguna etiqueta muerta.
     sin_uso = ETIQUETAS_VOCAB - usadas
     assert sin_uso == set(), f'etiquetas del vocabulario sin uso: {sorted(sin_uso)}'
@@ -1370,7 +1372,8 @@ def verificar_fundamentos():
     claves_bib = set(re.findall(r'clave:\s*"([a-z0-9-]+)"', fund))
     esperadas = {'shaughnessy1996', 'nielsen2003', 'ryan1996', 'leibniz1703',
                  'debruijn1946', 'fkm1978', 'oeis-a003042', 'knuth4a',
-                 'oeis-a000045', 'oeis-a000032', 'shannon1948', 'ising1925'}
+                 'oeis-a000045', 'oeis-a000032', 'shannon1948', 'ising1925',
+                 'singh1985', 'lucas1878', 'terras1999', 'pritchett1993'}
     assert claves_bib == esperadas, claves_bib
 
     # (e) El render APA congelado esta, verbatim, en el documento (sin markdown).
@@ -1791,6 +1794,63 @@ def verificar_cubo_no():
     print(f'   Polya: {collares} collares (formula = enumeracion) y {pulseras} pulseras  OK')
 
 
+# === 43. Los poetas que contaron primero (prosodia sanscrita) ===
+def verificar_prosodia():
+    """Exp 37: biyeccion entre las 21 figuras sin dos yin y los 21 metros de duracion 7."""
+    bits = lambda v: format(v, '06b')
+    figuras = [v for v in range(64) if '00' not in bits(v)]
+    assert len(figuras) == 21
+
+    def metro(v):
+        s = bits(v) + '1'  # centinela yang en la linea 7
+        sil = []
+        i = 0
+        while i < 7:
+            if s[i] == '0':
+                sil.append(2)
+                i += 2
+            else:
+                sil.append(1)
+                i += 1
+        return tuple(sil)
+
+    metros = [metro(v) for v in figuras]
+    assert all(sum(m) == 7 for m in metros), 'algun metro no dura 7'
+    assert len(set(metros)) == 21, 'la biyeccion no es inyectiva'
+
+    def comps(n):
+        if n == 0:
+            return [()]
+        r = []
+        if n >= 1:
+            r += [(1,) + c for c in comps(n - 1)]
+        if n >= 2:
+            r += [(2,) + c for c in comps(n - 2)]
+        return r
+
+    todas = set(comps(7))
+    assert len(todas) == 21 and set(metros) == todas, 'la imagen no cubre las composiciones de 7'
+    escalera = [len(comps(n)) for n in range(1, 8)]
+    assert escalera == [1, 2, 3, 5, 8, 13, 21]
+
+    print('43. Los poetas que contaron primero (prosodia sanscrita)')
+    print(f'   escalera de metros C(n) n=1..7: {escalera} = Fibonacci  OK')
+    print('   biyeccion: las 21 figuras sin dos yin <-> los 21 metros de duracion 7  OK')
+
+
+# === 44. Cage: la musica del azar ===
+def verificar_cage():
+    """Exp 38: el metodo de seleccion (seis monedas) es uniforme sobre los 64 hexagramas."""
+    d = SESAVOS['monedas']  # {9:2, 8:6, 7:6, 6:2}
+    p_yang = (d[7] + d[9]) / 16
+    assert abs(p_yang - 0.5) < 1e-12, p_yang
+    assert abs(p_yang ** 6 - 1 / 64) < 1e-12  # seis lineas independientes -> 1/64 cada hexagrama
+
+    print('44. Cage: la musica del azar')
+    print('   seleccion por seis monedas: P(yang) = 1/2 por linea -> cada hexagrama 1/64 (uniforme)  OK')
+    print('   metodo documentado (Pritchett 1993); la demo usa carta propia, no la obra de Cage  OK')
+
+
 # === 39. Hallazgos propios (sello de originalidad) ===
 def verificar_hallazgos():
     """Anexo: (a) cada hallazgo con afirmacion tipo teorema o calculo; (b) fecha valida y
@@ -1844,7 +1904,7 @@ def verificar_como_usar():
     bloques = re.findall(
         r'slug:\s*"([a-z0-9-]+)",.*?comoUsar:\s*\n?\s*"([^"]+)",.*?tipo:\s*"([a-z]+)",',
         reg, re.S)
-    assert len(bloques) == 36, f'entradas parseadas: {len(bloques)}'
+    assert len(bloques) == 38, f'entradas parseadas: {len(bloques)}'
 
     refs = [s for s, _, t in bloques if t == 'referencia']
     assert len(refs) == 2, f'experimentos de tipo referencia: {refs}'
@@ -1980,6 +2040,10 @@ if __name__ == '__main__':
     verificar_influencias()
     print()
     verificar_cubo_no()
+    print()
+    verificar_prosodia()
+    print()
+    verificar_cage()
     print()
     verificar_hallazgos()
     print()

@@ -20,6 +20,8 @@ import { ESPECTRO } from "./espectro-q6";
 import { ESPECTRO as ESPECTRO_FOURIER } from "./fourier-anillo";
 import { influencias, PROPIEDADES } from "./influencias";
 import { CODIGO_MAXIMO } from "./cubo-no";
+import { PARES as METROS_PARES } from "./prosodia";
+import { CARTA } from "./cage";
 import { SECUENCIA } from "./debruijn";
 import { sierpinski } from "./grupo";
 import { M } from "./matriz-nuclear";
@@ -573,6 +575,34 @@ export const GENERADORES: Record<string, Generador> = {
       </>
     );
   },
+  "prosodia-sanscrita": (c) =>
+    METROS_PARES.slice(0, 5).map((p, r) => {
+      let x = 20;
+      const y = 16 + r * 20;
+      return (
+        <g key={r}>
+          {p.metro.map((s, i) => {
+            const w = s === 2 ? 24 : 11;
+            const rect = <rect key={i} x={x} y={y} width={w - 3} height={12} rx={2} fill={s === 2 ? c : "#4a4436"} />;
+            x += w;
+            return rect;
+          })}
+        </g>
+      );
+    }),
+  "cage-musica-azar": (c) => {
+    const sub = CARTA.slice(0, 30);
+    return (
+      <>
+        <line x1={10} y1={H - 12} x2={W - 10} y2={H - 12} stroke={DIM} strokeWidth={0.8} />
+        {sub.map((s, i) => {
+          const x = 14 + i * 6.6;
+          const y = H - 16 - (s.altura / 11) * 82;
+          return <circle key={i} cx={x} cy={y} r={2} fill={i % 5 === 0 ? c : GRIS} />;
+        })}
+      </>
+    );
+  },
 };
 
 export const MINIATURA_SLUGS = Object.keys(GENERADORES);
@@ -590,5 +620,5 @@ export function Miniatura({ slug, color }: { slug: string; color: string }) {
 // Aserción en desarrollo.
 if (process.env.NODE_ENV !== "production") {
   if (puros.length !== 8) console.error("[miniaturas] deberían ser 8 hexagramas puros");
-  if (MINIATURA_SLUGS.length !== 36) console.error("[miniaturas] se esperaban 36 generadores");
+  if (MINIATURA_SLUGS.length !== 38) console.error("[miniaturas] se esperaban 38 generadores");
 }

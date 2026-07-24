@@ -778,6 +778,40 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#d0563f",
     estado: "activo",
   },
+  {
+    slug: "prosodia-sanscrita",
+    titulo: "Los poetas que contaron primero",
+    subtitulo: "Fibonacci en la prosodia sánscrita, siglos antes",
+    comoUsar:
+      "Toca una figura sin dos yin y mira su metro sánscrito: cada yin con el yang de arriba es una sílaba larga; los 21 coinciden.",
+    descripcion:
+      "La prosodia sánscrita contaba los metros de sílabas cortas (1) y largas (2), y la cuenta cumple C(n) = C(n-1) + C(n-2): 1, 2, 3, 5, 8, 13, 21, los números de Fibonacci, formulados por Virahanka, Gopala y Hemachandra siglos antes. Las 21 figuras de 6 líneas sin dos yin están en biyección con los 21 metros de duración 7: dos civilizaciones contaron lo mismo.",
+    simbolo: "⏑",
+    categoria: "historia",
+    etiquetas: ["combinatoria", "secuencias-historicas", "binario"],
+    tipo: "visualizacion",
+    nivel: "introductorio",
+    accent: "#c99a52",
+    estado: "activo",
+  },
+  {
+    slug: "cage-musica-azar",
+    titulo: "Cage: la música del azar",
+    subtitulo: "El I Ching como motor de composición (1951)",
+    comoUsar:
+      "Pulsa para tirar las monedas seis veces, selecciona una sonoridad de la carta demostrativa y encadena una frase, como hacía Cage.",
+    descripcion:
+      "A fines de 1950 John Cage recibió el I Ching, construyó cartas de 64 valores indexadas por los hexagramas y las seleccionó con tiradas de monedas; Music of Changes (1951) es la obra fundacional de la composición por azar. Documentamos el método, no la obra: la demo usa una carta propia y el motor de monedas del experimento 21.",
+    simbolo: "♪",
+    categoria: "historia",
+    etiquetas: ["interdisciplinar", "adivinacion", "secuencias-historicas"],
+    tipo: "simulador",
+    nivel: "introductorio",
+    accent: "#8a9bb0",
+    estado: "activo",
+    descargo:
+      "Documentamos el método compositivo, no la obra de Cage: la demo usa una carta demostrativa propia y no reproduce sus cartas, partituras ni fragmentos (copyright). La conexión es histórica (Pritchett, 1993), no una afirmación sobre el oráculo.",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
