@@ -129,6 +129,21 @@ Verificación: ficha de Cambridge University Press y OpenLibrary el 24 de julio 
 **Bloque Cage** (exp. 38)
 - "A fines de 1950 Cage recibió el I Ching, construyó cartas de 64 valores indexadas por los hexagramas y las seleccionó con tiradas de monedas; Music of Changes (1951) es la obra fundacional de la composición por azar" → tipo 3 → [pritchett1993]. Descargo interdisciplinar: se documenta el método, no la obra; la demo usa una carta propia y el motor de monedas del exp. 21, y no reproduce partituras ni fragmentos de Cage (copyright).
 
+**Bloque transformada de Haar** (exp. 39)
+- "La base de Haar es la otra base ortogonal clásica de 64 puntos, hermana de Walsh: sus 64 filas son ortogonales (matriz de Gram diagonal) aunque de normas distintas, la reconstrucción es exacta y Parseval se cumple con esas normas" → tipo 1 → suite (verificar_haar). Teorema clásico nombrado (base de Haar); ficha pendiente (sección D).
+- "Aplicada a la secuencia del Rey Wen, los coeficientes de Haar localizan dónde cambia el libro; los mayores viven en la escala de los bloques de trigramas (los tramos [0, 16) y [48, 64)) y se congelan" → tipo 2 → suite. Es la misma señal de Walsh y del Fourier del anillo, en la recta 0..63.
+
+**Bloque seis qubits** (exp. 40)
+- "Un hexagrama es un estado de la base computacional de 6 qubits, y la transformada de Walsh del sitio es la puerta de Hadamard H⊗6 (exp. 23); aplicada a |Kun⟩ = |000000⟩ da la superposición uniforme de los 64 hexagramas con amplitud 1/8 y probabilidad 1/64" → tipo 1 → suite (verificar_qubits). Descargo blindado: identidad matemática entre transformadas y estados; ninguna afirmación cuántica sobre el oráculo, y el "quantum I Ching" comercial está en el registro de aplicabilidad como rechazado. Teorema clásico nombrado (transformada de Hadamard); ficha pendiente (sección D).
+- "La transformación normalizada es unitaria (H·Hᵀ = I): preserva normas" → tipo 1 → suite (verificar_qubits).
+
+**Bloque caras del hexeracto** (exp. 41)
+- "Las caras del 6-cubo son los hexagramas parciales (palabras sobre yin, yang e indeterminado); el número de caras de dimensión k es f_k = C(6,k)·2^(6-k), verificado por fórmula y por enumeración directa de {0,1,*}^6; el f-vector es 64, 192, 240, 160, 60, 12, 1" → tipo 1 → suite (verificar_hexeracto). Teorema nombrado (f-vector del politopo); ficha pendiente (sección D).
+- "Las caras suman 3^6 = 729 (la generatriz (2+x)^6), el mismo número que el cociente Kun/Qian de la cadena de Markov; la característica de Euler es 0 en la frontera (una 5-esfera) y 1 en el sólido entero (contráctil)" → tipo 1 → suite. Teorema nombrado (característica de Euler-Poincaré); ficha pendiente (sección D).
+
+**Bloque paseo aleatorio, la campana** (exp. 25, ampliación)
+- "La estacionaria del número de yang del caminante es exactamente la binomial C(6,k)/64; con 200000 pasos y semilla fija la desviación máxima entre las frecuencias y la binomial queda bajo 0,003 (0,0008 con semilla 99)" → tipo 1 → suite (verificar_paseo). Teorema clásico nombrado (ley de los grandes números); ficha pendiente (sección D).
+
 ## D. Huecos conocidos (no citar hasta resolver)
 
 1. Ficha exacta de la edición castellana de Wilhelm/Vogelmann.
@@ -136,6 +151,7 @@ Verificación: ficha de Cambridge University Press y OpenLibrary el 24 de julio 
 3. Números de página de la Explication de Leibniz.
 4. Ficha del teorema de Perron-Frobenius: se nombra en el exp. 20 (Markov) como teorema con respaldo de suite, sin ficha aún.
 5. Fichas de teoremas clásicos nombrados con respaldo de suite y sin ficha aún: el análisis de funciones booleanas y las influencias (exp. 35), la cota de empaquetado de Hamming y la enumeración de Pólya (exp. 36).
-6. Cualquier fuente nueva que un experimento futuro necesite: pasa por este documento primero.
+6. Fichas de los teoremas clásicos nombrados en la tanda 4, todos con respaldo de suite y sin ficha aún: la base de Haar (exp. 39), la transformada de Hadamard H⊗n (exp. 40), el f-vector del politopo y la característica de Euler-Poincaré (exp. 41), y la ley de los grandes números (ampliación del exp. 25).
+7. Cualquier fuente nueva que un experimento futuro necesite: pasa por este documento primero.
 
-Resueltas en la tanda 3 (salen de la lista): el teorema de Lucas (exp. 18) con [lucas1878]; el análisis de Fourier sobre grupos finitos (exp. 23) y la transformada discreta de Fourier (exp. 34), ambos con [terras1999].
+Resueltas en la tanda 3 (salen de la lista): el teorema de Lucas (exp. 18) con [lucas1878]; el análisis de Fourier sobre grupos finitos (exp. 23) y la transformada discreta de Fourier (exp. 34), ambos con [terras1999]. La tanda 4 no añade fichas: sus teoremas se nombran con respaldo de suite y quedan en el hueco 6 de esta lista.
