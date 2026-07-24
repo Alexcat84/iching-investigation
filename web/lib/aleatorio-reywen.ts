@@ -55,7 +55,14 @@ export interface FilaChan {
   pares: number | null;
   invariante: boolean;
   veredicto: string;
+  /** Nota de reproducción al pie de la fila, si la hay. */
+  nota?: string;
 }
+
+/** Media de Hamming DENTRO de los 32 pares del Rey Wen (asertada en la suite). */
+export const HAMMING_DENTRO_PARES = 3.75;
+/** Media de Hamming ENTRE pares (las 31 transiciones que cruzan un par); coincide con Chan. */
+export const HAMMING_ENTRE_PARES = 2.9355;
 
 export const CHAN: { n: number; semilla: number; filas: FilaChan[] } = {
   n: 20000,
@@ -64,7 +71,7 @@ export const CHAN: { n: number; semilla: number; filas: FilaChan[] } = {
     { estadistico: "distancia media de transición", real: "3,349", libre: 97.5, pares: 29.4, invariante: false, veredicto: "corolario de la regla de pares" },
     { estadistico: "autocorrelación lag-1 de distancias", real: "−0,247", libre: 3.8, pares: 6.2, invariante: false, veredicto: "marginal, no significativa" },
     { estadistico: "grupos de 4 con 12 yang", real: "7", libre: 99.2, pares: 89.8, invariante: false, veredicto: "mayormente corolario" },
-    { estadistico: "asimetría dentro/entre pares", real: "3,75", libre: 99.9, pares: null, invariante: true, veredicto: "invariante por construcción" },
+    { estadistico: "asimetría dentro/entre pares", real: "3,75", libre: 99.9, pares: null, invariante: true, veredicto: "invariante por construcción", nota: "Nota de reproducción: nuestra media de Hamming dentro de los 32 pares, computada directamente, es 3,75 (asertada en la suite); Chan reporta 3,56, mientras que su media entre pares (2,94) sí coincide con la nuestra (2,94). La diferencia probablemente refleja una convención de emparejamiento o de métrica distinta en su implementación; la conclusión cualitativa (los pares son internamente más distantes que las transiciones entre pares) es idéntica en ambos." },
   ],
 };
 

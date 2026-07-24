@@ -215,6 +215,14 @@ export default function ReyWenAleatorio() {
             </table>
           </div>
 
+          {CHAN.filas
+            .filter((f) => f.nota)
+            .map((f) => (
+              <p key={f.estadistico} className="mt-3 border-l-2 pl-3 text-[13px] leading-relaxed text-sand-400" style={{ borderColor: `${ACCENT}66` }}>
+                {f.nota}
+              </p>
+            ))}
+
           <p className="mt-3 text-sm leading-relaxed text-sand-300">
             El giro es limpio: propiedades que bajo barajado libre están en el percentil 97
             a 99 caen, bajo la nula de pares, al centro (la distancia media al{" "}

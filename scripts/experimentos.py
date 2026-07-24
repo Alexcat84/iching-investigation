@@ -1214,6 +1214,15 @@ def verificar_dialogo_chan():
     assert s3(real) == 7, s3(real)
     assert abs(s4(real) - 3.75) < 1e-9, s4(real)
 
+    # Nota de reproduccion: media de Hamming dentro (3,75) y entre pares (2,9355).
+    # La media entre pares coincide con la de Chan (2,94); la de dentro difiere (Chan 3,56),
+    # pero la conclusion cualitativa (los pares son internamente mas distantes) es la misma.
+    dentro = s4(real)
+    entre = sum(ham(real[2 * k + 1], real[2 * k + 2]) for k in range(31)) / 31
+    assert abs(dentro - 3.75) < 1e-9, dentro
+    assert abs(entre - 2.9355) < 1e-3, entre
+    assert dentro > entre, 'los pares deberian ser internamente mas distantes'
+
     SEED, N = 20260722, 20000
     funcs = {'s1': s1, 's2': s2, 's3': s3, 's4': s4}
 
@@ -1259,6 +1268,7 @@ def verificar_dialogo_chan():
     print(f'   Rey Wen real: distancia {s1(real):.4f}, autocorrelacion {s2(real):.4f}, grupos de 12 yang {s3(real)}  OK')
     print(f'   percentil bajo la nula de pares: distancia {p_pares["s1"]:.1f}, autocorr {p_pares["s2"]:.1f}, grupos {p_pares["s3"]:.1f}  OK')
     print('   asimetria dentro/entre pares: invariante por construccion (std 0)  OK')
+    print(f'   media de Hamming dentro de pares {dentro} vs entre pares {entre:.4f} (dentro > entre)  OK')
     print('   tres de cuatro propiedades de Chan son corolarios de la regla de pares; la cuarta marginal  OK')
 
 
