@@ -50,6 +50,18 @@ Verificación: Crossref el 23 de julio de 2026 (título "A Mathematical Theory o
 **[ising1925]** Ising, E. (1925). Beitrag zur Theorie des Ferromagnetismus. *Zeitschrift für Physik, 31*, 253–258. https://doi.org/10.1007/BF02980577
 Verificación: Crossref el 23 de julio de 2026 (título "Beitrag zur Theorie des Ferromagnetismus", Zeitschrift für Physik, vol. 31, páginas 253-258, 1925). Evidencia de soporte: el modelo, planteado por Lenz en 1920, lo resuelve Ising en 1925 en una dimensión y demuestra que en 1D no hay transición de fase. Fundamenta: experimento 30 (el hexagrama como cadena de espines), tipo 1 con fuente.
 
+**[singh1985]** Singh, P. (1985). The so-called Fibonacci numbers in ancient and medieval India. *Historia Mathematica, 12*(3), 229–244. https://doi.org/10.1016/0315-0860(85)90021-7
+Verificación: Crossref el 24 de julio de 2026 (título, Historia Mathematica, vol. 12(3), páginas 229-244, 1985). Evidencia de soporte: documenta que la sucesión que en Occidente se llama de Fibonacci fue formulada antes en la prosodia india (Virahanka, Gopala, Hemachandra) al contar metros de sílabas cortas y largas. Fundamenta: experimento 37 (los poetas que contaron primero), tipo 3.
+
+**[lucas1878]** Lucas, É. (1878). Théorie des fonctions numériques simplement périodiques. *American Journal of Mathematics, 1*, 184–240, 289–321. https://doi.org/10.2307/2369373
+Verificación: Crossref el 24 de julio de 2026 (título, American Journal of Mathematics, vol. 1, 1878). Evidencia de soporte: la memoria donde Lucas desarrolla las funciones numéricas periódicas, marco del teorema de Lucas sobre coeficientes binomiales módulo p. Fundamenta la insignia del experimento 18 (grupo Sierpinski), tipo 3.
+
+**[terras1999]** Terras, A. (1999). *Fourier analysis on finite groups and applications* (London Mathematical Society Student Texts 43). Cambridge University Press. ISBN 978-0-521-45718-7.
+Verificación: ficha de Cambridge University Press y OpenLibrary el 24 de julio de 2026 (título, autora Audrey Terras, CUP, LMS Student Texts 43, 1999). Evidencia de soporte: texto de referencia del análisis de Fourier sobre grupos finitos, que cubre tanto los grupos abelianos (Z/2)⁶ y Z/64 como los caracteres. Fundamenta las insignias de los experimentos 23 (Walsh-Hadamard) y 34 (DFT), tipo 3.
+
+**[pritchett1993]** Pritchett, J. (1993). *The music of John Cage* (Music in the Twentieth Century 5). Cambridge University Press. ISBN 978-0-521-56544-8.
+Verificación: ficha de Cambridge University Press y OpenLibrary el 24 de julio de 2026 (título, autor James Pritchett, CUP, Music in the Twentieth Century 5; la ISBN corresponde a la rústica del original de 1993). Evidencia de soporte: estudio académico del método compositivo de Cage con el I Ching y las tiradas de monedas, incluida Music of Changes (1951). Fundamenta: experimento 38 (Cage: la música del azar), tipo 3.
+
 **[wilhelm]** Wilhelm, R. (1924). *I Ging: Das Buch der Wandlungen*. Eugen Diederichs. [Versión castellana: Vogelmann, D. J. (Trad.). (1975). *I Ching: El libro de las mutaciones*. Sudamericana.]
 ⚠ PENDIENTE DE VERIFICACIÓN FINAL: la ficha alemana y la existencia de la versión de Vogelmann son sólidas, pero la edición y año exactos de la castellana deben confirmarse en línea antes de commitear la ficha. Fundamenta: los nombres en español de los hexagramas usados en todo el sitio (tipo 3).
 
@@ -110,13 +122,20 @@ Verificación: Crossref el 23 de julio de 2026 (título "Beitrag zur Theorie des
 **Bloque espectro del hipercubo** (exp. 33)
 - "Los autovalores de la matriz de adyacencia de Q6 son 6 menos 2k con multiplicidad C(6,k): {6:1, 4:6, 2:15, 0:20, -2:15, -4:6, -6:1}; las multiplicidades son los niveles de yang del retículo B6 (exp. 13) y el espectro del paseo simple (exp. 25) es este dividido por 6" → tipo 1 → suite (verificar_espectro_q6).
 
+**Bloque prosodia sánscrita** (exp. 37)
+- "La prosodia sánscrita cuenta los metros de duración n hechos de sílabas cortas (1) y largas (2), y la cuenta cumple C(n) = C(n-1) + C(n-2): 1, 2, 3, 5, 8, 13, 21, los números de Fibonacci, formulados por Virahanka, Gopala y Hemachandra siglos antes de Fibonacci" → tipo 3 → [singh1985].
+- "Las 21 figuras de 6 líneas sin dos yin seguidos están en biyección con los 21 metros de duración 7 (añadir un yang centinela, emparejar cada yin con el yang superior como sílaba larga)" → tipo 1 → suite (verificar_prosodia). Teorema propio del experimento, verificado enumerando ambos lados.
+
+**Bloque Cage** (exp. 38)
+- "A fines de 1950 Cage recibió el I Ching, construyó cartas de 64 valores indexadas por los hexagramas y las seleccionó con tiradas de monedas; Music of Changes (1951) es la obra fundacional de la composición por azar" → tipo 3 → [pritchett1993]. Descargo interdisciplinar: se documenta el método, no la obra; la demo usa una carta propia y el motor de monedas del exp. 21, y no reproduce partituras ni fragmentos de Cage (copyright).
+
 ## D. Huecos conocidos (no citar hasta resolver)
 
 1. Ficha exacta de la edición castellana de Wilhelm/Vogelmann.
 2. Autoría del método de las 16 fichas.
 3. Números de página de la Explication de Leibniz.
-4. Ficha del teorema de Lucas (1878) sobre coeficientes binomiales módulo p: se nombra en el exp. 18 (grupo Sierpinski) como teorema con respaldo de suite, sin ficha aún.
-5. Ficha del teorema de Perron-Frobenius: se nombra en el exp. 20 (Markov) como teorema con respaldo de suite, sin ficha aún.
-6. Ficha del análisis de Fourier sobre grupos finitos abelianos: se nombra en el exp. 23 (Walsh-Hadamard) como teorema con respaldo de suite, sin ficha aún.
-7. Fichas de teoremas clásicos nombrados en la tanda 2, con respaldo de suite y sin ficha aún: la transformada discreta de Fourier (exp. 34), el análisis de funciones booleanas y las influencias (exp. 35), la cota de empaquetado de Hamming y la enumeración de Pólya (exp. 36).
-8. Cualquier fuente nueva que un experimento futuro necesite: pasa por este documento primero.
+4. Ficha del teorema de Perron-Frobenius: se nombra en el exp. 20 (Markov) como teorema con respaldo de suite, sin ficha aún.
+5. Fichas de teoremas clásicos nombrados con respaldo de suite y sin ficha aún: el análisis de funciones booleanas y las influencias (exp. 35), la cota de empaquetado de Hamming y la enumeración de Pólya (exp. 36).
+6. Cualquier fuente nueva que un experimento futuro necesite: pasa por este documento primero.
+
+Resueltas en la tanda 3 (salen de la lista): el teorema de Lucas (exp. 18) con [lucas1878]; el análisis de Fourier sobre grupos finitos (exp. 23) y la transformada discreta de Fourier (exp. 34), ambos con [terras1999].
