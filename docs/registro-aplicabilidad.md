@@ -1,6 +1,6 @@
 # Registro de aplicabilidad: teoremas y dominios frente al I Ching
 
-**Documento vivo.** Registra todo lo evaluado para el laboratorio: lo construido, lo aprobado, lo en exploración y lo rechazado, con su porqué. Crece con cada candidato nuevo; ninguna entrada se borra (un rechazo documentado también enseña). Última actualización: 23 de julio de 2026.
+**Documento vivo.** Registra todo lo evaluado para el laboratorio: lo construido, lo aprobado, lo en exploración y lo rechazado, con su porqué. Crece con cada candidato nuevo; ninguna entrada se borra (un rechazo documentado también enseña). Última actualización: 24 de julio de 2026.
 
 ## Estados y gobernanza
 
@@ -17,7 +17,7 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 | Entrada | Estado | ¿Aplica? | Por qué |
 |---|---|---|---|
 | Fourier sobre grupos finitos (Walsh-Hadamard) | 🟢 espectro-walsh | Sí | Es literalmente el análisis de Fourier del grupo (Z/2)⁶; la matriz es H⊗6 (verificado matricialmente) |
-| Fourier del círculo (DFT sobre Z/64) | 🔵 tanda 2 | Sí | El anillo de Shao Yong es Z/64; la DFT descompone secuencias en armónicos cíclicos; Parseval asertable |
+| Fourier del círculo (DFT sobre Z/64) | 🟢 fourier-anillo | Sí | El anillo de Shao Yong es Z/64; la DFT descompone secuencias en armónicos cíclicos; Parseval asertable |
 | Transformada de Haar (wavelets) | 🔵 | Sí | Base clásica de 64 puntos; localiza dónde cambia una señal; complementa a Walsh |
 | Transformada de Laplace | 🔴 | No | Exige tiempo continuo, inexistente en el I Ching; su pariente discreto legítimo es la matriz de transferencia (ver 4) |
 
@@ -29,7 +29,7 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 | Espectro del hipercubo Q6 | 🟢 espectro-q6 (tanda 1) | Sí | Autovalores 6−2k con multiplicidad C(6,k), verificado; las multiplicidades son los niveles de yang |
 | Perron-Frobenius | 🟢 markov-consultas (nombrado en tanda 1) | Sí | Garantiza la estacionaria única; autovalor 1 simple verificado (segundo módulo 0,5) |
 | Teorema de Lucas (Pascal mod 2) | 🟢 grupo-sierpinski | Sí | Verificado sobre las 4096 celdas; ficha bibliográfica pendiente de verificación |
-| Análisis de funciones booleanas (influencias) | 🔵 tanda 2 | Sí | Toda propiedad de hexagramas es una función booleana de 6 variables; influencias computadas y verificadas: para "sin dos yin", las líneas 2 y 5 influyen más (22/64) y las extremas menos (10/64) |
+| Análisis de funciones booleanas (influencias) | 🟢 influencias-lineas | Sí | Toda propiedad de hexagramas es una función booleana de 6 variables; influencias computadas y verificadas: para "sin dos yin", las líneas 2 y 5 influyen más (22/64) y las extremas menos (10/64) |
 
 ## 3. Probabilidad e información
 
@@ -37,7 +37,7 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 |---|---|---|---|
 | Cadenas de Markov | 🟢 markov-consultas | Sí | Forma cerrada asertada; Kun 729x Qian bajo milenrama |
 | Entropía de Shannon | 🟢 entropia-oraculo (tanda 1) | Sí | Monedas 1,8113 bits/línea vs milenrama 1,7490; hexagrama = 6 bits exactos; ficha shannon1948 verificada |
-| Codificación de Huffman | 🔵 ampliación del 31, tanda 2 | Sí | Código óptimo computable por método; verifica el teorema de codificación en vivo (milenrama 29/16 = 1,8125 bits esperados; monedas 30/16 = 1,875) |
+| Codificación de Huffman | 🟢 entropia-oraculo (sección Huffman) | Sí | Código óptimo computable por método; verifica el teorema de codificación en vivo (milenrama 29/16 = 1,8125 bits esperados; monedas 30/16 = 1,875) |
 | Teorema central del límite | 🟡 | Probable | Campana emergiendo de tiradas; ilustración más que hallazgo; baja prioridad |
 | Martingalas | 🟡 | Débil | Sin enunciado natural fuerte sobre consultas |
 
@@ -48,7 +48,7 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 | Fibonacci y Lucas | 🟢 fibonacci-hexagrama · SELLO DE HALLAZGO PROPIO | Sí | 21 = F(8), escalera F(n+2), circular 18 = L(6), intersección Ji Ji/Wei Ji; fichas OEIS verificadas |
 | Números de Catalan | 🟢 dentro de matriz-transferencia (tanda 1) | Sí | Caminos de Dyck 3-3: exactamente C₃ = 5, valores 42, 44, 50, 52, 56 |
 | Matriz de transferencia y funciones generatrices | 🟢 matriz-transferencia (tanda 1) | Sí | El método detrás de Fibonacci; autovalor dominante φ verificado |
-| Enumeración de Pólya (collares) | 🔵 tanda 2 | Sí | 14 collares bajo rotación (fórmula = enumeración) y 13 pulseras con reflejo, verificados |
+| Enumeración de Pólya (collares) | 🟢 cubo-dice-no | Sí | 14 collares bajo rotación (fórmula = enumeración) y 13 pulseras con reflejo, verificados |
 | Teorema chino del resto | ⚪ espera al najia | Sí, condicionado | El ciclo sexagenario es CRT sobre 10 y 12 (mcm 60); sin najia no hay dónde contarlo |
 | Razón áurea escondida en el Rey Wen, primos, gematrías | 🔴 | No | Caza numerológica sin enunciado asertable; el 61,8% del trading pertenece aquí |
 
@@ -66,8 +66,8 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 | Entrada | Estado | ¿Aplica? | Por qué |
 |---|---|---|---|
 | Hipercubo Q6, retículo B6, proyecciones | 🟢 base del sitio | Sí | Estructura madre de todo el laboratorio |
-| Bipartición por paridad | 🔵 tanda 2 | Sí | 32/32 por paridad de yang; toda arista cruza mitades (verificado); Q6 es bipartito |
-| Códigos correctores y teoremas de imposibilidad | 🔵 tanda 2 | Sí | Cota de Hamming: a lo sumo 9 palabras; máximo exacto = 8, computado por búsqueda exhaustiva propia; primer teorema de imposibilidad del sitio |
+| Bipartición por paridad | 🟢 cubo-dice-no | Sí | 32/32 por paridad de yang; toda arista cruza mitades (verificado); Q6 es bipartito |
+| Códigos correctores y teoremas de imposibilidad | 🟢 cubo-dice-no | Sí | Cota de Hamming: a lo sumo 9 palabras; máximo exacto = 8, computado por búsqueda exhaustiva propia; primer teorema de imposibilidad del sitio |
 | Característica de Euler y f-vector del hexeracto | 🔵 | Sí | Conteo de caras del 6-cubo; extensión del exp. 24 |
 | Teorema de Ramsey | 🟡 | Tenue | R(3,3) = 6 permite un mini-enunciado, pero aún no habla de hexagramas de verdad |
 

@@ -114,7 +114,15 @@ export default function FundamentosPage() {
           fuente académica o primaria; las analogías declaran lo que no afirman. La única
           fuente de referencias es{" "}
           <code className="text-sand-300">docs/evidencias-fundamentos.md</code>, y ninguna
-          se cita de memoria.
+          se cita de memoria. Qué teoremas y dominios se han evaluado, construido o
+          rechazado (y por qué) vive en el documento vivo{" "}
+          <a
+            href="https://github.com/Alexcat84/iching-investigation/blob/main/docs/registro-aplicabilidad.md"
+            className="underline decoration-dotted underline-offset-2 text-sand-300 hover:text-sand-100"
+          >
+            registro-aplicabilidad.md
+          </a>
+          .
         </p>
       </header>
 
