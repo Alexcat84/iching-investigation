@@ -41,6 +41,33 @@ export const HIST = {
   realBin: 15,
 };
 
+/** El diálogo con Chan (2026): las cuatro propiedades del preprint arXiv:2604.09234,
+ *  evaluadas bajo NUESTRA nula condicional (barajados que respetan la regla de pares).
+ *  Valores congelados desde la suite (verificar_dialogo_chan; N = 20000, semilla 20260722;
+ *  percentil = 100 x P(estadístico < valor real), como en el informe de originalidad). */
+export interface FilaChan {
+  estadistico: string;
+  /** Valor del Rey Wen real. */
+  real: string;
+  /** Percentil bajo barajado libre (la nula de Chan). */
+  libre: number;
+  /** Percentil bajo la nula condicional de pares; null si es invariante. */
+  pares: number | null;
+  invariante: boolean;
+  veredicto: string;
+}
+
+export const CHAN: { n: number; semilla: number; filas: FilaChan[] } = {
+  n: 20000,
+  semilla: 20260722,
+  filas: [
+    { estadistico: "distancia media de transición", real: "3,349", libre: 97.5, pares: 29.4, invariante: false, veredicto: "corolario de la regla de pares" },
+    { estadistico: "autocorrelación lag-1 de distancias", real: "−0,247", libre: 3.8, pares: 6.2, invariante: false, veredicto: "marginal, no significativa" },
+    { estadistico: "grupos de 4 con 12 yang", real: "7", libre: 99.2, pares: 89.8, invariante: false, veredicto: "mayormente corolario" },
+    { estadistico: "asimetría dentro/entre pares", real: "3,75", libre: 99.9, pares: null, invariante: true, veredicto: "invariante por construcción" },
+  ],
+};
+
 /** Costo en líneas de una secuencia (métrica de B3). */
 export function costo(seq: number[]): number {
   let s = 0;

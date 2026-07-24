@@ -130,8 +130,11 @@ export default function EspectroWalsh() {
             <Link href="/experimentos/rey-wen-aleatorio" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
               ¿es el Rey Wen aleatorio?
             </Link>{" "}
-            encontró por Monte Carlo: la única estructura real del orden tradicional es su
-            regla de pares, que aquí aparece como interacciones de orden par entre líneas.
+            encontró por Monte Carlo: bajo el estadístico de inversiones, la estructura
+            dominante del orden tradicional es su regla de pares, que aquí aparece como
+            interacciones de orden par entre líneas. (El diálogo con Chan (2026), en esa
+            misma página, matiza que bajo otros estadísticos queda además una señal
+            marginal.)
           </p>
         </Panel>
       </div>

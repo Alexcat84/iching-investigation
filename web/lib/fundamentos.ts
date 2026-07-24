@@ -32,9 +32,10 @@ export type ClaveBiblio =
   | "singh1985"
   | "lucas1878"
   | "terras1999"
-  | "pritchett1993";
+  | "pritchett1993"
+  | "chan2026";
 
-export type TipoFicha = "libro" | "articulo" | "actas" | "obra-referencia" | "recurso-web";
+export type TipoFicha = "libro" | "articulo" | "actas" | "obra-referencia" | "recurso-web" | "preprint";
 
 export interface Ficha {
   clave: ClaveBiblio;
@@ -274,6 +275,19 @@ export const BIBLIOGRAFIA: Record<ClaveBiblio, Ficha> = {
     orden: "Pritchett",
     apa: "Pritchett, J. (1993). The music of John Cage (Music in the Twentieth Century 5). Cambridge University Press. ISBN 978-0-521-56544-8.",
   },
+  chan2026: {
+    clave: "chan2026",
+    tipo: "preprint",
+    autores: "Chan, A.",
+    anio: "2026",
+    titulo:
+      "Statistical properties of the King Wen sequence: An anti-habituation structure that does not improve neural network training",
+    editorial: "arXiv",
+    url: "https://arxiv.org/abs/2604.09234",
+    citaCorta: "Chan, 2026",
+    orden: "Chan",
+    apa: "Chan, A. (2026). Statistical properties of the King Wen sequence: An anti-habituation structure that does not improve neural network training [Preprint]. arXiv. https://arxiv.org/abs/2604.09234",
+  },
 };
 
 /** Render APA unico, aplicado en todas partes (nunca formatos a mano por pagina). */
@@ -290,6 +304,8 @@ export function renderAPA(f: Ficha): string {
       return `${cab}${f.titulo}. ${f.contenedor}, ${f.detalle}.`;
     case "recurso-web":
       return `${cab}${f.titulo}. ${f.contenedor}. ${f.url}`;
+    case "preprint":
+      return `${cab}${f.titulo} [Preprint]. ${f.editorial}. ${f.url}`;
   }
 }
 
@@ -298,6 +314,7 @@ export function italicoAPA(f: Ficha): string {
   switch (f.tipo) {
     case "libro":
     case "recurso-web":
+    case "preprint":
       return f.titulo;
     case "articulo":
     case "actas":
@@ -417,6 +434,7 @@ export const AFIRMACIONES: Afirmacion[] = [
 
   a("rey-wen-aleatorio", "calculo", "verificar_rey_wen_aleatorio", [], "Bajo su propia regla de pares, el Rey Wen tiene 1013 inversiones, indistinguible de un barajado aleatorio (z = 0.05, p = 0.97), y tambien en el costo en lineas."),
   a("rey-wen-aleatorio", "calculo", "verificar_walsh", [], "El espectro de Walsh lo confirma por otra via: los ordenes pares 2 y 4 concentran el 77.4% de la energia, frente al 47.6% que repartiria el azar."),
+  a("rey-wen-aleatorio", "calculo", "verificar_dialogo_chan", ["chan2026"], "Chan (2026) demuestra por Monte Carlo contra barajados libres que el Rey Wen no es azar: cuatro propiedades significativas. Bajo nuestra nula condicional que respeta la regla de pares, tres son corolarios de esa regla (la distancia media de transicion cae al percentil 29, los grupos de 4 con 12 yang al 90 y la asimetria dentro/entre pares es invariante) y solo la autocorrelacion de distancias queda al percentil 6, marginal y no significativa.", { nota: "Complementariedad con Chan (2026): su Monte Carlo contra barajados libres prueba que el Rey Wen no es azar; nuestro analisis condicional muestra que, dada la regla de pares, casi toda esa estructura es corolario. Precision editorial: la regla de pares es la unica estructura bajo el estadistico de inversiones (p = 0,97), pero bajo los cuatro estadisticos de Chan tres son corolarios y el cuarto no alcanza significacion." }),
 
   a("markov-consultas", "calculo", "verificar_markov", [], "La cadena de Markov de las consultas tiene estacionaria uniforme con monedas y sesgada al yin con milenrama (Kun es 729 = 3^6 veces mas probable que Qian); ambas mezclan a la misma velocidad, con autovalor 1 simple y segundo modulo 0,5.", { nombreTeorema: "Teorema de Perron-Frobenius" }),
 

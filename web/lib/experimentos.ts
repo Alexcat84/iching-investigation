@@ -180,11 +180,12 @@ export interface Experimento {
   hallazgoPropio?: { busquedaFecha: string; busquedaNota: string };
 }
 
-// Candidatos a hallazgo propio (cada uno exige su propia busqueda de originalidad
-// documentada ANTES del sello; se haran uno por uno en turnos futuros, sin efecto visible
-// por ahora): rey-wen-aleatorio (el test del empate), espectro-walsh (77,4% de ordenes
-// pares en Walsh), comparador-particiones (ARI palacios contra cosets), permutacion (el
-// empate 1013/1008/1008 y los costos en lineas).
+// Hallazgos propios (cada uno exige su busqueda de originalidad documentada ANTES del
+// sello; ver docs/informe-originalidad.md). Concedidos: fibonacci-hexagrama (2026-07-23),
+// y en la tanda 5 (2026-07-25) espectro-walsh (77,4% de ordenes pares en Walsh),
+// comparador-particiones (ARI palacios contra cosets) y permutacion (el empate
+// 1013/1008/1008 y los costos en lineas). Denegado por ahora: rey-wen-aleatorio, con
+// antecedente directo Chan (2026); en su lugar, el dialogo condicional del exp. 19.
 
 /** Entradas sin número: el orden de este arreglo ES la numeración. */
 const BASE: Omit<Experimento, "n">[] = [
@@ -334,6 +335,11 @@ const BASE: Omit<Experimento, "n">[] = [
     nivel: "avanzado",
     accent: "#b57bb0",
     estado: "activo",
+    hallazgoPropio: {
+      busquedaFecha: "2026-07-25",
+      busquedaNota:
+        "Búsqueda 2026-07-25: las comparaciones publicadas entre órdenes históricos son cualitativas o visuales (Yijing Dao; Cottrell; Cook 2006 como intento de derivación del Rey Wen); la métrica de inversiones respecto del conteo binario, el empate 1013/1008/1008 y la tabla de costos en líneas no aparecen publicados.",
+    },
   },
   {
     slug: "ritual-milenrama",
@@ -542,6 +548,11 @@ const BASE: Omit<Experimento, "n">[] = [
     nivel: "avanzado",
     accent: "#7f8fd0",
     estado: "activo",
+    hallazgoPropio: {
+      busquedaFecha: "2026-07-25",
+      busquedaNota:
+        "Búsqueda 2026-07-25: existe literatura estructural sobre los palacios de Jing Fang (Mesker 2002; comparaciones en Yijing Dao) pero ninguna comparación cuantitativa de particiones; el ARI = −0,125 entre palacios y cosets del subgrupo de puros no aparece publicado.",
+    },
   },
   {
     slug: "espectro-walsh",
@@ -558,6 +569,11 @@ const BASE: Omit<Experimento, "n">[] = [
     nivel: "avanzado",
     accent: "#5aa0a8",
     estado: "activo",
+    hallazgoPropio: {
+      busquedaFecha: "2026-07-25",
+      busquedaNota:
+        "Búsqueda 2026-07-25: Walsh y I Ching aparecen asociados en la literatura (Petoukhov 2017, contexto genético-numerológico; Schöter, álgebra de hexagramas), y Chan (2026) detecta la asimetría de pares en dominio temporal; el espectro de Walsh de la ordenación del Rey Wen y su concentración en órdenes pares como confirmación espectral de la regla de pares no aparecen publicados.",
+    },
   },
   {
     slug: "conteos-astronomicos",

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import {
+  CHAN,
   COST,
   HIST,
   INV,
@@ -105,9 +106,12 @@ export default function ReyWenAleatorio() {
             campana: z = {INV.z.toFixed(2)}, p = {INV.p2.toFixed(2)}. En cuanto a
             inversiones, el orden del Rey Wen es <b>indistinguible de un barajado</b> que
             respeta su regla de pares.<NotaAlMargen slug="rey-wen-aleatorio" indice={0} /> Y
-            esto no es un fracaso: es un hallazgo legítimo.
-            La regla de pares es la única estructura global detectable; más allá de ella,
-            el arreglo se comporta como el azar. El{" "}
+            esto no es un fracaso: es un hallazgo legítimo.{" "}
+            <b>Bajo el estadístico de inversiones</b>, la regla de pares es la única
+            estructura global detectable; más allá de ella, el arreglo se comporta como el
+            azar (con un matiz importante bajo otros estadísticos: ver el{" "}
+            <a href="#dialogo-chan" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>diálogo con Chan (2026)</a>{" "}
+            más abajo). El{" "}
             <Link href="/experimentos/espectro-walsh" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
               espectro de Walsh
             </Link>{" "}
@@ -162,6 +166,65 @@ export default function ReyWenAleatorio() {
             propia regla de pares, el orden del Rey Wen es estadísticamente indistinguible
             de aleatorio. Cálculo con {N_NULA.toLocaleString("es")} órdenes y semilla fija,
             verificado por la suite.
+          </p>
+        </Panel>
+      </div>
+
+      {/* El diálogo con Chan (2026) */}
+      <div id="dialogo-chan" className="mt-8 scroll-mt-24">
+        <SectionLabel accent={ACCENT}>El diálogo con Chan (2026)</SectionLabel>
+        <Panel className="mt-2" accent={ACCENT}>
+          <Prose>
+            <p>
+              En abril de 2026,{" "}
+              <a href="https://arxiv.org/abs/2604.09234" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
+                Chan (2026)
+              </a>{" "}
+              publicó un análisis Monte Carlo del Rey Wen contra 100.000{" "}
+              <b>barajados libres</b> y encontró <b>cuatro</b> propiedades significativas.
+              No contradice nuestro test: lo complementa. La pregunta que añadimos es cuánto
+              de eso sobrevive a <b>nuestra nula</b>, la que respeta la regla de pares. La
+              respuesta: casi nada. Tres de las cuatro son <b>corolarios</b> de esa regla.
+            </p>
+          </Prose>
+
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full min-w-[560px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-ink-700 font-mono text-[11px] uppercase tracking-wider text-sand-500">
+                  <th className="px-3 py-2 font-normal">Propiedad de Chan</th>
+                  <th className="px-3 py-2 text-right font-normal">Rey Wen</th>
+                  <th className="px-3 py-2 text-right font-normal">pct. barajado libre</th>
+                  <th className="px-3 py-2 text-right font-normal">pct. nula de pares</th>
+                  <th className="px-3 py-2 font-normal">veredicto</th>
+                </tr>
+              </thead>
+              <tbody className="text-sand-300">
+                {CHAN.filas.map((f) => (
+                  <tr key={f.estadistico} className="border-b border-ink-800">
+                    <td className="px-3 py-2">{f.estadistico}</td>
+                    <td className="px-3 py-2 text-right font-mono">{f.real}</td>
+                    <td className="px-3 py-2 text-right font-mono text-sand-500">{f.libre.toFixed(1)}</td>
+                    <td className="px-3 py-2 text-right font-mono" style={{ color: f.invariante ? ACCENT : undefined }}>
+                      {f.invariante ? "invariante" : f.pares?.toFixed(1)}
+                    </td>
+                    <td className="px-3 py-2 text-[13px]">{f.veredicto}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="mt-3 text-sm leading-relaxed text-sand-300">
+            El giro es limpio: propiedades que bajo barajado libre están en el percentil 97
+            a 99 caen, bajo la nula de pares, al centro (la distancia media al{" "}
+            <b style={{ color: ACCENT }}>29</b>) o desaparecen (la asimetría dentro de pares
+            es <b>invariante por construcción</b>: no se puede barajar). Solo la
+            autocorrelación de distancias queda al percentil <b>6</b>, sugerente pero{" "}
+            <b>no significativa</b>. <b>Chan demuestra que el Rey Wen no es azar libre;
+            nosotros, que condicionado a la regla de pares casi nada queda.</b> Los dos
+            resultados son verdaderos y complementarios. Análisis condicional con{" "}
+            {CHAN.n.toLocaleString("es")} barajados y semilla fija, verificado por la suite.
           </p>
         </Panel>
       </div>

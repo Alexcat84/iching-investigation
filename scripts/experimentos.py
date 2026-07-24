@@ -1182,6 +1182,86 @@ def verificar_rey_wen_aleatorio():
     print('   indistinguible de aleatorio bajo su propia regla de pares  (hallazgo legitimo)')
 
 
+# === 48. El dialogo con Chan (2026): las 4 propiedades bajo la nula de pares ===
+def verificar_dialogo_chan():
+    """Ampliacion del exp. 19. Las cuatro propiedades significativas de Chan (2026,
+    arXiv:2604.09234), evaluadas bajo NUESTRA nula condicional (barajados que respetan la
+    regla de pares). Reproduce los tres valores del Rey Wen y los cuatro percentiles
+    (percentil = 100 * P(estadistico < valor real), como en el informe de originalidad)."""
+    import random
+    pairs = [(BY_KW[2 * k - 1]['valor'], BY_KW[2 * k]['valor']) for k in range(1, 33)]
+    real = [BY_KW[k + 1]['valor'] for k in range(64)]
+    pc = lambda x: bin(x).count('1')
+    ham = lambda a, b: bin(a ^ b).count('1')
+
+    def s1(s):  # distancia media de transicion
+        return sum(ham(s[i], s[i + 1]) for i in range(63)) / 63
+
+    def s2(s):  # autocorrelacion lag-1 de las distancias
+        d = [ham(s[i], s[i + 1]) for i in range(63)]
+        m = sum(d) / len(d)
+        return sum((d[i] - m) * (d[i + 1] - m) for i in range(len(d) - 1)) / sum((x - m) ** 2 for x in d)
+
+    def s3(s):  # grupos de 4 consecutivos con 12 yang exactos
+        return sum(1 for g in range(16) if sum(pc(s[4 * g + j]) for j in range(4)) == 12)
+
+    def s4(s):  # distancia media DENTRO de pares (la asimetria dentro/entre pares)
+        return sum(ham(s[2 * k], s[2 * k + 1]) for k in range(32)) / 32
+
+    # (a) los tres valores del Rey Wen real
+    assert abs(s1(real) - 3.3492) < 1e-3, s1(real)
+    assert abs(s2(real) + 0.2469) < 1e-3, s2(real)
+    assert s3(real) == 7, s3(real)
+    assert abs(s4(real) - 3.75) < 1e-9, s4(real)
+
+    SEED, N = 20260722, 20000
+    funcs = {'s1': s1, 's2': s2, 's3': s3, 's4': s4}
+
+    def muestrea(kind, rng):
+        if kind == 'pares':
+            pr = pairs[:]
+            rng.shuffle(pr)
+            seq = []
+            for a, b in pr:
+                if rng.random() < 0.5:
+                    a, b = b, a
+                seq += [a, b]
+            return seq
+        seq = list(range(64))
+        rng.shuffle(seq)
+        return seq
+
+    def corre(kind):
+        rng = random.Random(SEED)
+        S = {f: [] for f in funcs}
+        for _ in range(N):
+            seq = muestrea(kind, rng)
+            for f, fn in funcs.items():
+                S[f].append(fn(seq))
+        lt = lambda vals, r: 100 * sum(1 for x in vals if x < r - 1e-9) / N
+        return S, {f: lt(S[f], funcs[f](real)) for f in funcs}
+
+    Slibre, p_libre = corre('libre')
+    Spares, p_pares = corre('pares')
+
+    # (b) s4 (asimetria dentro/entre pares) es invariante bajo la nula de pares: std nula.
+    inv_std = (sum((x - s4(real)) ** 2 for x in Spares['s4']) / N) ** 0.5
+    assert inv_std == 0.0, f's4 no es invariante bajo la nula de pares: std {inv_std}'
+
+    # (c) los cuatro percentiles congelados (deben coincidir con aleatorio-reywen.ts)
+    assert abs(p_libre['s1'] - 97.5) < 0.35 and abs(p_libre['s2'] - 3.8) < 0.35, p_libre
+    assert abs(p_libre['s3'] - 99.2) < 0.35 and abs(p_libre['s4'] - 99.9) < 0.35, p_libre
+    assert abs(p_pares['s1'] - 29.4) < 0.35, p_pares
+    assert abs(p_pares['s2'] - 6.2) < 0.35, p_pares
+    assert abs(p_pares['s3'] - 89.8) < 0.35, p_pares
+
+    print('48. El dialogo con Chan (2026) (ampliacion del exp. 19)')
+    print(f'   Rey Wen real: distancia {s1(real):.4f}, autocorrelacion {s2(real):.4f}, grupos de 12 yang {s3(real)}  OK')
+    print(f'   percentil bajo la nula de pares: distancia {p_pares["s1"]:.1f}, autocorr {p_pares["s2"]:.1f}, grupos {p_pares["s3"]:.1f}  OK')
+    print('   asimetria dentro/entre pares: invariante por construccion (std 0)  OK')
+    print('   tres de cuatro propiedades de Chan son corolarios de la regla de pares; la cuarta marginal  OK')
+
+
 def verificar_grupo_sierpinski():
     """A2: (Z/2)^6 con XOR; subgrupo de puros y sus cosets; matriz = Pascal mod 2."""
     puros = [v for v in range(64) if v >> 3 == (v & 7)]
@@ -1395,7 +1475,8 @@ def verificar_fundamentos():
     esperadas = {'shaughnessy1996', 'nielsen2003', 'ryan1996', 'leibniz1703',
                  'debruijn1946', 'fkm1978', 'oeis-a003042', 'knuth4a',
                  'oeis-a000045', 'oeis-a000032', 'shannon1948', 'ising1925',
-                 'singh1985', 'lucas1878', 'terras1999', 'pritchett1993'}
+                 'singh1985', 'lucas1878', 'terras1999', 'pritchett1993',
+                 'chan2026'}
     assert claves_bib == esperadas, claves_bib
 
     # (e) El render APA congelado esta, verbatim, en el documento (sin markdown).
@@ -1992,22 +2073,26 @@ def verificar_hallazgos():
         slug = max((s for s in slugs if s[0] < hm.start()), key=lambda s: s[0])[1]
         sellos.append(slug)
 
-    # (c) conteo congelado en 1
-    assert len(sellos) == 1, f'sellos: {sellos} (el conteo esta congelado en 1)'
-    # (b) fecha valida + nota no vacia
+    # (c) conteo congelado en 4 (fibonacci-hexagrama + los tres sellos de la tanda 5)
+    assert len(sellos) == 4, f'sellos: {sellos} (el conteo esta congelado en 4)'
+    esperados = {'fibonacci-hexagrama', 'espectro-walsh', 'comparador-particiones', 'permutacion'}
+    assert set(sellos) == esperados, f'sellos inesperados: {sorted(sellos)}'
+    # (b) fecha valida + nota no vacia, una por sello
     fechas = re.findall(r'busquedaFecha:\s*"(\d{4}-\d{2}-\d{2})"', base)
     notas = re.findall(r'busquedaNota:\s*"([^"]+)"', base)
-    assert len(fechas) == 1 and len(notas) == 1, (len(fechas), len(notas))
-    datetime.date.fromisoformat(fechas[0])
-    assert len(notas[0].strip()) >= 20, 'busquedaNota vacia o demasiado corta'
+    assert len(fechas) == 4 and len(notas) == 4, (len(fechas), len(notas))
+    for f in fechas:
+        datetime.date.fromisoformat(f)
+    for nota in notas:
+        assert len(nota.strip()) >= 20, 'busquedaNota vacia o demasiado corta'
     # (a) cada sello con afirmacion tipo teorema o calculo
     for slug in sellos:
         tipos = re.findall(r'\n  a\("' + re.escape(slug) + r'",\s*"([a-z]+)"', fund)
         assert any(t in ('teorema', 'calculo') for t in tipos), f'{slug}: sin teorema/calculo'
 
     print('39. Hallazgos propios (sello de originalidad)')
-    print(f'   {len(sellos)} sello (conteo congelado): {sellos[0]}, con afirmacion teorema/calculo  OK')
-    print(f'   busqueda con fecha {fechas[0]} y nota documentada  OK')
+    print(f'   {len(sellos)} sellos (conteo congelado): {sorted(sellos)}, todos con afirmacion teorema/calculo  OK')
+    print(f'   cada uno con fecha de busqueda valida y nota documentada  OK')
 
 
 # === 33. Pistas de uso (comoUsar) ===
@@ -2120,6 +2205,8 @@ if __name__ == '__main__':
     verificar_grupo_sierpinski()
     print()
     verificar_rey_wen_aleatorio()
+    print()
+    verificar_dialogo_chan()
     print()
     verificar_markov()
     print()
