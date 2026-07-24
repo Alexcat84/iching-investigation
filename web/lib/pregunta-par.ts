@@ -14,7 +14,7 @@
  * Los 4 pares simétricos (autovolteados) van por opuesto (dui), no por volteo, y se
  * tratan aparte. Nota: PROHIBIDO conceder sello aquí; la búsqueda se hará por separado.
  */
-import { HEX_BY_KW, fan, lineIsYang, hamming } from "./iching";
+import { HEX_BY_KW, fan, lineIsYang, hamming, huGua } from "./iching";
 import { binom as comb } from "./hexeracto";
 
 /** Secuencia del Rey Wen: valor Fu Xi por posición. */
@@ -143,6 +143,37 @@ export function evaluar(c: Criterio): Resultado {
   return { gana, pierde, empata, decidibles, p: pBinomial(gana, decidibles) };
 }
 
+// === Ampliación (tanda 7): la propuesta nuclear a prueba y el diálogo con Radisic (2026) ===
+
+/** El criterio del hu gua: poner primero al de mayor hexagrama nuclear. La señal más
+ *  fuerte de la batería, pero no significativa: la propuesta publicada no se confirma. */
+export const NUCLEAR: { mayor: number; menor: number; empate: number; decidibles: number; p: number } = (() => {
+  let mayor = 0;
+  let menor = 0;
+  let empate = 0;
+  for (const par of FAN) {
+    const ha = huGua(par.a);
+    const hb = huGua(par.b);
+    if (ha === hb) empate++;
+    else if (ha > hb) mayor++;
+    else menor++;
+  }
+  return { mayor, menor, empate, decidibles: mayor + menor, p: pBinomial(mayor, mayor + menor) };
+})();
+
+/** Los 4 núcleos del cuarto nivel del bosque (hu gua iterado dos veces): {Kun, Ji Ji, Wei Ji, Qian}. */
+export const NUCLEOS_4: number[] = [...new Set(Array.from({ length: 64 }, (_, v) => huGua(huGua(v))))].sort((a, b) => a - b);
+
+/** Pares donde los dos miembros colapsan a núcleos distintos del cuarto nivel: 16 de 28. */
+export const CUENCAS_DISTINTAS = FAN.filter((p) => huGua(huGua(p.a)) !== huGua(huGua(p.b))).length;
+
+/** La partición de Radisic (2026): 4 por opuesto (dist 6), 4 anti-simétricos, 24 por volteo (dist 2 o 4). */
+export const PARTICION: { opuesto: number; antisimetricos: number; volteo: number } = {
+  opuesto: DUI.length,
+  antisimetricos: FAN.filter((p) => hamming(p.a, p.b) === 6).length,
+  volteo: FAN.filter((p) => hamming(p.a, p.b) === 2 || hamming(p.a, p.b) === 4).length,
+};
+
 // === Los dos cánones ===
 export const YANG_SUPERIOR = Array.from({ length: 30 }, (_, k) => pc(KW[k])).reduce((a, b) => a + b, 0); // 86
 export const YANG_INFERIOR = Array.from({ length: 34 }, (_, k) => pc(KW[30 + k])).reduce((a, b) => a + b, 0); // 106
@@ -175,4 +206,7 @@ if (process.env.NODE_ENV !== "production") {
   }
   if (YANG_SUPERIOR !== 86 || YANG_INFERIOR !== 106) console.error("[pregunta-par] yang de los cánones inesperado");
   if (AUTOVOLTEADOS.join(",") !== "1,2,27,28,29,30,61,62") console.error("[pregunta-par] posiciones de autovolteados inesperadas", AUTOVOLTEADOS);
+  if (NUCLEAR.mayor !== 8 || NUCLEAR.menor !== 16 || NUCLEAR.empate !== 4) console.error("[pregunta-par] propuesta nuclear inesperada", NUCLEAR);
+  if (CUENCAS_DISTINTAS !== 16) console.error("[pregunta-par] cuencas distintas != 16", CUENCAS_DISTINTAS);
+  if (PARTICION.opuesto !== 4 || PARTICION.antisimetricos !== 4 || PARTICION.volteo !== 24) console.error("[pregunta-par] partición de matchings inesperada", PARTICION);
 }

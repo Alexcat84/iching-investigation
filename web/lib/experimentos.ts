@@ -181,11 +181,14 @@ export interface Experimento {
 }
 
 // Hallazgos propios (cada uno exige su busqueda de originalidad documentada ANTES del
-// sello; ver docs/informe-originalidad.md). Concedidos: fibonacci-hexagrama (2026-07-23),
-// y en la tanda 5 (2026-07-25) espectro-walsh (77,4% de ordenes pares en Walsh),
+// sello; ver docs/informe-originalidad.md). Concedidos: fibonacci-hexagrama (2026-07-23);
+// tanda 5 (2026-07-25) espectro-walsh (77,4% de ordenes pares en Walsh),
 // comparador-particiones (ARI palacios contra cosets) y permutacion (el empate
-// 1013/1008/1008 y los costos en lineas). Denegado por ahora: rey-wen-aleatorio, con
-// antecedente directo Chan (2026); en su lugar, el dialogo condicional del exp. 19.
+// 1013/1008/1008 y los costos en lineas); tanda 7 (2026-07-27) hermandad-ordenes (la
+// estadistica de permutaciones entre los ordenes historicos, el 759 de KW-Mawangdui).
+// Denegado por ahora: rey-wen-aleatorio, con antecedente directo Chan (2026); en su lugar,
+// el dialogo condicional del exp. 19. El sello de pregunta-del-par queda reevaluable tras
+// la ampliacion del dialogo con Radisic (2026).
 
 /** Entradas sin número: el orden de este arreglo ES la numeración. */
 const BASE: Omit<Experimento, "n">[] = [
@@ -893,6 +896,11 @@ const BASE: Omit<Experimento, "n">[] = [
     nivel: "intermedio",
     accent: "#d0a24e",
     estado: "activo",
+    hallazgoPropio: {
+      busquedaFecha: "2026-07-27",
+      busquedaNota:
+        "Búsqueda 2026-07-27: existe investigación comparativa de la secuencia de Mawangdui frente al Rey Wen (Han Zhongmin, en chino), análisis del Rey Wen contra el binario (Chan 2026; iching-math con el tipo de ciclo [52, 10, 2]) y comparaciones cualitativas (Yijing Dao), pero ninguna estadística de permutaciones ENTRE los órdenes históricos entre sí; el 759 de KW-Mawangdui (z = -2,89) y el cuadro completo de la hermandad no aparecen publicados.",
+    },
   },
   {
     slug: "pregunta-del-par",

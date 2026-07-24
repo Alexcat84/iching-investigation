@@ -16,6 +16,9 @@ import {
   DIST_SUPERIOR,
   DIST_INFERIOR,
   AUTOVOLTEADOS,
+  NUCLEAR,
+  CUENCAS_DISTINTAS,
+  PARTICION,
 } from "@/lib/pregunta-par";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
 
@@ -166,6 +169,59 @@ export default function PreguntaDelPar() {
             <b>8 hexagramas autovolteados</b> caen en las posiciones{" "}
             <b style={{ color: ACCENT }}>{AUTOVOLTEADOS.join(", ")}</b>, y el canon superior
             <b> termina exactamente</b> tras su tercer par simétrico (el 29-30).
+          </p>
+        </Prose>
+      </Panel>
+
+      {/* La propuesta nuclear a prueba */}
+      <div className="mt-8 mb-2">
+        <SectionLabel accent={ACCENT}>La propuesta nuclear a prueba</SectionLabel>
+      </div>
+      <Panel className="mb-6" accent={ACCENT}>
+        <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat valor={`${NUCLEAR.mayor}/${NUCLEAR.decidibles}`} etiqueta="mayor hu gua primero" accent={ACCENT} />
+          <Stat valor={`${NUCLEAR.menor}/${NUCLEAR.decidibles}`} etiqueta="menor hu gua primero" />
+          <Stat valor={`p = ${fmtP(NUCLEAR.p)}`} etiqueta="la señal más fuerte (no significativa)" accent={ACCENT} />
+          <Stat valor={`${CUENCAS_DISTINTAS}/28`} etiqueta="pares en núcleos distintos" />
+        </div>
+        <Prose>
+          <p>
+            Existe una <b>propuesta publicada</b> de que el <b>hexagrama nuclear</b> (hu gua)
+            decide la orientación del par. La ponemos a prueba: poner primero al de mayor hu
+            gua acierta en solo <b>{NUCLEAR.mayor} de {NUCLEAR.decidibles}</b> pares decidibles
+            (16 hacia el menor primero), <b>p = {fmtP(NUCLEAR.p)}</b>. Es la señal más fuerte
+            de toda la batería, <b>sugerente pero no significativa</b>: la propuesta no se
+            confirma. Un dato que acompaña: en{" "}
+            <Link href="/experimentos/bosque-nuclear" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
+              {CUENCAS_DISTINTAS} de los 28 pares
+            </Link>{" "}
+            los dos miembros colapsan a núcleos distintos del cuarto nivel del bosque nuclear.
+          </p>
+        </Prose>
+      </Panel>
+
+      {/* Diálogo con Radisic (2026) */}
+      <div className="mb-2">
+        <SectionLabel accent={ACCENT}>Diálogo con Radisic (2026)</SectionLabel>
+      </div>
+      <Panel>
+        <Prose>
+          <p>
+            En enero de 2026,{" "}
+            <a href="https://arxiv.org/abs/2601.07175" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
+              Radisic (2026)
+            </a>{" "}
+            formalizó la partición de los 32 pares del Rey Wen: <b>{PARTICION.opuesto} por
+            opuesto</b> (a distancia 6), <b>{PARTICION.antisimetricos} anti-simétricos</b> y{" "}
+            <b>{PARTICION.volteo} por volteo</b> (a distancia 2 o 4), con el corolario de que
+            los pares respetan las{" "}
+            <Link href="/experimentos/simetrias" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
+              órbitas de Klein
+            </Link>
+            . Nuestra suite ya asertaba exactamente esas particiones y órbitas: <b>dos
+            análisis independientes que coinciden</b>. (Contexto histórico, sin adoptar el
+            marco: McKenna estudió en los años 80 el perfil de diferencias del Rey Wen dentro
+            de su Timewave, que el laboratorio clasifica fuera del criterio.)
           </p>
         </Prose>
       </Panel>

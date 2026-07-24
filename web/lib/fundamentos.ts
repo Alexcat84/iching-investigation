@@ -33,7 +33,8 @@ export type ClaveBiblio =
   | "lucas1878"
   | "terras1999"
   | "pritchett1993"
-  | "chan2026";
+  | "chan2026"
+  | "matchings2026";
 
 export type TipoFicha = "libro" | "articulo" | "actas" | "obra-referencia" | "recurso-web" | "preprint";
 
@@ -288,6 +289,19 @@ export const BIBLIOGRAFIA: Record<ClaveBiblio, Ficha> = {
     orden: "Chan",
     apa: "Chan, A. (2026). Statistical properties of the King Wen sequence: An anti-habituation structure that does not improve neural network training [Preprint]. arXiv. https://arxiv.org/abs/2604.09234",
   },
+  matchings2026: {
+    clave: "matchings2026",
+    tipo: "preprint",
+    autores: "Radisic, A.",
+    anio: "2026",
+    titulo:
+      "Optimal Equivariant Matchings on the 6-Cube with an Application to the King Wen Sequence",
+    editorial: "arXiv",
+    url: "https://arxiv.org/abs/2601.07175",
+    citaCorta: "Radisic, 2026",
+    orden: "Radisic",
+    apa: "Radisic, A. (2026). Optimal Equivariant Matchings on the 6-Cube with an Application to the King Wen Sequence [Preprint]. arXiv. https://arxiv.org/abs/2601.07175",
+  },
 };
 
 /** Render APA unico, aplicado en todas partes (nunca formatos a mano por pagina). */
@@ -504,10 +518,15 @@ export const AFIRMACIONES: Afirmacion[] = [
 
   a("hermandad-ordenes", "teorema", "verificar_hermandad", [], "Entre dos ordenes aleatorios de 64 elementos, el numero esperado de inversiones es exactamente n(n-1)/4 = 1008, con desviacion sqrt(n(n-1)(2n+5)/72) = 86,3 (verificado contra Monte Carlo). Los tres ordenes historicos miden 1013, 1008 y 1008 inversiones contra Fu Xi: estan a la distancia esperada del azar respecto del binario, no correlacionados con el.", { nombreTeorema: "Distribución mahoniana de inversiones" }),
   a("hermandad-ordenes", "calculo", "verificar_hermandad", [], "Las inversiones entre los tres ordenes historicos son 759 (Rey Wen-Mawangdui, z = -2,89), 909 (Rey Wen-Jing Fang, z = -1,15) y 872 (Mawangdui-Jing Fang, z = -1,58). Solo el par Rey Wen-Mawangdui se aparta del azar (p Monte Carlo 0,003, sobrevive la correccion de Bonferroni por 3 comparaciones): los dos ordenes mas antiguos se parecen entre si, y Jing Fang es el solitario."),
+  a("hermandad-ordenes", "calculo", "verificar_hermandad", [], "El mecanismo de la hermandad, en negativo: los 32 pares del Rey Wen quedan 0/32 adyacentes en Mawangdui y 0/32 dentro del mismo octeto, con distancia media de posiciones 24,4 (azar 21,7). El volteo cambia el trigrama superior casi siempre, asi que la organizacion por octetos de Mawangdui separa los pares por construccion; la hermandad no se hereda por los pares, y su mecanismo queda como pregunta abierta."),
 
   a("pregunta-del-par", "teorema", "verificar_pregunta_par", [], "En los 28 pares no simetricos del Rey Wen el volteo (fan) conserva el numero de yang, asi que el criterio de poner primero al de mas yang es indecidible por construccion: empatan 28/28. Un micro-teorema de imposibilidad."),
   a("pregunta-del-par", "calculo", "verificar_pregunta_par", [], "Ningun criterio estructural probado decide el orden dentro del par mejor que una moneda: mayor valor binario primero 14/28 (p = 0,575), linea 1 yang primero 16/28 (p = 0,286), linea 6 yang primero 12/28 (p = 0,286), y el suavizado de la transicion 7/15 en la entrada y 7/15 en la salida (p = 0,500).", { nota: "El texto de cada hexagrama queda declarado fuera del alcance del laboratorio: aqui solo se prueban criterios estructurales binarios. Si existe la regla, no vive en la estructura binaria." }),
   a("pregunta-del-par", "calculo", "verificar_pregunta_par", [], "Los dos canones del Rey Wen: 86 lineas yang en las 180 del canon superior (hexagramas 1 a 30) contra 106 en las 204 del inferior; los 8 hexagramas autovolteados (que van por opuesto, no por volteo) caen en las posiciones 1, 2, 27, 28, 29, 30, 61, 62, y el canon superior termina tras su tercer par simetrico."),
+  a("pregunta-del-par", "calculo", "verificar_pregunta_par", [], "La propuesta publicada de que el hexagrama nuclear decide la orientacion del par no se confirma: poner primero al de mayor hu gua da 8 de 24 decidibles (16/24 hacia el menor primero, p = 0,076), la senal mas fuerte de la bateria pero no significativa. Dato acompanante: en 16 de los 28 pares los dos miembros colapsan a nucleos distintos del cuarto nivel del bosque nuclear (hu gua iterado)."),
+  a("pregunta-del-par", "calculo", "verificar_pregunta_par", ["matchings2026"], "Radisic (2026) formaliza la particion de los 32 pares del Rey Wen (4 por opuesto a distancia 6, 4 anti-simetricos, 24 por volteo a distancia 2 o 4) y su respeto de las orbitas de Klein; nuestra suite asierta esa misma particion de forma independiente (verificar_simetrias, verificar_rey_wen, verificar_pregunta_par): dos analisis que coinciden.", { nota: "Contexto historico nombrado sin adoptar el marco: McKenna estudio en los anios 80 el perfil de diferencias del Rey Wen dentro de su Timewave, que el registro de aplicabilidad clasifica fuera del criterio." }),
+
+  a("calendario-soberanos", "teorema", "verificar_soberanos", [], "Los 12 hexagramas soberanos (los monotonos de Q6) son exactamente las primeras seis generaciones del palacio de Qian y las primeras seis del de Kun (seis y seis; cero en los otros seis palacios): un puente entre los soberanos y los palacios de Jing Fang.", { nota: "La observacion cualitativa esta en Yijing Dao; aqui se demuestra y se asierta." }),
 ];
 
 // === Consultas ===

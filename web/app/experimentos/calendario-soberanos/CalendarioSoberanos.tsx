@@ -14,6 +14,7 @@ import {
   lineasEnOrden,
   antipodasDui,
   sonLosMonotonos,
+  PUENTE_PALACIOS,
 } from "@/lib/soberanos";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
 import { NotaAlMargen } from "@/components/NotaAlMargen";
@@ -353,6 +354,44 @@ export default function CalendarioSoberanos() {
         <p className="mt-2 text-center font-mono text-[11px] text-sand-500">
           los 12 marcados sobre el anillo binario 0–63, unidos en orden de mes: un
           polígono estrellado que se cierra
+        </p>
+      </Panel>
+
+      {/* Puente con los palacios */}
+      <div className="mb-2">
+        <SectionLabel accent={ACCENT}>Puente: los soberanos son medio palacio de Qian y medio de Kun</SectionLabel>
+      </div>
+      <Panel className="mb-6">
+        <div className="grid gap-3 sm:grid-cols-2">
+          {[
+            { titulo: "Palacio de Qian, generaciones 1 a 6", vals: PUENTE_PALACIOS.qian },
+            { titulo: "Palacio de Kun, generaciones 1 a 6", vals: PUENTE_PALACIOS.kun },
+          ].map((col) => (
+            <div key={col.titulo} className="rounded-lg border border-ink-700 bg-ink-850/40 p-3">
+              <div className="mb-2 font-mono text-[11px] text-sand-500">{col.titulo}</div>
+              <div className="flex flex-wrap gap-2">
+                {col.vals.map((v) => (
+                  <span key={v} className="inline-flex items-center gap-1 rounded border border-ink-700 px-1.5 py-0.5" title={`${hex(v).kw}. ${hex(v).py}`}>
+                    <span className="text-lg leading-none" style={{ color: ACCENT }}>{hex(v).glyph}</span>
+                    <span className="font-mono text-[10px] text-sand-500">{hex(v).kw}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-sm leading-relaxed text-sand-300">
+          Los 12 soberanos no son un conjunto suelto: son <b>exactamente</b> las primeras{" "}
+          <b style={{ color: ACCENT }}>seis generaciones del palacio de Qian</b> y las{" "}
+          <b style={{ color: ACCENT }}>seis del de Kun</b> (6 y 6), y <b>ninguno</b> aparece en
+          los otros seis{" "}
+          <Link href="/experimentos/palacios" className="underline decoration-1 underline-offset-2" style={{ textDecorationColor: ACCENT, color: "#c9c0ad" }}>
+            palacios de Jing Fang
+          </Link>
+          . Tiene sentido: llenar el yang de abajo hacia arriba (los soberanos crecientes) es
+          justo cambiar las líneas 1 a 6 desde Qian o desde Kun, que es como se generan las
+          primeras seis casas de cada palacio. La observación cualitativa está en Yijing Dao;
+          aquí queda demostrada y asertada por la suite.
         </p>
       </Panel>
 

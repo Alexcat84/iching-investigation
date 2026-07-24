@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   hex,
   LINE_COLOR,
@@ -51,6 +52,15 @@ export default function Palacios() {
             notable: los <code>8 × 8 = 64</code> hexagramas salen todos distintos. Los
             palacios <b>particionan</b> el conjunto entero, sin planearlo con teoría de
             conjuntos.
+          </p>
+          <p>
+            Hay además un puente con otro sistema Han: los{" "}
+            <Link href="/experimentos/calendario-soberanos" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
+              12 hexagramas soberanos del calendario
+            </Link>{" "}
+            son exactamente las <b>primeras seis generaciones del palacio de Qian</b> y las{" "}
+            <b>seis del de Kun</b> (6 y 6; cero en los otros seis palacios), un teorema que la
+            suite asierta.
           </p>
         </Prose>
       </div>

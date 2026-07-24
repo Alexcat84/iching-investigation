@@ -1388,12 +1388,22 @@ def verificar_soberanos():
     assert len(monotonos) == 12, f'monotonos de Q6: {len(monotonos)}'
     assert sorted(valores) == monotonos, 'los 12 soberanos no coinciden con los monotonos'
 
+    # Puente soberanos <-> palacios (Yijing Dao lo observa; aqui se demuestra y se asierta):
+    # los 12 monotonos son las primeras 6 generaciones del palacio de Qian y las 6 del de Kun.
+    mono_set = set(monotonos)
+    en_qian = [v for v in palacio('Qian')[:6] if v in mono_set]
+    en_kun = [v for v in palacio('Kun')[:6] if v in mono_set]
+    otros = sum(len([v for v in palacio(c)[:6] if v in mono_set]) for c in CABEZAS if c not in ('Qian', 'Kun'))
+    assert len(en_qian) == 6 and len(en_kun) == 6 and otros == 0, (len(en_qian), len(en_kun), otros)
+    assert set(en_qian) | set(en_kun) == mono_set, 'Qian[:6] U Kun[:6] no cubre los monotonos'
+
     print('29. El calendario de los soberanos (bi gua)')
     print('   los 12 valores corresponden a los numeros del Rey Wen de la tradicion  OK')
     print('   ciclo Gray cerrado de 12 meses, incluido Kun->Fu: una linea por paso  OK')
     print('   lineas que cambian 2,3,4,5,6,1,... ; onda de yang 1,2,3,4,5,6,5,4,3,2,1,0  OK')
     print('   meses opuestos (m, m+6) complementos dui exactos: 6 pares  OK')
     print('   los 12 = los 12 hexagramas monotonos de Q6 (igualdad de conjuntos)  OK')
+    print('   puente con los palacios: los 12 = primeras 6 generaciones de Qian (6) + de Kun (6), 0 en los otros  OK')
 
 
 def verificar_miniaturas():
@@ -1488,7 +1498,7 @@ def verificar_fundamentos():
                  'debruijn1946', 'fkm1978', 'oeis-a003042', 'knuth4a',
                  'oeis-a000045', 'oeis-a000032', 'shannon1948', 'ising1925',
                  'singh1985', 'lucas1878', 'terras1999', 'pritchett1993',
-                 'chan2026'}
+                 'chan2026', 'matchings2026'}
     assert claves_bib == esperadas, claves_bib
 
     # (e) El render APA congelado esta, verbatim, en el documento (sin markdown).
@@ -2134,11 +2144,23 @@ def verificar_hermandad():
     p_mc = sum(1 for x in vals if abs(x - E) >= abs(kwmwd - E)) / N
     assert p_mc < 0.01, p_mc
 
+    # Ampliacion: el mecanismo en negativo. Los 32 pares del Rey Wen quedan separados en
+    # Mawangdui (el volteo cambia el trigrama superior, y MWD organiza por octetos de
+    # trigrama superior): 0 adyacentes, 0 en el mismo octeto, distancia media 24,4 (azar 21,7).
+    pares = [(KW[2 * i], KW[2 * i + 1]) for i in range(32)]
+    posMWD = {v: i for i, v in enumerate(MWD)}
+    adj = sum(1 for a, b in pares if abs(posMWD[a] - posMWD[b]) == 1)
+    octeto = sum(1 for a, b in pares if posMWD[a] // 8 == posMWD[b] // 8)
+    dist_media = sum(abs(posMWD[a] - posMWD[b]) for a, b in pares) / 32
+    assert adj == 0 and octeto == 0, (adj, octeto)
+    assert abs(dist_media - 24.375) < 1e-9, dist_media
+
     print('49. El arbol genealogico de los ordenes (exp 42)')
     print(f'   esperanza n(n-1)/4 = {E:.0f}, desviacion {SD:.1f} (Monte Carlo media {m:.1f}, sd {sd:.1f})  OK')
     print('   vs Fu Xi: Rey Wen 1013, Mawangdui 1008, Jing Fang 1008 (a la distancia del azar)  OK')
     print(f'   hermandad: KW-MWD {kwmwd} (z={z(kwmwd):.2f}), KW-JF {kwjf} (z={z(kwjf):.2f}), MWD-JF {mwdjf} (z={z(mwdjf):.2f})  OK')
     print(f'   solo Rey Wen-Mawangdui se aparta del azar: p Monte Carlo {p_mc:.4f} < 0,01 (sobrevive Bonferroni x3)  OK')
+    print(f'   mecanismo en negativo: pares 0/32 adyacentes y 0/32 en octeto en Mawangdui; distancia media {dist_media:.1f} (azar 21,7)  OK')
 
 
 # === 50. La pregunta del par (exp 43) ===
@@ -2192,6 +2214,30 @@ def verificar_pregunta_par():
             return sum(comb(m, j) for j in range(k, m + 1)) / t
         return sum(comb(m, j) for j in range(0, k + 1)) / t
 
+    # Ampliacion (tanda 7): la propuesta nuclear a prueba. Poner primero al de mayor hu gua
+    # da 8/24 decidibles (16/24 hacia el menor primero); la senal mas fuerte, no significativa.
+    mayor = menor = emp_hg = 0
+    for a, b, i in fan_pares:
+        ha, hb = hu_gua(a), hu_gua(b)
+        if ha == hb:
+            emp_hg += 1
+        elif ha > hb:
+            mayor += 1
+        else:
+            menor += 1
+    assert (mayor, menor, emp_hg) == (8, 16, 4), (mayor, menor, emp_hg)
+    # cuencas del cuarto nivel del bosque (hu gua iterado dos veces -> 4 nucleos {0,21,42,63})
+    nucleos = set(hu_gua(hu_gua(v)) for v in range(64))
+    assert nucleos == {0, 21, 42, 63}, nucleos
+    cuencas_dist = sum(1 for a, b, i in fan_pares if hu_gua(hu_gua(a)) != hu_gua(hu_gua(b)))
+    assert cuencas_dist == 16, cuencas_dist
+    # Particion de Radisic (2026): 4 por opuesto (dist 6), 4 anti-simetricos (fan dist 6),
+    # 24 por volteo (fan dist 2 o 4). La suite ya asierta las orbitas de Klein en simetrias.
+    anti = sum(1 for a, b, i in fan_pares if ham(a, b) == 6)
+    volteo24 = sum(1 for a, b, i in fan_pares if ham(a, b) in (2, 4))
+    assert len(dui_pares) == 4 and all(ham(a, b) == 6 for a, b, i in dui_pares)
+    assert anti == 4 and volteo24 == 24, (anti, volteo24)
+
     # (c) los dos canones
     yang_sup = sum(pc(KW[k]) for k in range(30))
     yang_inf = sum(pc(KW[k]) for k in range(30, 64))
@@ -2207,6 +2253,8 @@ def verificar_pregunta_par():
     print('   micro-teorema: fan conserva el yang -> "mas yang primero" empata 28/28  OK')
     print(f'   criterios: valor {c_val}/28 (p={p1(c_val, 28):.3f}), linea1 {c_l1}/28 (p={p1(c_l1, 28):.3f}), linea6 {c_l6}/28 (p={p1(c_l6, 28):.3f})  OK')
     print(f'   suaviza entrada {g_e}/{dec_e} (p={p1(g_e, dec_e):.3f}), salida {g_s}/{dec_s} (p={p1(g_s, dec_s):.3f}); todos compatibles con una moneda  OK')
+    print(f'   propuesta nuclear: mayor hu gua {mayor}/{mayor + menor} (p={p1(mayor, mayor + menor):.3f}); cuencas distintas {cuencas_dist}/28; no se confirma  OK')
+    print(f'   particion de Radisic (2026): {len(dui_pares)} opuesto (dist 6), {anti} anti-simetricos, {volteo24} volteo (dist 2 o 4)  OK')
     print(f'   canones: yang superior {yang_sup}/180, inferior {yang_inf}/204; autovolteados en {autov}  OK')
 
 
@@ -2227,14 +2275,16 @@ def verificar_hallazgos():
         slug = max((s for s in slugs if s[0] < hm.start()), key=lambda s: s[0])[1]
         sellos.append(slug)
 
-    # (c) conteo congelado en 4 (fibonacci-hexagrama + los tres sellos de la tanda 5)
-    assert len(sellos) == 4, f'sellos: {sellos} (el conteo esta congelado en 4)'
-    esperados = {'fibonacci-hexagrama', 'espectro-walsh', 'comparador-particiones', 'permutacion'}
+    # (c) conteo congelado en 5 (fibonacci-hexagrama + tanda 5: walsh, particiones,
+    # permutacion + tanda 7: hermandad-ordenes)
+    assert len(sellos) == 5, f'sellos: {sellos} (el conteo esta congelado en 5)'
+    esperados = {'fibonacci-hexagrama', 'espectro-walsh', 'comparador-particiones',
+                 'permutacion', 'hermandad-ordenes'}
     assert set(sellos) == esperados, f'sellos inesperados: {sorted(sellos)}'
     # (b) fecha valida + nota no vacia, una por sello
     fechas = re.findall(r'busquedaFecha:\s*"(\d{4}-\d{2}-\d{2})"', base)
     notas = re.findall(r'busquedaNota:\s*"([^"]+)"', base)
-    assert len(fechas) == 4 and len(notas) == 4, (len(fechas), len(notas))
+    assert len(fechas) == 5 and len(notas) == 5, (len(fechas), len(notas))
     for f in fechas:
         datetime.date.fromisoformat(f)
     for nota in notas:

@@ -15,6 +15,7 @@
  *      todo el yin, o al revés).
  */
 import { lineBit } from "./iching";
+import { PALACIOS } from "./palacios";
 
 export interface Soberano {
   /** Mes lunar chino (1–12). */
@@ -44,6 +45,17 @@ export const SOBERANOS: Soberano[] = [
 ];
 
 export const VALORES: number[] = SOBERANOS.map((s) => s.v);
+
+/**
+ * Puente con los palacios de Jing Fang (la observación cualitativa está en Yijing Dao;
+ * aquí se demuestra): los 12 soberanos (los monótonos de Q6) son exactamente las primeras
+ * seis generaciones del palacio de Qian y las seis del de Kun. Cero en los otros seis.
+ */
+export const PUENTE_PALACIOS: { qian: number[]; kun: number[] } = (() => {
+  const monos = new Set(VALORES);
+  const primeras6 = (i: number) => PALACIOS[i].celdas.slice(0, 6).map((c) => c.v).filter((v) => monos.has(v));
+  return { qian: primeras6(0), kun: primeras6(4) }; // PALACIOS[0]=Qian, PALACIOS[4]=Kun
+})();
 
 function popcount(v: number): number {
   let n = 0;
@@ -107,4 +119,8 @@ if (process.env.NODE_ENV !== "production") {
   if (!sonLosMonotonos()) console.error("[soberanos] no coinciden con los monótonos de Q6");
   if (YANG_POR_MES.join(",") !== "1,2,3,4,5,6,5,4,3,2,1,0")
     console.error("[soberanos] la onda de yang no es la esperada");
+  if (PUENTE_PALACIOS.qian.length !== 6 || PUENTE_PALACIOS.kun.length !== 6)
+    console.error("[soberanos] el puente con los palacios no da 6 + 6", PUENTE_PALACIOS);
+  if (new Set([...PUENTE_PALACIOS.qian, ...PUENTE_PALACIOS.kun]).size !== 12)
+    console.error("[soberanos] Qian[:6] y Kun[:6] no cubren los 12 monótonos");
 }

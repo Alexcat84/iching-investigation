@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { HERMANDAD, VS_FUXI, ESPERANZA, DESVIACION, NOMBRE, MC } from "@/lib/hermandad";
+import { HERMANDAD, VS_FUXI, ESPERANZA, DESVIACION, NOMBRE, MC, MECANISMO } from "@/lib/hermandad";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
 
 const ACCENT = "#d0a24e";
@@ -96,6 +96,31 @@ export default function HermandadOrdenes() {
         <p className="mt-1 text-center font-mono text-[10px] text-sand-500">
           líneas punteadas: cada orden está a la distancia del azar (≈1008) del binario · líneas sólidas: inversiones entre históricos
         </p>
+      </Panel>
+
+      {/* El mecanismo, en negativo */}
+      <div className="mb-2">
+        <SectionLabel accent={ACCENT}>El mecanismo, en negativo</SectionLabel>
+      </div>
+      <Panel className="mb-6">
+        <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat valor={`${MECANISMO.adyacentes}/32`} etiqueta="pares adyacentes en Mawangdui" accent={ACCENT} />
+          <Stat valor={`${MECANISMO.octeto}/32`} etiqueta="pares en el mismo octeto" accent={ACCENT} />
+          <Stat valor={MECANISMO.distMedia.toFixed(1).replace(".", ",")} etiqueta="distancia media de posiciones" />
+          <Stat valor={MECANISMO.azar.toFixed(1).replace(".", ",")} etiqueta="lo que daría el azar" />
+        </div>
+        <Prose>
+          <p>
+            ¿La hermandad se hereda por los <b>pares</b>? No. Los 32 pares del Rey Wen quedan{" "}
+            <b style={{ color: ACCENT }}>completamente separados</b> en Mawangdui:{" "}
+            <b>ninguno</b> queda adyacente, <b>ninguno</b> cae en el mismo octeto, y la
+            distancia media entre los miembros de un par (24,4 posiciones) es <b>mayor</b> que
+            la del azar (21,7). La razón es estructural: el volteo cambia el trigrama superior
+            casi siempre, y Mawangdui organiza justo <b>por trigrama superior</b>, así que
+            separa a los pares por construcción. La hermandad es real, pero su mecanismo{" "}
+            <b>no son los pares</b>: queda como pregunta abierta.
+          </p>
+        </Prose>
       </Panel>
 
       <Panel>

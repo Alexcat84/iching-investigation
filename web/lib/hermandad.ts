@@ -17,6 +17,7 @@
  * Nota: PROHIBIDO conceder sello aquí; la búsqueda de originalidad se hará aparte.
  */
 import { ORDENES } from "./ordenes";
+import { HEX_BY_KW } from "./iching";
 
 export const N = 64;
 /** Esperanza de inversiones entre dos órdenes aleatorios: n(n-1)/4. */
@@ -79,6 +80,29 @@ export const NOMBRE: Record<string, string> = {
  */
 export const MC = { media: 1007.5, sd: 86.41, pKwMwd: 0.0034 };
 
+/**
+ * El mecanismo de la hermandad, en negativo: los 32 pares del Rey Wen quedan separados en
+ * Mawangdui. El volteo cambia el trigrama superior casi siempre, así que la organización de
+ * Mawangdui por octetos de trigrama superior los separa por construcción. La hermandad no
+ * se hereda por los pares; su mecanismo queda como pregunta abierta.
+ */
+export const MECANISMO: { adyacentes: number; octeto: number; distMedia: number; azar: number } = (() => {
+  const KW = Array.from({ length: 64 }, (_, k) => HEX_BY_KW[k + 1].v);
+  const posMWD = new Map<number, number>();
+  PERM.mawangdui.forEach((v, i) => posMWD.set(v, i));
+  let adyacentes = 0;
+  let octeto = 0;
+  let suma = 0;
+  for (let i = 0; i < 32; i++) {
+    const pa = posMWD.get(KW[2 * i])!;
+    const pb = posMWD.get(KW[2 * i + 1])!;
+    if (Math.abs(pa - pb) === 1) adyacentes++;
+    if (Math.floor(pa / 8) === Math.floor(pb / 8)) octeto++;
+    suma += Math.abs(pa - pb);
+  }
+  return { adyacentes, octeto, distMedia: suma / 32, azar: 65 / 3 };
+})();
+
 // Marca significativa la arista Rey Wen-Mawangdui (p Monte Carlo < 0,01/3 tras Bonferroni).
 HERMANDAD.forEach((e) => {
   if (e.a === "reywen" && e.b === "mawangdui") e.significativa = true;
@@ -95,4 +119,6 @@ if (process.env.NODE_ENV !== "production") {
   }
   const vf: Record<string, number> = { reywen: 1013, mawangdui: 1008, jingfang: 1008 };
   for (const o of VS_FUXI) if (vf[o.id] !== o.inv) console.error(`[hermandad] ${o.id} vs Fu Xi esperado ${vf[o.id]}, es ${o.inv}`);
+  if (MECANISMO.adyacentes !== 0 || MECANISMO.octeto !== 0) console.error("[hermandad] los pares no deberían quedar juntos en Mawangdui");
+  if (Math.abs(MECANISMO.distMedia - 24.375) > 1e-9) console.error("[hermandad] distancia media de pares inesperada", MECANISMO.distMedia);
 }
