@@ -28,11 +28,11 @@ Aplicación Next.js (App Router, React 19, Tailwind v4) con un **menú extensibl
 
 **Sistema de etiquetado en facetas** (`docs/etiquetado-experimentos.md`): cada experimento tiene exactamente 1 **categoría** (geometría, álgebra, historia, azar, práctica), de 2 a 4 **etiquetas** de un vocabulario cerrado de 19 (union types que el compilador valida), un **tipo** y un **nivel**. El vocabulario de 19 etiquetas queda completamente cubierto (0 muertas).
 
-**36 experimentos**, por categoría (la lista exacta vive en el registro y en `docs/etiquetado-experimentos.md`):
+**38 experimentos**, por categoría (la lista exacta vive en el registro y en `docs/etiquetado-experimentos.md`):
 
 - **Geometría** (7): el cubo de 6 dimensiones y sus formas (hipercubo y recorrido Gray, sombras del 6-cubo, árbol de Fu Xi, serpiente de De Bruijn, retículo B6, conteos astronómicos, el cubo dice que no).
 - **Álgebra** (12): grupos, matrices, particiones y espectros (simetrías, bosque y matriz nuclear, grupo (Z/2)⁶ y Sierpinski, comparador de particiones, Fourier sobre el cubo y sobre el anillo, codones, Fibonacci en el hexagrama, la matriz de transferencia, el espectro de Q6, las influencias de las líneas).
-- **Historia** (8): los órdenes tradicionales y sus documentos (palacios de Jing Fang, secuencia del Rey Wen, cuadrado y círculo de Shao Yong, dos cielos, Rey Wen como permutación, ¿es el Rey Wen aleatorio?, Leibniz, el calendario de los soberanos).
+- **Historia** (10): los órdenes tradicionales, sus documentos y otras civilizaciones (palacios de Jing Fang, secuencia del Rey Wen, cuadrado y círculo de Shao Yong, dos cielos, Rey Wen como permutación, ¿es el Rey Wen aleatorio?, Leibniz, el calendario de los soberanos, la prosodia sánscrita, Cage y la música del azar).
 - **Azar** (7): probabilidades, cadenas, paseos y física estadística (monedas contra milenrama, ritual de las 49 varillas, cadena de Markov, comparador de sorteos, paseo aleatorio, el hexagrama como cadena de espines de Ising, la entropía del oráculo).
 - **Tu práctica** (2): herramientas sobre las propias consultas (el mapa de la lectura, la trayectoria personal).
 

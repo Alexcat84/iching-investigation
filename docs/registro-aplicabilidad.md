@@ -16,8 +16,8 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 
 | Entrada | Estado | ¿Aplica? | Por qué |
 |---|---|---|---|
-| Fourier sobre grupos finitos (Walsh-Hadamard) | 🟢 espectro-walsh | Sí | Es literalmente el análisis de Fourier del grupo (Z/2)⁶; la matriz es H⊗6 (verificado matricialmente) |
-| Fourier del círculo (DFT sobre Z/64) | 🟢 fourier-anillo | Sí | El anillo de Shao Yong es Z/64; la DFT descompone secuencias en armónicos cíclicos; Parseval asertable |
+| Fourier sobre grupos finitos (Walsh-Hadamard) | 🟢 espectro-walsh | Sí | Es literalmente el análisis de Fourier del grupo (Z/2)⁶; la matriz es H⊗6 (verificado matricialmente); ficha terras1999 |
+| Fourier del círculo (DFT sobre Z/64) | 🟢 fourier-anillo | Sí | El anillo de Shao Yong es Z/64; la DFT descompone secuencias en armónicos cíclicos; Parseval asertable; ficha terras1999 |
 | Transformada de Haar (wavelets) | 🔵 | Sí | Base clásica de 64 puntos; localiza dónde cambia una señal; complementa a Walsh |
 | Transformada de Laplace | 🔴 | No | Exige tiempo continuo, inexistente en el I Ching; su pariente discreto legítimo es la matriz de transferencia (ver 4) |
 
@@ -28,7 +28,7 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 | Teoría espectral de operadores | 🟢 bosque-nuclear, matriz-nuclear | Sí | El hu gua es lineal sobre F2; rangos 6→4→2, M⁴=M², todo asertado |
 | Espectro del hipercubo Q6 | 🟢 espectro-q6 (tanda 1) | Sí | Autovalores 6−2k con multiplicidad C(6,k), verificado; las multiplicidades son los niveles de yang |
 | Perron-Frobenius | 🟢 markov-consultas (nombrado en tanda 1) | Sí | Garantiza la estacionaria única; autovalor 1 simple verificado (segundo módulo 0,5) |
-| Teorema de Lucas (Pascal mod 2) | 🟢 grupo-sierpinski | Sí | Verificado sobre las 4096 celdas; ficha bibliográfica pendiente de verificación |
+| Teorema de Lucas (Pascal mod 2) | 🟢 grupo-sierpinski | Sí | Verificado sobre las 4096 celdas; ficha lucas1878 verificada (Crossref) |
 | Análisis de funciones booleanas (influencias) | 🟢 influencias-lineas | Sí | Toda propiedad de hexagramas es una función booleana de 6 variables; influencias computadas y verificadas: para "sin dos yin", las líneas 2 y 5 influyen más (22/64) y las extremas menos (10/64) |
 
 ## 3. Probabilidad e información
@@ -83,14 +83,14 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 
 | Entrada | Estado | ¿Aplica? | Por qué |
 |---|---|---|---|
-| John Cage, Music of Changes (1951) | 🟡 ficha por verificar | Sí, como historia documentada | Composición real con operaciones de azar del I Ching; página de referencia tipo Leibniz |
+| John Cage, Music of Changes (1951) | 🟢 cage-musica-azar | Sí, como historia documentada | Método compositivo con I Ching y monedas; ficha pritchett1993 verificada; demo con carta propia, sin reproducir la obra (copyright) |
 | Geometría de los ritmos (collares, ritmos euclidianos) | 🟡 | Probable | Un ritmo de 6 pulsos es un hexagrama sonando; conecta con Pólya; falta ficha (Toussaint) y enunciado |
 
 ## 9. Otras civilizaciones
 
 | Entrada | Estado | ¿Aplica? | Por qué |
 |---|---|---|---|
-| Prosodia sánscrita (Pingala, Virahanka, Hemachandra) | 🟡 ficha por verificar (Singh 1985, Historia Mathematica) | Sí | Contar sílabas cortas y largas sin restricción es EXACTAMENTE el problema del exp. 29 con yin y yang; los números "de Fibonacci" nacieron ahí, siglos antes de Fibonacci; sería la ampliación histórica del 29 |
+| Prosodia sánscrita (Pingala, Virahanka, Hemachandra) | 🟢 prosodia-sanscrita | Sí | Los metros de sílabas cortas y largas dan Fibonacci siglos antes; biyección verificada entre las 21 figuras sin dos yin y los 21 metros de duración 7; ficha singh1985 verificada |
 
 ## 10. Tradición calendárica china
 
