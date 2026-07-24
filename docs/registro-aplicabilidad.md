@@ -1,6 +1,6 @@
 # Registro de aplicabilidad: teoremas y dominios frente al I Ching
 
-**Documento vivo.** Registra todo lo evaluado para el laboratorio: lo construido, lo aprobado, lo en exploración y lo rechazado, con su porqué. Crece con cada candidato nuevo; ninguna entrada se borra (un rechazo documentado también enseña). Última actualización: 25 de julio de 2026.
+**Documento vivo.** Registra todo lo evaluado para el laboratorio: lo construido, lo aprobado, lo en exploración y lo rechazado, con su porqué. Crece con cada candidato nuevo; ninguna entrada se borra (un rechazo documentado también enseña). Última actualización: 26 de julio de 2026.
 
 ## Estados y gobernanza
 
@@ -12,11 +12,13 @@
 
 Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de cero o ficha verificada en línea); 🔵→🟢 exige construcción con aserciones; 🔴 es permanente salvo que aparezca un teorema nuevo. Regla heredada del sitio: aplica = produce afirmaciones tipo teorema o cálculo asertables, o tradición con ficha APA. No aplica = solo metáfora o numerología.
 
+**Sellos de hallazgo propio (tanda 5, búsqueda 2026-07-25, en docs/informe-originalidad.md).** El conteo de sellos pasa de 1 a 4: se conceden a espectro-walsh (el espectro de Walsh de la ordenación del Rey Wen y su 77,4% en órdenes pares), comparador-particiones (el ARI = −0,125 entre palacios y cosets) y permutacion (el empate 1013/1008/1008 y los costos en líneas); ninguno aparece publicado. El sello del test de aleatoriedad del Rey Wen (rey-wen-aleatorio) queda DENEGADO POR AHORA: Chan (2026), *Statistical properties of the King Wen sequence* (arXiv:2604.09234), es antecedente directo con cuatro propiedades significativas contra barajados libres. En su lugar se publica el diálogo condicional del experimento 19 (tres de esas cuatro propiedades son corolarios de la regla de pares; la cuarta, marginal), con ficha [chan2026]. Sello reevaluable en una búsqueda futura.
+
 ## 1. Análisis y señales
 
 | Entrada | Estado | ¿Aplica? | Por qué |
 |---|---|---|---|
-| Fourier sobre grupos finitos (Walsh-Hadamard) | 🟢 espectro-walsh | Sí | Es literalmente el análisis de Fourier del grupo (Z/2)⁶; la matriz es H⊗6 (verificado matricialmente); ficha terras1999 |
+| Fourier sobre grupos finitos (Walsh-Hadamard) | 🟢 espectro-walsh · SELLO (tanda 5) | Sí | Es literalmente el análisis de Fourier del grupo (Z/2)⁶; la matriz es H⊗6 (verificado matricialmente); ficha terras1999; el 77,4% en órdenes pares es hallazgo propio |
 | Fourier del círculo (DFT sobre Z/64) | 🟢 fourier-anillo | Sí | El anillo de Shao Yong es Z/64; la DFT descompone secuencias en armónicos cíclicos; Parseval asertable; ficha terras1999 |
 | Transformada de Haar (wavelets) | 🟢 transformada-haar | Sí | Base ortogonal de 64 puntos hermana de Walsh; filas ortogonales (Gram diagonal) de normas distintas, reconstrucción exacta, Parseval con las normas; localiza dónde cambia el libro; coeficientes mayores congelados |
 | Transformada de Laplace | 🔴 | No | Exige tiempo continuo, inexistente en el I Ching; su pariente discreto legítimo es la matriz de transferencia (ver 4) |
