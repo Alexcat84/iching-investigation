@@ -730,6 +730,54 @@ const BASE: Omit<Experimento, "n">[] = [
     accent: "#7f8fd0",
     estado: "activo",
   },
+  {
+    slug: "fourier-anillo",
+    titulo: "El Fourier del anillo",
+    subtitulo: "La DFT sobre el círculo Z/64 de Shao Yong",
+    comoUsar:
+      "Recorre el espectro de magnitudes por frecuencia y descubre qué armónico cíclico domina la secuencia del Rey Wen sobre el círculo.",
+    descripcion:
+      "El círculo de Shao Yong es Z/64, y la transformada discreta de Fourier descompone cualquier secuencia sobre él en armónicos cíclicos. Aplicada al Rey Wen, el armónico dominante es k=8 (el periodo de los ocho trigramas). La misma señal que el espectro de Walsh, en otra geometría: el círculo en vez del cubo.",
+    simbolo: "圜",
+    categoria: "algebra",
+    etiquetas: ["algebra-lineal", "secuencias-historicas", "hipercubo"],
+    tipo: "visualizacion",
+    nivel: "avanzado",
+    accent: "#5aa0a8",
+    estado: "activo",
+  },
+  {
+    slug: "influencias-lineas",
+    titulo: "Las influencias de las líneas",
+    subtitulo: "Cuánto pesa cada línea en una propiedad",
+    comoUsar:
+      "Elige una propiedad y mira cuánto pesa cada línea en el veredicto; compara la influencia total con la suma espectral de Walsh.",
+    descripcion:
+      "Toda propiedad de hexagramas es una función booleana de 6 variables; la influencia de la línea k es la probabilidad de que voltearla cambie el veredicto. Para la regla sin dos yin, las líneas 2 y 5 pesan más (22/64) y las extremas menos (10/64); para la paridad de yang, toda línea influye 1. La influencia total es la suma espectral de Walsh.",
+    simbolo: "∂",
+    categoria: "algebra",
+    etiquetas: ["combinatoria", "algebra-lineal", "binario"],
+    tipo: "calculadora",
+    nivel: "intermedio",
+    accent: "#b57bb0",
+    estado: "activo",
+  },
+  {
+    slug: "cubo-dice-no",
+    titulo: "El cubo dice que no",
+    subtitulo: "Tres teoremas de imposibilidad sobre Q6",
+    comoUsar:
+      "Recorre los tres actos: el código máximo de 8 palabras, la bipartición que cruzan todas las aristas, y los 14 collares de Pólya.",
+    descripcion:
+      "Los primeros teoremas de imposibilidad del sitio: a lo sumo 8 hexagramas se corrigen entre sí a distancia 3 (la cota de empaquetado da 9, pero no hay código perfecto porque 7 no divide 64); los 32 de yang par y los 32 de impar forman una bipartición que toda arista cruza (Q6 es bipartito); y hay 14 collares de Pólya bajo rotación, 13 pulseras con reflejo.",
+    simbolo: "無",
+    categoria: "geometria",
+    etiquetas: ["combinatoria", "hipercubo", "teoria-de-grupos"],
+    tipo: "visualizacion",
+    nivel: "intermedio",
+    accent: "#d0563f",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({

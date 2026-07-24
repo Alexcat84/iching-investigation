@@ -8,6 +8,7 @@ import {
   HEXAGRAMA_UNIFORME,
   ESTACIONARIA_MONEDAS,
   ESTACIONARIA_MILENRAMA,
+  LONGITUD_HUFFMAN,
 } from "@/lib/entropia";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
 
@@ -102,6 +103,30 @@ export default function EntropiaOraculo() {
             solo cambia a dónde tiende la serie, sino cuánta información retiene.
           </p>
         </Prose>
+      </Panel>
+
+      <div className="mb-2 mt-6">
+        <SectionLabel accent={ACCENT}>El código óptimo: Huffman</SectionLabel>
+      </div>
+      <Panel>
+        <Prose>
+          <p>
+            ¿Cuántos bits cuesta transmitir una línea con el mejor código posible? El de{" "}
+            <b>Huffman</b>, construido por el sitio (no cableado), da longitud esperada{" "}
+            <b>{LONGITUD_HUFFMAN.monedas} bits</b> con monedas (30/16) y{" "}
+            <b style={{ color: ACCENT }}>{LONGITUD_HUFFMAN.milenrama} bits</b> con milenrama
+            (29/16). El hallazgo: el método antiguo no solo tiene menos entropía, también se{" "}
+            <b>comprime mejor</b>. Y ambos cumplen el <b>teorema de codificación de fuente</b>{" "}
+            de Shannon: H ≤ L &lt; H+1, la longitud óptima queda a menos de un bit de la
+            entropía.
+          </p>
+        </Prose>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat valor={LONGITUD_HUFFMAN.monedas.toFixed(4)} etiqueta="Huffman monedas (30/16)" />
+          <Stat valor={LONGITUD_HUFFMAN.milenrama.toFixed(4)} etiqueta="Huffman milenrama (29/16)" accent={ACCENT} />
+          <Stat valor="H ≤ L < H+1" etiqueta="codificación de fuente (Shannon)" />
+          <Stat valor={`+${(LONGITUD_HUFFMAN.monedas - LONGITUD_HUFFMAN.milenrama).toFixed(4)}`} etiqueta="monedas cuesta más por línea" />
+        </div>
       </Panel>
     </div>
   );

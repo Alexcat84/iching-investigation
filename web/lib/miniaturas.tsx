@@ -17,6 +17,9 @@ import { probsBoltzmann } from "./ising";
 import { entropiaLinea } from "./entropia";
 import { PRESETS } from "./transferencia";
 import { ESPECTRO } from "./espectro-q6";
+import { ESPECTRO as ESPECTRO_FOURIER } from "./fourier-anillo";
+import { influencias, PROPIEDADES } from "./influencias";
+import { CODIGO_MAXIMO } from "./cubo-no";
 import { SECUENCIA } from "./debruijn";
 import { sierpinski } from "./grupo";
 import { M } from "./matriz-nuclear";
@@ -526,6 +529,50 @@ export const GENERADORES: Record<string, Generador> = {
         </g>
       );
     }),
+  "fourier-anillo": (c) => {
+    const esp = ESPECTRO_FOURIER.slice(1, 25);
+    const max = Math.max(...esp);
+    const bw = (W - 24) / esp.length;
+    return (
+      <>
+        {esp.map((m, i) => {
+          const h = (m / max) * 92 + 2;
+          return <rect key={i} x={12 + i * bw} y={H - 14 - h} width={bw - 0.8} height={h} rx={0.5} fill={i + 1 === 8 ? c : "#4a4436"} />;
+        })}
+      </>
+    );
+  },
+  "influencias-lineas": (c) => {
+    const inf = influencias(PROPIEDADES[0]);
+    const max = 32;
+    return (
+      <>
+        {inf.map((v, i) => {
+          const h = (v / max) * 90 + 2;
+          const x = 26 + i * 30;
+          const alto = i === 1 || i === 4;
+          return (
+            <g key={i}>
+              <rect x={x} y={H - 16 - h} width={22} height={h} rx={2} fill={alto ? c : "#4a4436"} />
+              <text x={x + 11} y={H - 5} textAnchor="middle" fontSize={7} fontFamily="ui-monospace, monospace" fill={GRIS}>{i + 1}</text>
+            </g>
+          );
+        })}
+      </>
+    );
+  },
+  "cubo-dice-no": (c) => {
+    const cod = new Set(CODIGO_MAXIMO);
+    return (
+      <>
+        {Array.from({ length: 64 }, (_, v) => {
+          const [x, y] = anilloPos(v);
+          const en = cod.has(v);
+          return <circle key={v} cx={x} cy={y} r={en ? 3.4 : 1} fill={en ? c : DIM} />;
+        })}
+      </>
+    );
+  },
 };
 
 export const MINIATURA_SLUGS = Object.keys(GENERADORES);
@@ -543,5 +590,5 @@ export function Miniatura({ slug, color }: { slug: string; color: string }) {
 // Aserción en desarrollo.
 if (process.env.NODE_ENV !== "production") {
   if (puros.length !== 8) console.error("[miniaturas] deberían ser 8 hexagramas puros");
-  if (MINIATURA_SLUGS.length !== 33) console.error("[miniaturas] se esperaban 33 generadores");
+  if (MINIATURA_SLUGS.length !== 36) console.error("[miniaturas] se esperaban 36 generadores");
 }

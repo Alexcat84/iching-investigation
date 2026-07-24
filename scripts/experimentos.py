@@ -657,6 +657,9 @@ ETIQUETADO = {
     'entropia-oraculo': ('azar', ['probabilidad', 'adivinacion', 'estadistica'], 'visualizacion', 'introductorio'),
     'matriz-transferencia': ('algebra', ['combinatoria', 'algebra-lineal', 'binario'], 'calculadora', 'avanzado'),
     'espectro-q6': ('algebra', ['algebra-lineal', 'hipercubo'], 'visualizacion', 'avanzado'),
+    'fourier-anillo': ('algebra', ['algebra-lineal', 'secuencias-historicas', 'hipercubo'], 'visualizacion', 'avanzado'),
+    'influencias-lineas': ('algebra', ['combinatoria', 'algebra-lineal', 'binario'], 'calculadora', 'intermedio'),
+    'cubo-dice-no': ('geometria', ['combinatoria', 'hipercubo', 'teoria-de-grupos'], 'visualizacion', 'intermedio'),
 }
 
 
@@ -1286,7 +1289,7 @@ def verificar_miniaturas():
     mini = open(os.path.join(raiz, 'web', 'lib', 'miniaturas.tsx'), encoding='utf-8').read()
     slugs_registro = set(re.findall(r'slug:\s*"([a-z0-9-]+)"', reg))
     slugs_gen = set(re.findall(r'"([a-z0-9-]+)":\s*\(c\)\s*=>', mini))
-    assert len(slugs_registro) == 33, f'slugs en registro: {len(slugs_registro)}'
+    assert len(slugs_registro) == 36, f'slugs en registro: {len(slugs_registro)}'
     faltan = slugs_registro - slugs_gen
     huerfanos = slugs_gen - slugs_registro
     assert not faltan, f'slugs sin generador de miniatura: {sorted(faltan)}'
@@ -1311,9 +1314,9 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 6, 'historia': 8, 'algebra': 10, 'azar': 7, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 7, 'historia': 8, 'algebra': 12, 'azar': 7, 'practica': 2}, por_cat
 
-    # Con el catalogo completo (33 experimentos), el vocabulario de 19 debe estar
+    # Con el catalogo completo (36 experimentos), el vocabulario de 19 debe estar
     # totalmente cubierto: ninguna etiqueta muerta.
     sin_uso = ETIQUETAS_VOCAB - usadas
     assert sin_uso == set(), f'etiquetas del vocabulario sin uso: {sorted(sin_uso)}'
@@ -1574,10 +1577,29 @@ def verificar_entropia():
     assert abs(est_mil - 4.8677) < 1e-3, est_mil
     assert abs(est_mon - 6) < 1e-9
 
+    # Codigo optimo de Huffman: longitud esperada y teorema de codificacion H <= L < H+1.
+    def huffman(probs):
+        prof = [0] * len(probs)
+        nodos = [[p, [i]] for i, p in enumerate(probs)]
+        while len(nodos) > 1:
+            nodos.sort()
+            a = nodos.pop(0)
+            b = nodos.pop(0)
+            for h in a[1] + b[1]:
+                prof[h] += 1
+            nodos.append([a[0] + b[0], a[1] + b[1]])
+        return sum(probs[i] * prof[i] for i in range(len(probs)))
+
+    l_mon = huffman([ses['monedas'][e] / 16 for e in (6, 7, 8, 9)])
+    l_mil = huffman([ses['milenrama'][e] / 16 for e in (6, 7, 8, 9)])
+    assert abs(l_mon - 30 / 16) < 1e-9 and abs(l_mil - 29 / 16) < 1e-9, (l_mon, l_mil)
+    assert hl_mon <= l_mon < hl_mon + 1 and hl_mil <= l_mil < hl_mil + 1
+
     print('36. La entropia del oraculo (Shannon)')
     print('   hexagrama uniforme = 6 bits (maximo para 64 estados)  OK')
     print(f'   linea: monedas {hl_mon:.4f} vs milenrama {hl_mil:.4f} bits (dif {hl_mon - hl_mil:.4f}); valor = 1 bit en ambos  OK')
     print(f'   estacionaria: milenrama {est_mil:.4f} = 6 H(1/4) vs monedas {est_mon:.1f}  OK')
+    print(f'   Huffman: monedas L = {l_mon} (30/16), milenrama L = {l_mil} (29/16); H <= L < H+1 (menos entropia y mejor compresion)  OK')
 
 
 # === 37. La matriz de transferencia ===
@@ -1653,6 +1675,122 @@ def verificar_espectro_q6():
     print('   multiplicidades = niveles de yang del reticulo B6; paseo simple = espectro / 6  OK')
 
 
+# === 40. El Fourier del anillo (DFT sobre Z/64) ===
+def verificar_fourier():
+    """Exp 34: DFT sobre Z/64. Parseval, delta, ida y vuelta; armonicos congelados."""
+    import math
+    import cmath
+    senal = [BY_VALUE[v]['kw'] for v in range(64)]
+
+    def dft(f):
+        n = len(f)
+        return [sum(f[v] * cmath.exp(-2j * math.pi * k * v / n) for v in range(n)) for k in range(n)]
+
+    def idft(F):
+        n = len(F)
+        return [(sum(F[k] * cmath.exp(2j * math.pi * k * v / n) for k in range(n)) / n).real for v in range(n)]
+
+    F = dft(senal)
+    mag = [abs(x) for x in F]
+    assert abs(sum(x * x for x in senal) - sum(m * m for m in mag) / 64) < 1e-6, 'Parseval'
+    Fc = dft([5] * 64)
+    assert abs(Fc[0] - 320) < 1e-9 and all(abs(x) < 1e-6 for x in Fc[1:]), 'delta'
+    vuelta = idft(F)
+    assert all(abs(vuelta[v] - senal[v]) < 1e-6 for v in range(64)), 'ida y vuelta'
+    assert abs(mag[0] - 2080) < 1e-6
+
+    ks = sorted(range(1, 33), key=lambda k: -mag[k])[:6]
+    esperado = [(8, 388.42), (2, 274.0), (6, 233.67), (3, 208.61), (25, 204.05), (1, 188.76)]
+    assert [k for k in ks] == [k for k, _ in esperado], ks
+    for k, (_, m) in zip(ks, esperado):
+        assert abs(mag[k] - m) < 0.1, (k, mag[k], m)
+
+    print('40. El Fourier del anillo (DFT sobre Z/64)')
+    print('   Parseval, DFT(constante) = delta, ida y vuelta recupera la senal  OK')
+    print(f'   DC = {mag[0]:.0f} (suma de los numeros del Rey Wen); armonico dominante k = 8 (trigramas)  OK')
+    print(f'   armonicos congelados (k, |F|): {[(k, round(mag[k], 2)) for k in ks]}  OK')
+
+
+# === 41. Las influencias de las lineas (funciones booleanas) ===
+def verificar_influencias():
+    """Exp 35: influencia de cada linea; total = suma espectral ponderada de Walsh."""
+    LB = lambda k: 1 << (6 - k)
+    pc = lambda v: bin(v).count('1')
+    bits = lambda v: format(v, '06b')
+    sin_yin = lambda v: '00' not in bits(v)
+    paridad = lambda v: (pc(v) & 1) == 0
+
+    def inf(P):
+        return [sum(1 for v in range(64) if P(v) != P(v ^ LB(k))) for k in range(1, 7)]
+
+    assert inf(sin_yin) == [10, 22, 18, 18, 22, 10], inf(sin_yin)
+    assert inf(paridad) == [64, 64, 64, 64, 64, 64]
+
+    def total_walsh(P):
+        g = [1 - 2 * (1 if P(v) else 0) for v in range(64)]
+        t = 0.0
+        for w in range(64):
+            G = sum(g[v] * (-1 if bin(w & v).count('1') & 1 else 1) for v in range(64))
+            t += pc(w) * (G / 64) ** 2
+        return t
+
+    for nombre, P in [('sin dos yin', sin_yin), ('paridad', paridad)]:
+        assert abs(sum(inf(P)) / 64 - total_walsh(P)) < 1e-9, nombre
+
+    print('41. Las influencias de las lineas (funciones booleanas)')
+    print(f'   sin dos yin: influencias {inf(sin_yin)} de 64 (maximas en las lineas 2 y 5)  OK')
+    print('   paridad de yang: la influencia de toda linea es exactamente 1  OK')
+    print('   influencia total = suma espectral ponderada de Walsh (une con el exp. 23)  OK')
+
+
+# === 42. El cubo dice que no (teoremas de imposibilidad) ===
+def verificar_cubo_no():
+    """Exp 36: (a) codigo max a distancia 3 = 8 por busqueda exhaustiva; (b) biparticion;
+    (c) collares de Polya (14) y pulseras (13)."""
+    ham = lambda a, b: bin(a ^ b).count('1')
+    pc = lambda v: bin(v).count('1')
+
+    # (a) cota de empaquetado 64/7 -> 9; maximo real 8 por branch and bound exhaustivo
+    assert 64 // 7 == 9
+    adj = [set(j for j in range(64) if j != i and ham(i, j) >= 3) for i in range(64)]
+    best = [0]
+
+    def rec(R, P):
+        if len(R) > best[0]:
+            best[0] = len(R)
+        if len(R) + len(P) <= best[0]:
+            return
+        P = list(P)
+        while P and len(R) + len(P) > best[0]:
+            v = P.pop()
+            rec(R + [v], [u for u in P if u in adj[v]])
+
+    rec([], list(range(64)))
+    assert best[0] == 8, best[0]
+    cod = [11, 12, 18, 21, 33, 38, 56, 63]
+    dmin = min(ham(a, b) for i, a in enumerate(cod) for b in cod[i + 1:])
+    assert len(cod) == 8 and dmin == 3
+
+    # (b) biparticion por paridad de yang: las 192 aristas cruzan
+    cruces = sum(1 for v in range(64) for k in range(1, 7)
+                 if v < (v ^ (1 << (6 - k))) and (pc(v) & 1) != (pc(v ^ (1 << (6 - k))) & 1))
+    assert cruces == 192 and sum(1 for v in range(64) if pc(v) % 2 == 0) == 32
+
+    # (c) collares (C6) y pulseras (D6)
+    b6 = lambda v: format(v, '06b')
+    rota = lambda v, r: int(b6(v)[r:] + b6(v)[:r], 2)
+    refl = lambda v: int(b6(v)[::-1], 2)
+    collares = sum(1 for v in range(64) if min(rota(v, r) for r in range(6)) == v)
+    pulseras = sum(1 for v in range(64) if min(min(rota(v, r), refl(rota(v, r))) for r in range(6)) == v)
+    polya = (1 * 2 ** 6 + 1 * 2 ** 3 + 2 * 2 ** 2 + 2 * 2 ** 1) // 6
+    assert collares == 14 == polya and pulseras == 13
+
+    print('42. El cubo dice que no (teoremas de imposibilidad)')
+    print(f'   codigos: cota de empaquetado 9; maximo real {best[0]} (busqueda exhaustiva); codigo {cod}  OK')
+    print(f'   biparticion: las {cruces} aristas cruzan yang par/impar (Q6 bipartito)  OK')
+    print(f'   Polya: {collares} collares (formula = enumeracion) y {pulseras} pulseras  OK')
+
+
 # === 39. Hallazgos propios (sello de originalidad) ===
 def verificar_hallazgos():
     """Anexo: (a) cada hallazgo con afirmacion tipo teorema o calculo; (b) fecha valida y
@@ -1706,7 +1844,7 @@ def verificar_como_usar():
     bloques = re.findall(
         r'slug:\s*"([a-z0-9-]+)",.*?comoUsar:\s*\n?\s*"([^"]+)",.*?tipo:\s*"([a-z]+)",',
         reg, re.S)
-    assert len(bloques) == 33, f'entradas parseadas: {len(bloques)}'
+    assert len(bloques) == 36, f'entradas parseadas: {len(bloques)}'
 
     refs = [s for s, _, t in bloques if t == 'referencia']
     assert len(refs) == 2, f'experimentos de tipo referencia: {refs}'
@@ -1836,6 +1974,12 @@ if __name__ == '__main__':
     verificar_transferencia()
     print()
     verificar_espectro_q6()
+    print()
+    verificar_fourier()
+    print()
+    verificar_influencias()
+    print()
+    verificar_cubo_no()
     print()
     verificar_hallazgos()
     print()

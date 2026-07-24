@@ -394,6 +394,18 @@ export const AFIRMACIONES: Afirmacion[] = [
   a("matriz-transferencia", "teorema", "verificar_transferencia", [], "Los hexagramas balanceados donde el yang nunca va por detras del yin son exactamente C₃ = 5, los valores 42, 44, 50, 52 y 56 (numeros de Catalan): es la transformada z del conteo, no la de Laplace, porque no hay tiempo continuo."),
 
   a("espectro-q6", "teorema", "verificar_espectro_q6", [], "Los autovalores de la adyacencia de Q6 son 6-2k con multiplicidad C(6,k): las multiplicidades son los niveles de yang del reticulo B6 (exp. 13) y el espectro del paseo simple (exp. 25) es este dividido por 6, lo que fija su velocidad de mezcla.", { nombreTeorema: "Teoría espectral de grafos" }),
+
+  a("entropia-oraculo", "calculo", "verificar_entropia", ["shannon1948"], "El codigo optimo de Huffman de una linea da longitud esperada 30/16 = 1,875 bits con monedas y 29/16 = 1,8125 con milenrama: el metodo antiguo tiene menos entropia y ademas se comprime mejor, cumpliendo H <= L < H+1.", { nombreTeorema: "Teorema de codificación de fuente (Shannon)" }),
+
+  a("fourier-anillo", "calculo", "verificar_fourier", [], "La DFT sobre Z/64 (el circulo de Shao Yong) descompone la secuencia del Rey Wen en armonicos ciclicos y cumple Parseval; la DFT de una constante es una delta y la ida y vuelta recupera la senal.", { nombreTeorema: "Transformada discreta de Fourier" }),
+  a("fourier-anillo", "calculo", "verificar_fourier", [], "El armonico dominante es k = 8, el periodo de los ocho trigramas; es la misma senal del experimento 23 en otra geometria: el circulo Z/64 en vez del cubo (Z/2)^6."),
+
+  a("influencias-lineas", "teorema", "verificar_influencias", [], "Para la regla sin dos yin, las influencias por linea son 10, 22, 18, 18, 22, 10 de 64 (maximas en las lineas 2 y 5); para la paridad de yang, la influencia de toda linea es exactamente 1."),
+  a("influencias-lineas", "teorema", "verificar_influencias", [], "La influencia total de una propiedad coincide con la suma espectral ponderada de Walsh (suma de popcount(w) por el coeficiente al cuadrado): el teorema que une este experimento con el 23.", { nombreTeorema: "Análisis de funciones booleanas" }),
+
+  a("cubo-dice-no", "teorema", "verificar_cubo_no", [], "La cota de empaquetado de esferas da a lo sumo 9 palabras a distancia 3 en Q6 (7 no divide 64: no hay codigo perfecto); el maximo real es 8, probado por busqueda exhaustiva, y un codigo de 8 corrige cualquier error de una linea.", { nombreTeorema: "Cota de Hamming (empaquetado de esferas)" }),
+  a("cubo-dice-no", "teorema", "verificar_cubo_no", [], "Los 32 hexagramas de yang par y los 32 de impar forman una biparticion: las 192 aristas cruzan de mitad, asi que Q6 es bipartito y no hay ciclos impares de mutaciones."),
+  a("cubo-dice-no", "teorema", "verificar_cubo_no", [], "Bajo rotacion de las 6 lineas hay exactamente 14 collares (formula de Polya = enumeracion directa) y 13 pulseras anadiendo el reflejo.", { nombreTeorema: "Enumeración de Pólya" }),
 ];
 
 // === Consultas ===

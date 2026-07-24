@@ -50,6 +50,33 @@ export function entropiaEstacionaria(pYang: number): number {
 export const ESTACIONARIA_MONEDAS = entropiaEstacionaria(1 / 2);
 export const ESTACIONARIA_MILENRAMA = entropiaEstacionaria(1 / 4);
 
+/** Profundidad de cada hoja en el arbol de Huffman de una distribucion. */
+export function huffmanProfundidades(probs: number[]): number[] {
+  const prof = new Array(probs.length).fill(0);
+  let nodos = probs.map((p, i) => ({ p, hojas: [i] }));
+  while (nodos.length > 1) {
+    nodos.sort((a, b) => a.p - b.p);
+    const a = nodos.shift()!;
+    const b = nodos.shift()!;
+    for (const h of [...a.hojas, ...b.hojas]) prof[h]++;
+    nodos.push({ p: a.p + b.p, hojas: [...a.hojas, ...b.hojas] });
+  }
+  return prof;
+}
+
+/** Longitud esperada del codigo optimo (Huffman) de una linea: bits por linea. */
+export function longitudHuffman(m: Metodo): number {
+  const probs = probsLinea(m);
+  const prof = huffmanProfundidades(probs);
+  return probs.reduce((s, p, i) => s + p * prof[i], 0);
+}
+
+/** Monedas 30/16 = 1,875; milenrama 29/16 = 1,8125 (menos entropia y mejor compresion). */
+export const LONGITUD_HUFFMAN: Record<Metodo, number> = {
+  monedas: longitudHuffman("monedas"),
+  milenrama: longitudHuffman("milenrama"),
+};
+
 // Aserciones en desarrollo.
 if (process.env.NODE_ENV !== "production") {
   const err = (c: boolean, m: string) => c && console.error(`[entropia] ${m}`);
@@ -61,4 +88,10 @@ if (process.env.NODE_ENV !== "production") {
   err(Math.abs(HEXAGRAMA_UNIFORME - 6) > 1e-9, "uniforme != 6");
   err(Math.abs(ESTACIONARIA_MILENRAMA - 4.8677) > 1e-3, "estacionaria milenrama != 4.8677");
   err(Math.abs(ESTACIONARIA_MONEDAS - 6) > 1e-9, "estacionaria monedas != 6");
+  err(Math.abs(LONGITUD_HUFFMAN.monedas - 30 / 16) > 1e-9, "Huffman monedas != 30/16");
+  err(Math.abs(LONGITUD_HUFFMAN.milenrama - 29 / 16) > 1e-9, "Huffman milenrama != 29/16");
+  for (const m of ["monedas", "milenrama"] as const) {
+    const h = entropiaLinea(m);
+    err(!(h <= LONGITUD_HUFFMAN[m] && LONGITUD_HUFFMAN[m] < h + 1), `Huffman ${m} no cumple H <= L < H+1`);
+  }
 }

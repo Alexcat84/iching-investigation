@@ -118,4 +118,5 @@ Verificación: Crossref el 23 de julio de 2026 (título "Beitrag zur Theorie des
 4. Ficha del teorema de Lucas (1878) sobre coeficientes binomiales módulo p: se nombra en el exp. 18 (grupo Sierpinski) como teorema con respaldo de suite, sin ficha aún.
 5. Ficha del teorema de Perron-Frobenius: se nombra en el exp. 20 (Markov) como teorema con respaldo de suite, sin ficha aún.
 6. Ficha del análisis de Fourier sobre grupos finitos abelianos: se nombra en el exp. 23 (Walsh-Hadamard) como teorema con respaldo de suite, sin ficha aún.
-7. Cualquier fuente nueva que un experimento futuro necesite: pasa por este documento primero.
+7. Fichas de teoremas clásicos nombrados en la tanda 2, con respaldo de suite y sin ficha aún: la transformada discreta de Fourier (exp. 34), el análisis de funciones booleanas y las influencias (exp. 35), la cota de empaquetado de Hamming y la enumeración de Pólya (exp. 36).
+8. Cualquier fuente nueva que un experimento futuro necesite: pasa por este documento primero.
