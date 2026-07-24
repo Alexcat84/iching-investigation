@@ -662,6 +662,9 @@ ETIQUETADO = {
     'cubo-dice-no': ('geometria', ['combinatoria', 'hipercubo', 'teoria-de-grupos'], 'visualizacion', 'intermedio'),
     'prosodia-sanscrita': ('historia', ['combinatoria', 'secuencias-historicas', 'binario'], 'visualizacion', 'introductorio'),
     'cage-musica-azar': ('historia', ['interdisciplinar', 'adivinacion', 'secuencias-historicas'], 'simulador', 'introductorio'),
+    'transformada-haar': ('algebra', ['algebra-lineal', 'secuencias-historicas'], 'visualizacion', 'avanzado'),
+    'seis-qubits': ('algebra', ['fisica', 'algebra-lineal', 'interdisciplinar'], 'visualizacion', 'intermedio'),
+    'caras-hexeracto': ('geometria', ['hipercubo', 'combinatoria'], 'visualizacion', 'intermedio'),
 }
 
 
@@ -811,10 +814,29 @@ def verificar_paseo():
     mr = sum(ret() for _ in range(R)) / R
     assert abs(mr - 64) < 3, f'retorno medio {mr} lejos de 64'
 
+    # La campana del caminante (TCL): la estacionaria del numero de yang es EXACTAMENTE
+    # la binomial C(6,k)/64. Con 200000 pasos y semilla fija, la desviacion maxima entre
+    # frecuencias y binomial queda bajo 0,003 (la ley de los grandes numeros en vivo).
+    binomial = [comb(6, k) / 64 for k in range(7)]
+    assert abs(sum(binomial) - 1) < 1e-12, 'la binomial no suma 1'
+    rng2 = random.Random(99)
+    pc = lambda x: bin(x).count('1')
+    cuenta = [0] * 7
+    w = 0
+    cuenta[pc(w)] += 1
+    PASOS = 200000
+    for _ in range(PASOS):
+        w ^= LINE_BIT(1 + rng2.randrange(6))
+        cuenta[pc(w)] += 1
+    frec = [c / (PASOS + 1) for c in cuenta]
+    desv = max(abs(frec[k] - binomial[k]) for k in range(7))
+    assert desv < 0.003, f'la campana no converge: desviacion maxima {desv}'
+
     print('25. Paseo aleatorio y cobertura (C2)')
     print('   matriz doblemente estocastica -> estacionaria uniforme  OK')
     print(f'   tiempo de retorno al origen: teoria 64, simulado {mr:.2f}  OK')
     print(f'   cover time (semilla fija, T={T}): media {media:.1f} en la banda [320, 400]  OK')
+    print(f'   campana: numero de yang -> binomial C(6,k)/64; desviacion {desv:.4f} en {PASOS} pasos (semilla 99)  OK')
 
 
 def verificar_conteos():
@@ -1291,7 +1313,7 @@ def verificar_miniaturas():
     mini = open(os.path.join(raiz, 'web', 'lib', 'miniaturas.tsx'), encoding='utf-8').read()
     slugs_registro = set(re.findall(r'slug:\s*"([a-z0-9-]+)"', reg))
     slugs_gen = set(re.findall(r'"([a-z0-9-]+)":\s*\(c\)\s*=>', mini))
-    assert len(slugs_registro) == 38, f'slugs en registro: {len(slugs_registro)}'
+    assert len(slugs_registro) == 41, f'slugs en registro: {len(slugs_registro)}'
     faltan = slugs_registro - slugs_gen
     huerfanos = slugs_gen - slugs_registro
     assert not faltan, f'slugs sin generador de miniatura: {sorted(faltan)}'
@@ -1316,9 +1338,9 @@ def verificar_etiquetado():
         por_cat[cat] += 1
 
     # Distribucion de los publicados: ninguna categoria vacia.
-    assert por_cat == {'geometria': 7, 'historia': 10, 'algebra': 12, 'azar': 7, 'practica': 2}, por_cat
+    assert por_cat == {'geometria': 8, 'historia': 10, 'algebra': 14, 'azar': 7, 'practica': 2}, por_cat
 
-    # Con el catalogo completo (38 experimentos), el vocabulario de 19 debe estar
+    # Con el catalogo completo (41 experimentos), el vocabulario de 19 debe estar
     # totalmente cubierto: ninguna etiqueta muerta.
     sin_uso = ETIQUETAS_VOCAB - usadas
     assert sin_uso == set(), f'etiquetas del vocabulario sin uso: {sorted(sin_uso)}'
@@ -1851,6 +1873,108 @@ def verificar_cage():
     print('   metodo documentado (Pritchett 1993); la demo usa carta propia, no la obra de Cage  OK')
 
 
+# === 45. La transformada de Haar (exp 39) ===
+def verificar_haar():
+    """Exp 39: Haar de la secuencia del Rey Wen. Filas ortogonales (Gram diagonal),
+    reconstruccion exacta, Parseval con las normas, y coeficientes mayores congelados."""
+    N = 64
+    filas = [(-1, 0, N, N, [1] * N)]  # (escala, pos, ancho, norm2, fila)
+    for p in range(6):
+        ancho = N >> p
+        mitad = ancho >> 1
+        for q in range(1 << p):
+            f = [0] * N
+            ini = q * ancho
+            for i in range(mitad):
+                f[ini + i] = 1
+            for i in range(mitad, ancho):
+                f[ini + i] = -1
+            filas.append((p, q, ancho, ancho, f))
+    assert len(filas) == 64
+
+    senal = [BY_VALUE[v]['kw'] for v in range(64)]
+
+    # (a) filas ortogonales: la matriz de Gram es diagonal (norma^2 en la diagonal).
+    for r in range(64):
+        for s in range(64):
+            d = sum(filas[r][4][v] * filas[s][4][v] for v in range(64))
+            assert d == (filas[r][3] if r == s else 0), f'filas {r},{s}'
+
+    c = [sum(filas[r][4][v] * senal[v] for v in range(64)) for r in range(64)]
+
+    # (b) reconstruccion exacta.
+    rec = [0.0] * 64
+    for r in range(64):
+        esc = c[r] / filas[r][3]
+        for v in range(64):
+            rec[v] += esc * filas[r][4][v]
+    assert all(abs(rec[v] - senal[v]) < 1e-9 for v in range(64)), 'reconstruccion no exacta'
+
+    # (c) Parseval con las normas correctas: sum f^2 = sum c^2/norm2.
+    lhs = sum(x * x for x in senal)
+    rhs = sum(c[r] * c[r] / filas[r][3] for r in range(64))
+    assert abs(lhs - rhs) < 1e-6, (lhs, rhs)
+    assert c[0] == 2080, 'DC = suma de la senal'
+
+    # (d) coeficientes de onda mayores por energia c^2/norm2, congelados.
+    tabla = sorted(
+        ((c[r] * c[r] / filas[r][3], filas[r][0], filas[r][1], c[r]) for r in range(64) if filas[r][0] >= 0),
+        reverse=True,
+    )
+    top = [(p, q, cr) for _, p, q, cr in tabla[:6]]
+    esperado = [(2, 3, 198), (2, 0, -180), (4, 4, -77), (5, 27, 48), (4, 12, -61), (5, 31, 42)]
+    assert top == esperado, top
+
+    print('45. La transformada de Haar (exp 39)')
+    print('   64 filas ortogonales (Gram diagonal), normas 2^p; reconstruccion exacta  OK')
+    print(f'   Parseval con las normas: sum f^2 = {int(lhs)} = sum c^2/norm2  OK')
+    print(f'   coeficientes mayores congelados (escala, pos, c): {top}  OK')
+
+
+# === 46. Seis qubits (exp 40) ===
+def verificar_qubits():
+    """Exp 40: H tensor 6 es la puerta de Hadamard sobre las 6 lineas. Aplicada a |Kun>
+    da la superposicion uniforme (amplitud 1/8, prob 1/64) y es unitaria."""
+    had = lambda w, v: -1 if bin(w & v).count('1') & 1 else 1
+    amp = [had(w, 0) / 8 for w in range(64)]  # columna de |Kun> / 8
+    assert all(abs(a - 1 / 8) < 1e-12 for a in amp), 'las amplitudes de |Kun> no son 1/8'
+    assert abs(sum(a * a for a in amp) - 1) < 1e-12, 'la superposicion no esta normalizada'
+    assert abs(amp[0] ** 2 - 1 / 64) < 1e-12, 'prob por hexagrama != 1/64'
+    # unitaria: columnas ortonormales tras normalizar por 1/8 (H H^T = I).
+    for a in range(64):
+        for b in range(64):
+            s = sum((had(w, a) / 8) * (had(w, b) / 8) for w in range(64))
+            assert abs(s - (1 if a == b else 0)) < 1e-9, (a, b)
+
+    print('46. Seis qubits (exp 40)')
+    print('   H tensor 6 |Kun> = superposicion uniforme: 64 amplitudes = 1/8, prob 1/64  OK')
+    print('   la transformacion normalizada es unitaria (H H^T = I): preserva normas  OK')
+    print('   identidad formal; ninguna afirmacion cuantica sobre el oraculo (descargo)  OK')
+
+
+# === 47. Las caras del hexeracto (exp 41) ===
+def verificar_hexeracto():
+    """Exp 41: f-vector de las caras del 6-cubo por formula C(6,k)2^(6-k) y por enumeracion
+    directa de {0,1,*}^6; suma 3^6 = 729; caracteristica de Euler frontera 0, total 1."""
+    from itertools import product
+    fvec = [comb(6, k) * 2 ** (6 - k) for k in range(7)]
+    assert fvec == [64, 192, 240, 160, 60, 12, 1], fvec
+    cnt = [0] * 7
+    for w in product((0, 1, 2), repeat=6):  # 2 = indeterminado (*)
+        cnt[w.count(2)] += 1
+    assert cnt == fvec, (cnt, fvec)
+    assert sum(fvec) == 729 == 3 ** 6, sum(fvec)
+    chi_frontera = sum((-1) ** k * fvec[k] for k in range(6))
+    chi_total = sum((-1) ** k * fvec[k] for k in range(7))
+    assert chi_frontera == 0, chi_frontera  # 5-esfera
+    assert chi_total == 1, chi_total        # bola contractil
+
+    print('47. Las caras del hexeracto (exp 41)')
+    print(f'   f-vector {fvec} por formula = por enumeracion directa de {{0,1,*}}^6  OK')
+    print(f'   suma total {sum(fvec)} = 3^6 (tres opciones por linea), la generatriz (2+x)^6  OK')
+    print(f'   Euler: frontera {chi_frontera} (5-esfera), total {chi_total} (bola contractil)  OK')
+
+
 # === 39. Hallazgos propios (sello de originalidad) ===
 def verificar_hallazgos():
     """Anexo: (a) cada hallazgo con afirmacion tipo teorema o calculo; (b) fecha valida y
@@ -1904,7 +2028,7 @@ def verificar_como_usar():
     bloques = re.findall(
         r'slug:\s*"([a-z0-9-]+)",.*?comoUsar:\s*\n?\s*"([^"]+)",.*?tipo:\s*"([a-z]+)",',
         reg, re.S)
-    assert len(bloques) == 38, f'entradas parseadas: {len(bloques)}'
+    assert len(bloques) == 41, f'entradas parseadas: {len(bloques)}'
 
     refs = [s for s, _, t in bloques if t == 'referencia']
     assert len(refs) == 2, f'experimentos de tipo referencia: {refs}'
@@ -2044,6 +2168,12 @@ if __name__ == '__main__':
     verificar_prosodia()
     print()
     verificar_cage()
+    print()
+    verificar_haar()
+    print()
+    verificar_qubits()
+    print()
+    verificar_hexeracto()
     print()
     verificar_hallazgos()
     print()

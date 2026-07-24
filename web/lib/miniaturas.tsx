@@ -22,6 +22,9 @@ import { influencias, PROPIEDADES } from "./influencias";
 import { CODIGO_MAXIMO } from "./cubo-no";
 import { PARES as METROS_PARES } from "./prosodia";
 import { CARTA } from "./cage";
+import { TOP as HAAR_TOP } from "./haar";
+import { SUPERPOSICION_KUN } from "./qubits";
+import { F_VECTOR } from "./hexeracto";
 import { SECUENCIA } from "./debruijn";
 import { sierpinski } from "./grupo";
 import { M } from "./matriz-nuclear";
@@ -603,6 +606,51 @@ export const GENERADORES: Record<string, Generador> = {
       </>
     );
   },
+  "transformada-haar": (c) => {
+    const max = Math.max(...HAAR_TOP.map((t) => Math.sqrt(t.energia)));
+    return (
+      <>
+        <line x1={14} y1={CY} x2={W - 14} y2={CY} stroke={DIM} strokeWidth={0.8} />
+        {HAAR_TOP.map((t, i) => {
+          const centro = (t.ini + t.fin) / 2;
+          const x = 14 + (centro / 64) * (W - 28);
+          const h = (Math.sqrt(t.energia) / max) * 44 + 4;
+          return (
+            <rect key={i} x={x - 3} y={t.c > 0 ? CY - h : CY} width={6} height={h} rx={1}
+              fill={i < 2 ? c : GRIS} opacity={0.9} />
+          );
+        })}
+      </>
+    );
+  },
+  "seis-qubits": (c) => {
+    const bw = (W - 24) / 64;
+    return (
+      <>
+        {SUPERPOSICION_KUN.map((a, w) => (
+          <rect key={w} x={12 + w * bw} y={CY - a * 300} width={bw - 0.6} height={a * 300} rx={0.4}
+            fill={w % 8 === 0 ? c : GRIS} opacity={0.85} />
+        ))}
+      </>
+    );
+  },
+  "caras-hexeracto": (c) => {
+    const max = Math.max(...F_VECTOR);
+    return (
+      <>
+        {F_VECTOR.map((f, k) => {
+          const h = (f / max) * 90 + 3;
+          const x = 22 + k * 26;
+          return (
+            <g key={k}>
+              <rect x={x} y={H - 16 - h} width={19} height={h} rx={2} fill={k === 2 ? c : "#4a4436"} />
+              <text x={x + 9.5} y={H - 5} textAnchor="middle" fontSize={7} fontFamily="ui-monospace, monospace" fill={GRIS}>{f}</text>
+            </g>
+          );
+        })}
+      </>
+    );
+  },
 };
 
 export const MINIATURA_SLUGS = Object.keys(GENERADORES);
@@ -620,5 +668,5 @@ export function Miniatura({ slug, color }: { slug: string; color: string }) {
 // Aserción en desarrollo.
 if (process.env.NODE_ENV !== "production") {
   if (puros.length !== 8) console.error("[miniaturas] deberían ser 8 hexagramas puros");
-  if (MINIATURA_SLUGS.length !== 38) console.error("[miniaturas] se esperaban 38 generadores");
+  if (MINIATURA_SLUGS.length !== 41) console.error("[miniaturas] se esperaban 41 generadores");
 }

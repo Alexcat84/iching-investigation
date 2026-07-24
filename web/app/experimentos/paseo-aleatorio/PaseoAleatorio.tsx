@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { hex } from "@/lib/iching";
 import {
   paso,
   RETORNO_ESPERADO,
   tiempoCobertura,
   tiempoRetorno,
+  frecuenciasYang,
+  BINOMIAL,
+  desviacionMax,
 } from "@/lib/paseo";
 import { ExperimentHeader, Panel, Prose, SectionLabel, Stat } from "@/components/ui";
 
@@ -26,7 +30,13 @@ export default function PaseoAleatorio() {
   const [pasos, setPasos] = useState(0);
   const [andando, setAndando] = useState(false);
   const [sim, setSim] = useState<{ cover: number; ret: number; coverMedia: number } | null>(null);
+  const [campana, setCampana] = useState<{ frec: number[]; pasos: number; desv: number } | null>(null);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const lanzarCampana = (pasos: number) => {
+    const frec = frecuenciasYang(pasos);
+    setCampana({ frec, pasos, desv: desviacionMax(frec) });
+  };
 
   useEffect(() => {
     if (!andando) {
@@ -166,6 +176,75 @@ export default function PaseoAleatorio() {
             <b>360 pasos</b> de media: visitar el último puñado de estados nuevos es lo
             que más cuesta. La simulación con semilla fija queda dentro de esa banda,
             verificada por la suite.
+          </p>
+        </Panel>
+      </div>
+
+      {/* La campana del caminante */}
+      <div className="mt-8">
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <SectionLabel accent={ACCENT}>La campana del caminante</SectionLabel>
+          <div className="flex gap-2">
+            <button onClick={() => lanzarCampana(2000)} className="rounded-full border px-3 py-1.5 font-mono text-xs" style={{ borderColor: ACCENT, color: ACCENT }}>
+              2000 pasos
+            </button>
+            <button onClick={() => lanzarCampana(50000)} className="rounded-full border px-3 py-1.5 font-mono text-xs" style={{ borderColor: ACCENT, color: ACCENT }}>
+              50000 pasos
+            </button>
+          </div>
+        </div>
+        <Panel accent={ACCENT}>
+          <p className="mb-3 text-sm leading-relaxed text-sand-300">
+            El <b>número de yang</b> del caminante no es uniforme: su estacionaria es
+            exactamente la <b style={{ color: ACCENT }}>binomial C(6,k)/64</b>, porque hay
+            C(6,k) hexagramas con k líneas yang y todos son igual de probables. Al acumular
+            las visitas, la <b>campana</b> emerge de las tiradas: la ley de los grandes
+            números en vivo.
+          </p>
+
+          <svg viewBox="0 0 400 190" className="w-full" role="img" aria-label="Frecuencia del número de yang del caminante frente a la binomial C(6,k)/64.">
+            <line x1={30} y1={160} x2={392} y2={160} stroke="#2A2620" strokeWidth={0.8} />
+            {Array.from({ length: 7 }, (_, k) => {
+              const cw = 46;
+              const x = 34 + k * 51;
+              const escala = 150 / 0.34;
+              const obs = campana ? campana.frec[k] : 0;
+              const teo = BINOMIAL[k];
+              return (
+                <g key={k}>
+                  {campana && (
+                    <rect x={x} y={160 - obs * escala} width={cw} height={obs * escala} rx={1.5} fill={ACCENT} opacity={0.8} />
+                  )}
+                  {/* objetivo binomial: barra de contorno */}
+                  <rect x={x - 1} y={160 - teo * escala} width={cw + 2} height={teo * escala} rx={1.5} fill="none" stroke="#f5efdf" strokeWidth={1} strokeDasharray="3 2" opacity={0.75} />
+                  <text x={x + cw / 2} y={174} textAnchor="middle" fontSize={10} fill="#8a8272" fontFamily="ui-monospace, monospace">{k}</text>
+                </g>
+              );
+            })}
+            <text x={210} y={186} textAnchor="middle" fontSize={9} fill="#6b6353" fontFamily="ui-monospace, monospace">líneas yang</text>
+          </svg>
+          <p className="mt-1 text-center font-mono text-[10px] text-sand-500">
+            barras = frecuencia observada · contorno punteado = binomial C(6,k)/64 (la estacionaria exacta)
+          </p>
+
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <Stat valor={campana ? campana.pasos.toLocaleString("es") : "–"} etiqueta="pasos simulados" accent={ACCENT} />
+            <Stat valor={campana ? campana.desv.toFixed(4) : "–"} etiqueta="desviación máx. vs binomial" />
+            <Stat valor="20/64" etiqueta="cima: C(6,3)/64" />
+          </div>
+
+          <p className="mt-3 text-sm leading-relaxed text-sand-300">
+            La velocidad de esta convergencia <b>es</b> la brecha espectral del{" "}
+            <Link href="/experimentos/espectro-q6" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
+              espectro de Q6
+            </Link>
+            : el segundo autovalor del paseo (4/6) fija cuánto tarda en mezclar. Y la campana
+            es la más ancha de las distribuciones sobre los 64: su{" "}
+            <Link href="/experimentos/entropia-oraculo" className="underline decoration-dotted underline-offset-4" style={{ color: ACCENT }}>
+              entropía
+            </Link>{" "}
+            por el número de yang es máxima en el centro. La suite lo cierra: con 200000 pasos
+            y semilla fija, la desviación queda bajo 0,003.
           </p>
         </Panel>
       </div>

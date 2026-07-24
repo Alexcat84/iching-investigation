@@ -430,6 +430,7 @@ export const AFIRMACIONES: Afirmacion[] = [
   a("conteos-astronomicos", "calculo", "verificar_conteos", ["oeis-a003042", "knuth4a"], "El numero de codigos Gray ciclicos de Q6 se cita a OEIS sin reproducir sus digitos; Knuth es la referencia general de codigos Gray y secuencias de De Bruijn.", { nota: "Cifra citada, no reproducida." }),
 
   a("paseo-aleatorio", "calculo", "verificar_paseo", [], "El paseo aleatorio sobre Q6 tiene estacionaria uniforme; el tiempo esperado de retorno al origen es exactamente 64 y la cobertura de los 64 estados ronda los 360 pasos."),
+  a("paseo-aleatorio", "teorema", "verificar_paseo", [], "La estacionaria del numero de yang del caminante es exactamente la binomial C(6,k)/64; con 200000 pasos y semilla fija la desviacion maxima entre las frecuencias y la binomial queda bajo 0,003 (0,0008 con semilla 99): la campana emerge de las tiradas.", { nombreTeorema: "Ley de los grandes números" }),
 
   a("leibniz-documentos", "tradicion", null, ["ryan1996"], "Los chinos no practicaban aritmetica binaria: Shao Yong buscaba cosmologia y fue Leibniz, con su binario ya inventado, quien reconocio la identidad estructural."),
   a("leibniz-documentos", "tradicion", null, ["leibniz1703", "ryan1996"], "Cronologia documentada: Bouvet comunico la analogia en carta del 4 de noviembre de 1701, recibida por Leibniz el 1 de abril de 1703; la Explication de l'arithmetique binaire aparecio en 1703."),
@@ -473,6 +474,15 @@ export const AFIRMACIONES: Afirmacion[] = [
 
   a("cage-musica-azar", "tradicion", null, ["pritchett1993"], "A fines de 1950 Cage recibio el I Ching, construyo cartas de 64 valores indexadas por los hexagramas y las selecciono con tiradas de monedas; Music of Changes (1951) es la obra fundacional de la composicion por azar.", { nota: "Se documenta el metodo, no la obra: la demo usa una carta propia y el motor de monedas del experimento 21, sin reproducir partituras ni fragmentos de Cage." }),
   a("cage-musica-azar", "calculo", "verificar_cage", [], "El metodo de seleccion (seis tiradas de monedas, P(yang) = 1/2 por linea) elige uniformemente uno de los 64 hexagramas, cada uno con probabilidad 1/64; nuestra carta demostrativa asigna un valor a cada hexagrama, como hacia Cage con sus cartas."),
+
+  a("transformada-haar", "teorema", "verificar_haar", [], "La base de Haar es la otra base ortogonal clasica de 64 puntos, hermana de Walsh: sus 64 filas son ortogonales (la matriz de Gram es diagonal) aunque de normas distintas, la reconstruccion es exacta y Parseval se cumple con esas normas.", { nombreTeorema: "Base de Haar" }),
+  a("transformada-haar", "calculo", "verificar_haar", [], "Aplicada a la secuencia del Rey Wen, los coeficientes de Haar localizan donde cambia el libro; los mayores viven en la escala de los bloques de trigramas (los tramos 0 a 16 y 48 a 64) y se congelan como valores fijos. Es la misma senal de Walsh y del Fourier del anillo, en la recta 0..63."),
+
+  a("seis-qubits", "teorema", "verificar_qubits", [], "Un hexagrama es un estado de la base computacional de 6 qubits, y la transformada de Walsh del sitio es la puerta de Hadamard H tensor 6 (asertada en el experimento 23); aplicada a |Kun> = |000000> da la superposicion uniforme de los 64 hexagramas, con amplitud 1/8 y probabilidad 1/64 cada uno.", { nombreTeorema: "Transformada de Hadamard (H⊗n)" }),
+  a("seis-qubits", "teorema", "verificar_qubits", [], "La transformacion normalizada es unitaria (H H^T = I): preserva normas, como debe una evolucion cuantica. Es una identidad formal entre transformadas y estados matematicos; no se afirma nada cuantico sobre el oraculo.", { nota: "Identidad matematica, con descargo blindado: el quantum I Ching comercial esta en el registro de aplicabilidad como rechazado." }),
+
+  a("caras-hexeracto", "teorema", "verificar_hexeracto", [], "Las caras del 6-cubo son los hexagramas parciales (palabras sobre yin, yang e indeterminado): el numero de caras de dimension k es f_k = C(6,k) 2^(6-k), verificado por formula y por enumeracion directa de {0,1,*}^6; el f-vector es 64, 192, 240, 160, 60, 12, 1.", { nombreTeorema: "f-vector del politopo" }),
+  a("caras-hexeracto", "teorema", "verificar_hexeracto", [], "Las caras suman 3^6 = 729 (tres opciones por linea, la generatriz (2+x)^6), el mismo numero que el cociente Kun/Qian de la cadena de Markov; y la caracteristica de Euler es 0 en la frontera (una 5-esfera) y 1 en el solido entero (contractil).", { nombreTeorema: "Característica de Euler-Poincaré" }),
 ];
 
 // === Consultas ===

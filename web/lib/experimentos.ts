@@ -812,6 +812,56 @@ const BASE: Omit<Experimento, "n">[] = [
     descargo:
       "Documentamos el método compositivo, no la obra de Cage: la demo usa una carta demostrativa propia y no reproduce sus cartas, partituras ni fragmentos (copyright). La conexión es histórica (Pritchett, 1993), no una afirmación sobre el oráculo.",
   },
+  {
+    slug: "transformada-haar",
+    titulo: "Haar: dónde cambia el libro",
+    subtitulo: "La base que localiza, hermana de Walsh",
+    comoUsar:
+      "Recorre los coeficientes de Haar por escala y posición y ve en qué tramos del libro se concentran los cambios del Rey Wen.",
+    descripcion:
+      "La otra base ortogonal clásica de 64 puntos. Walsh pregunta en qué frecuencia vive una señal; Haar pregunta dónde cambia. Aplicada al Rey Wen, sus coeficientes localizan las irregularidades del libro por escala y posición. Con esto el trío queda completo: Walsh es el cubo, la DFT el círculo, Haar la localización.",
+    simbolo: "⊓",
+    categoria: "algebra",
+    etiquetas: ["algebra-lineal", "secuencias-historicas"],
+    tipo: "visualizacion",
+    nivel: "avanzado",
+    accent: "#4fa89b",
+    estado: "activo",
+  },
+  {
+    slug: "seis-qubits",
+    titulo: "Seis qubits",
+    subtitulo: "El hexagrama como estado de la base computacional",
+    comoUsar:
+      "Aplica Hadamard a |Kun⟩, mira nacer la superposición de los 64 hexagramas con amplitud 1/8, y mide para colapsar a uno.",
+    descripcion:
+      "Un hexagrama es un estado de la base computacional de 6 qubits, y la transformada de Walsh del sitio es la puerta de Hadamard aplicada a las 6 líneas (H⊗6). Aplicarla a |Kun⟩ = |000000⟩ produce la superposición uniforme de los 64 hexagramas con amplitud 1/8 cada uno: el estado que contiene el libro entero. Identidad formal, no una afirmación cuántica sobre el oráculo.",
+    simbolo: "ψ",
+    categoria: "algebra",
+    etiquetas: ["fisica", "algebra-lineal", "interdisciplinar"],
+    tipo: "visualizacion",
+    nivel: "intermedio",
+    accent: "#8a7fd6",
+    estado: "activo",
+    descargo:
+      "Es una identidad matemática entre transformadas y estados: la base computacional de 6 qubits son los 64 hexagramas y la transformada de Walsh es la puerta de Hadamard H⊗6. No se afirma nada cuántico sobre el oráculo; el «quantum I Ching» comercial está en el registro de aplicabilidad como rechazado.",
+  },
+  {
+    slug: "caras-hexeracto",
+    titulo: "Las caras del hexeracto",
+    subtitulo: "Los hexagramas parciales y el f-vector del 6-cubo",
+    comoUsar:
+      "Marca qué líneas dejas indeterminadas y observa encenderse la cara del 6-cubo que representan, con su dimensión y su conteo.",
+    descripcion:
+      "Las caras del 6-cubo son los hexagramas parciales: palabras de seis símbolos sobre yin, yang e indeterminado. Los vértices son los 64 hexagramas; las aristas, las 192 mutaciones; el sólido entero, el hexagrama abierto. El f-vector es 64, 192, 240, 160, 60, 12, 1, que suma 3⁶ = 729, y la característica de Euler distingue la frontera (esfera) del sólido.",
+    simbolo: "⧉",
+    categoria: "geometria",
+    etiquetas: ["hipercubo", "combinatoria"],
+    tipo: "visualizacion",
+    nivel: "intermedio",
+    accent: "#5f93d8",
+    estado: "activo",
+  },
 ];
 
 export const EXPERIMENTOS: Experimento[] = BASE.map((e, i) => ({
