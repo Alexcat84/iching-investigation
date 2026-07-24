@@ -62,6 +62,9 @@ Verificación: ficha de Cambridge University Press y OpenLibrary el 24 de julio 
 **[pritchett1993]** Pritchett, J. (1993). *The music of John Cage* (Music in the Twentieth Century 5). Cambridge University Press. ISBN 978-0-521-56544-8.
 Verificación: ficha de Cambridge University Press y OpenLibrary el 24 de julio de 2026 (título, autor James Pritchett, CUP, Music in the Twentieth Century 5; la ISBN corresponde a la rústica del original de 1993). Evidencia de soporte: estudio académico del método compositivo de Cage con el I Ching y las tiradas de monedas, incluida Music of Changes (1951). Fundamenta: experimento 38 (Cage: la música del azar), tipo 3.
 
+**[chan2026]** Chan, A. (2026). *Statistical properties of the King Wen sequence: An anti-habituation structure that does not improve neural network training* [Preprint]. arXiv. https://arxiv.org/abs/2604.09234
+Verificación: página de arXiv consultada en línea el 25 de julio de 2026 (arXiv:2604.09234 [cs.LG], autor Augustin Chan, enviado el 10 de abril de 2026, revisado el 25 de junio de 2026). Evidencia de soporte: análisis Monte Carlo del orden del Rey Wen contra 100.000 permutaciones libres que encuentra cuatro propiedades estadísticamente significativas (distancia media de transición, autocorrelación de distancias, grupos de balance de yang, asimetría dentro/entre pares) y demuestra que, pese a parecerse al aprendizaje curricular, la secuencia no mejora el entrenamiento de redes neuronales (resultado negativo). Es antecedente directo del experimento 19: fundamenta el diálogo condicional (bajo la nula que respeta la regla de pares, tres de las cuatro propiedades son corolarios de esa regla), tipo 3 (con respaldo de suite en verificar_dialogo_chan para el análisis condicional propio).
+
 **[wilhelm]** Wilhelm, R. (1924). *I Ging: Das Buch der Wandlungen*. Eugen Diederichs. [Versión castellana: Vogelmann, D. J. (Trad.). (1975). *I Ching: El libro de las mutaciones*. Sudamericana.]
 ⚠ PENDIENTE DE VERIFICACIÓN FINAL: la ficha alemana y la existencia de la versión de Vogelmann son sólidas, pero la edición y año exactos de la castellana deben confirmarse en línea antes de commitear la ficha. Fundamenta: los nombres en español de los hexagramas usados en todo el sitio (tipo 3).
 
@@ -144,6 +147,13 @@ Verificación: ficha de Cambridge University Press y OpenLibrary el 24 de julio 
 **Bloque paseo aleatorio, la campana** (exp. 25, ampliación)
 - "La estacionaria del número de yang del caminante es exactamente la binomial C(6,k)/64; con 200000 pasos y semilla fija la desviación máxima entre las frecuencias y la binomial queda bajo 0,003 (0,0008 con semilla 99)" → tipo 1 → suite (verificar_paseo). Teorema clásico nombrado (ley de los grandes números); ficha pendiente (sección D).
 
+**Bloque diálogo con Chan** (exp. 19, ampliación)
+- "Chan (2026) demuestra por Monte Carlo contra barajados libres que el orden del Rey Wen no es azar: cuatro propiedades significativas" → tipo 3 → [chan2026]. Antecedente directo del test del experimento 19.
+- "Bajo nuestra nula condicional (barajados que respetan la regla de pares), tres de las cuatro propiedades de Chan son corolarios de esa regla: la distancia media de transición cae al percentil 29, los grupos de 4 con 12 yang al 90 y la asimetría dentro/entre pares es invariante por construcción; solo la autocorrelación de distancias queda al percentil 6 (marginal, no significativa)" → tipo 1 → suite (verificar_dialogo_chan). Cálculo propio (Monte Carlo N=20000, semilla fija) que cita a [chan2026]; los valores reales del Rey Wen (distancia 3,349; autocorrelación −0,247; 7 grupos) y los cuatro percentiles se reproducen en la suite. Complementariedad: Chan prueba que no es azar libre; nosotros, que condicionado a la regla de pares casi nada queda.
+- Precisión editorial obligada: donde el copy del experimento 19 (o del 23) diga que la regla de pares es "la única estructura" del Rey Wen, se matiza a "bajo el estadístico de inversiones (p = 0,97); bajo los cuatro estadísticos de Chan (2026), tres resultan corolarios de la regla de pares y el cuarto no alcanza significación".
+
+**Sellos de hallazgo propio concedidos en la tanda 5** (búsqueda de originalidad 2026-07-25, documentada en docs/informe-originalidad.md): espectro-walsh (el espectro de Walsh de la ordenación del Rey Wen y su 77,4% en órdenes pares), comparador-particiones (el ARI = −0,125 entre palacios y cosets) y permutacion (el empate 1013/1008/1008 y los costos en líneas). El conteo de sellos pasa de 1 a 4. El sello de rey-wen-aleatorio queda denegado por ahora: Chan (2026) es antecedente directo, y en su lugar se publica el diálogo condicional (reevaluable en una búsqueda futura).
+
 ## D. Huecos conocidos (no citar hasta resolver)
 
 1. Ficha exacta de la edición castellana de Wilhelm/Vogelmann.
@@ -155,3 +165,5 @@ Verificación: ficha de Cambridge University Press y OpenLibrary el 24 de julio 
 7. Cualquier fuente nueva que un experimento futuro necesite: pasa por este documento primero.
 
 Resueltas en la tanda 3 (salen de la lista): el teorema de Lucas (exp. 18) con [lucas1878]; el análisis de Fourier sobre grupos finitos (exp. 23) y la transformada discreta de Fourier (exp. 34), ambos con [terras1999]. La tanda 4 no añade fichas: sus teoremas se nombran con respaldo de suite y quedan en el hueco 6 de esta lista.
+
+Añadida en la tanda 5: [chan2026], preprint de arXiv verificado en línea el 25 de julio de 2026, para el diálogo del experimento 19. Pendiente para la siguiente ronda: Toussaint (geometría de los ritmos euclidianos), citado en el registro de aplicabilidad como candidato de la sección de música.
