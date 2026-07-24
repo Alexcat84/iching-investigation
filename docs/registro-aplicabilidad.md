@@ -1,6 +1,6 @@
 # Registro de aplicabilidad: teoremas y dominios frente al I Ching
 
-**Documento vivo.** Registra todo lo evaluado para el laboratorio: lo construido, lo aprobado, lo en exploración y lo rechazado, con su porqué. Crece con cada candidato nuevo; ninguna entrada se borra (un rechazo documentado también enseña). Última actualización: 26 de julio de 2026.
+**Documento vivo.** Registra todo lo evaluado para el laboratorio: lo construido, lo aprobado, lo en exploración y lo rechazado, con su porqué. Crece con cada candidato nuevo; ninguna entrada se borra (un rechazo documentado también enseña). Última actualización: 27 de julio de 2026.
 
 ## Estados y gobernanza
 
@@ -12,7 +12,7 @@
 
 Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de cero o ficha verificada en línea); 🔵→🟢 exige construcción con aserciones; 🔴 es permanente salvo que aparezca un teorema nuevo. Regla heredada del sitio: aplica = produce afirmaciones tipo teorema o cálculo asertables, o tradición con ficha APA. No aplica = solo metáfora o numerología.
 
-**Sellos de hallazgo propio (tanda 5, búsqueda 2026-07-25, en docs/informe-originalidad.md).** El conteo de sellos pasa de 1 a 4: se conceden a espectro-walsh (el espectro de Walsh de la ordenación del Rey Wen y su 77,4% en órdenes pares), comparador-particiones (el ARI = −0,125 entre palacios y cosets) y permutacion (el empate 1013/1008/1008 y los costos en líneas); ninguno aparece publicado. El sello del test de aleatoriedad del Rey Wen (rey-wen-aleatorio) queda DENEGADO POR AHORA: Chan (2026), *Statistical properties of the King Wen sequence* (arXiv:2604.09234), es antecedente directo con cuatro propiedades significativas contra barajados libres. En su lugar se publica el diálogo condicional del experimento 19 (tres de esas cuatro propiedades son corolarios de la regla de pares; la cuarta, marginal), con ficha [chan2026]. Sello reevaluable en una búsqueda futura.
+**Sellos de hallazgo propio (tanda 5, búsqueda 2026-07-25, en docs/informe-originalidad.md).** El conteo de sellos pasa de 1 a 4: se conceden a espectro-walsh (el espectro de Walsh de la ordenación del Rey Wen y su 77,4% en órdenes pares), comparador-particiones (el ARI = −0,125 entre palacios y cosets) y permutacion (el empate 1013/1008/1008 y los costos en líneas); ninguno aparece publicado. Nota (tanda 6): el reencuadre del 1008 refuerza el sello de permutacion sin tocar su busquedaNota, que es documentación histórica de la búsqueda; el 1008 es la esperanza exacta del azar (n(n-1)/4, desviación 86,3), así que el empate significa que los tres órdenes están a la distancia esperada del binario (ver hermandad-ordenes). El sello del test de aleatoriedad del Rey Wen (rey-wen-aleatorio) queda DENEGADO POR AHORA: Chan (2026), *Statistical properties of the King Wen sequence* (arXiv:2604.09234), es antecedente directo con cuatro propiedades significativas contra barajados libres. En su lugar se publica el diálogo condicional del experimento 19 (tres de esas cuatro propiedades son corolarios de la regla de pares; la cuarta, marginal), con ficha [chan2026]. Sello reevaluable en una búsqueda futura.
 
 ## 1. Análisis y señales
 
@@ -118,3 +118,11 @@ Transiciones: 🟡→🔵 exige verificación externa (cálculo reproducido de c
 | Entrada | Estado | ¿Aplica? | Por qué |
 |---|---|---|---|
 | Los 64 codones | 🟢 codones | Sí, como analogía con descargo | Isomorfismo combinatorio real; la codificación concreta es arbitraria (24 asignaciones) y el experimento lo demuestra |
+
+## 14. Estructura de los órdenes históricos
+
+| Entrada | Estado | ¿Aplica? | Por qué |
+|---|---|---|---|
+| Hermandad de los órdenes (inversiones de Kendall) | 🟢 hermandad-ordenes | Sí | La esperanza de inversiones entre órdenes aleatorios es n(n-1)/4 = 1008 (desviación 86,3, teorema mahoniano verificado contra Monte Carlo); los tres históricos están a esa distancia del binario; entre sí, solo Rey Wen-Mawangdui se aparta del azar (759, z = −2,89, p Monte Carlo 0,003, sobrevive Bonferroni) |
+| La pregunta del par (qué ordena cada par) | 🟢 pregunta-del-par | Sí | Micro-teorema: el volteo conserva el yang, así que "más yang primero" empata 28/28; ningún criterio binario probado (valor, líneas, suavizado) se aparta de una moneda; si hay regla, no vive en la estructura binaria (el texto queda fuera del alcance) |
+| PROHIBIDO conceder sello en la tanda 6 | ⚪ | Pendiente | La búsqueda de originalidad de ambos experimentos se hará después, por separado |
